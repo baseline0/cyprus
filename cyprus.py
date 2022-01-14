@@ -1,9 +1,9 @@
 #!/use/bin/python
 
 import sys, getopt
-from random import shuffle
 
 from funcparserlib.parser import NoParseError
+from cyprus.base import Base
 from cyprus.program import CyprusProgram as Program
 
 
@@ -27,6 +27,9 @@ def version():
 # -----------------
 
 if __name__ == '__main__':
+
+  from cyprus.base import Base
+  base = Base()
 
   args = sys.argv[1:]
 

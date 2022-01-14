@@ -1,6 +1,11 @@
-class CyprusRule(object):
+class Rule(object):
 
-  def __init__(self, name, req, out, pri=1):
+  def __init__(self, 
+    name:str, 
+    req, 
+    out, 
+    pri:int=1) -> None:
+
     self.name = name
     self.requirements = req
     self.output = out
@@ -8,9 +13,9 @@ class CyprusRule(object):
   
   def __str__(self):
     if self.name != None:
-      return "%s -> %s (%s)[%s])" % (self.requirements, self.output, self.priority, self.name)
+      return f"{self.requirements} -> {self.output} ({self.priority})[{self.name}])"
     else:
-      return "%s -> %s (%s)" % (self.requirements, self.output, self.priority)
+      return f"{self.requirements} -> {self.output} ({self.priority})"
   
   def __repr__(self):
     return self.__str__()

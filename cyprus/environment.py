@@ -1,9 +1,25 @@
-# An environment - a container object for rules and particles
-class CyprusEnvironment(object):
-  def __init__(self, name=None, parent=None, contents=[], membranes=[], rules=[]):
-    global sim
-    self.sim = sim
+from random import shuffle
+from textwrap import indent
 
+from cyprus.base import Base
+from cyprus.dissolve_particle import DissolveParticle
+from cyprus.particle import Particle
+from cyprus.osmose_particle import OsmoseParticle
+
+from cyprus.base import get_base
+base = get_base()
+
+from typing import List
+
+# An environment - a container object for rules and particles
+class Environment(object):
+  def __init__(self, 
+    name=None, 
+    parent=None, 
+    contents:List=[], 
+    membranes:List=[], 
+    rules:List=[]) -> None:
+    
     self.name = name
     self.parent = parent
     self.contents = contents
@@ -14,15 +30,17 @@ class CyprusEnvironment(object):
     self.setpriorities()
 
   def printstatus(self, depth=0):
-    spaces = " " * (depth * 2)
-    print('%s[name: %s' % (spaces, self.name))
-    print('%s symbols: %s' % (spaces, self.contents))
-    print('%s rules: %s' % (spaces, self.rules))
-    print('%s staging area: %s' % (spaces, self.staging_area))
-    print('%s Membranes:' % spaces)
+    indent = " " * (depth * 2)
+
+    print(f'{indent} [name: {self.name}')
+    print(f'{indent} symbols: {self.contents}')
+    print(f'{indent} rules: {self.rules}')
+    print(f'{indent} staging area: {self.staging_area}')
+    
+    print(f'{ indent} Membranes:')
     for m in self.membranes:
       m.printstatus(depth + 1)
-    print('%s]' % spaces)
+    print(f'{indent}]')
   
   def tick(self):
     self.stage1()
@@ -71,7 +89,7 @@ class CyprusEnvironment(object):
   
   ## apply changes from stage 1, including dissolutions and osmosis
   def stage2(self):
-    global sim # cyprus_membrane_lookup_table
+    global base 
 
     for m in self.membranes: 
       m.stage2()
@@ -81,25 +99,25 @@ class CyprusEnvironment(object):
     contentcopy = list(self.contents)
 
     for s in contentcopy:
-      if isinstance(s, CyprusDissolveParticle):
+      if isinstance(s, DissolveParticle):
         self.contents.remove(s)
 
         if s.target:
-          if not sim.cyprus_membrane_lookup_table.get(s.target, None):
+          if not base.cyprus_membrane_lookup_table.get(s.target, None):
             msg = "ERROR: No containers defined with name '%s'" % s.target
-            raise CyprusException(msg)
-          sim.cyprus_membrane_lookup_table[s.target].dissolve()
+            raise Exception(msg)
+          base.cyprus_membrane_lookup_table[s.target].dissolve()
         else:
           self.dissolve()
           break
       
-      if isinstance(s, CyprusOsmoseParticle):
+      if isinstance(s, OsmoseParticle):
         self.contents.remove(s)
         if s.target:
-          if not sim.cyprus_membrane_lookup_table.get(s.target, None):
+          if not base.cyprus_membrane_lookup_table.get(s.target, None):
             msg = "ERROR: No containers defined with name '%s'" % s.target
-            raise CyprusException(msg)
-          sim.cyprus_membrane_lookup_table[s.target].contents.append(
+            raise Exception(msg)
+          base.cyprus_membrane_lookup_table[s.target].contents.append(
             Particle(s.payload))
         elif self.parent:
           self.parent.contents.append(Particle(s.payload))

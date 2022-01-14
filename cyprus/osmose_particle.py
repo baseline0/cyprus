@@ -1,7 +1,7 @@
-from cyprus.particle import CyprusParticle as Particle
+from cyprus.particle import Particle
 
 
-class CyprusOsmoseParticle(Particle):
+class OsmoseParticle(Particle):
 
   def __init__(self, payload, target=None):
     self.payload = payload
@@ -9,12 +9,12 @@ class CyprusOsmoseParticle(Particle):
     
   def __str__(self):
     if self.target:
-      return "!%s!!%s" % (self.payload, self.target)
+      return f"!{self.payload}!!{self.target}"
     else:
-      return "!%s" % self.payload
+      return f"!{self.payload}"
   
   def __eq__(self, other):
-    if isinstance(other, CyprusOsmoseParticle):
+    if isinstance(other, OsmoseParticle):
       return (self.target, self.payload) == (other.target, other.payload)
     else:
       return False

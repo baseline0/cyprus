@@ -1,9 +1,14 @@
 import sys
 sys.path.append('..')
 
-import cyprus_lexer as lexer
+import unittest
 
-if __name__ == '__main__':
-  ts = lexer.tokenizefile('test.cyp')
-  for t in ts:
-    print(t.__unicode__())
+from cyprus.program import tokenizefile
+
+class LexerTest(unittest.TestCase):
+
+  def test_unicode(self):  
+
+    ts = tokenizefile('test.cyp')
+    for t in ts:
+      print(t.__unicode__())

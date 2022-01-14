@@ -1,11 +1,11 @@
-class CyprusParticle(object):
+class Particle(object):
 
-  def __init__(self, name, charge=''):
+  def __init__(self, name:str, charge:str=''):
     self.name = name
     self.charge = charge
     
   def __str__(self):
-    return "%s%s" % (self.name, self.charge)
+    return f"{self.name}{self.charge}"
   
   def __repr__(self):
     return self.__str__()

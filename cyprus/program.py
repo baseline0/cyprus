@@ -1,46 +1,22 @@
 from funcparserlib.lexer import Token
 
+from cyprus.base import get_base
+base = get_base()
+
 from cyprus.clock import CyprusClock as Clock
-from cyprus.environment import CyprusEnvironment as Environment
-from cyprus.membrane import CyprusMembrane as Membrane
-from cyprus.particle import CyprusParticle as Particle
-from cyprus.dissolve_particle import CyprusDissolveParticle as DissolveParticle
-from cyprus.osmose_particle import CyprusOsmoseParticle as OsmoseParticle
-from cyprus.rule import CyprusRule as Rule
+from cyprus.environment import Environment
+from cyprus.membrane import  Membrane
+from cyprus.particle import Particle
+from cyprus.dissolve_particle import DissolveParticle
+from cyprus.osmose_particle import OsmoseParticle
+from cyprus.rule import Rule
 
 from cyprus.parser import Statement, Program, Environment, Membrane
-
-from cyprus.parser import flatten
-
-# -----------------
-
-cyprus_rule_lookup_table = {}
-cyprus_membrane_lookup_table = {}
-cyprus_state_rule_applied = True
-
-# class Simulation:
-
-#   def __init__(self) -> None:
-#     # formerly: global state
-#     self.cyprus_rule_lookup_table = {}
-#     self.cyprus_membrane_lookup_table = {}
-#     self.cyprus_state_rule_applied = True
-
-#     # TODO
-#     # self.logFile = open('cypres_log.txt', 'w')
-
-#   def is_valid_membrane_file() -> bool:
-#     # TODO
-#     return False
-
-#   def run(self) -> None:
-#     pass
-
-# sim = Simulation()
+from cyprus.parser import flatten, Grouping
 
 # -----------------
 
-from funcparserlib.parser import (some, a, maybe, many, finished, skip, 
+from funcparserlib.parser import (some, maybe, many, finished, skip, 
   with_forward_decls, oneplus, NoParseError)
 from funcparserlib.lexer import Token
 from funcparserlib.util import pretty_tree
@@ -111,10 +87,10 @@ def parse(tokens):
   
   return program.parse(tokens)
 
-# pretty print(a parse tree
+# pretty print a parse tree
 def ptree(tree):
 
-  def kids(x):
+  def get_kids(x):
     if isinstance(x, Grouping):
       return x.kids
     else:
@@ -132,7 +108,7 @@ def ptree(tree):
       return '{Statement}'
     else:
       return repr(x)
-  return pretty_tree(tree, kids, show)
+  return pretty_tree(tree, get_kids, show)
 
 # -----------------
 
@@ -194,6 +170,7 @@ class CyprusProgram(object):
     return out
   
   def buildcontainer(self, e):
+    
     name = None
     parent = None
     contents = []
@@ -225,21 +202,23 @@ class CyprusProgram(object):
     name, parent, contents, membranes, rules = self.buildcontainer(e)
     env = Environment(name, parent, contents, membranes, rules)
     if name:
-      if cyprus_membrane_lookup_table.get(name, None):
-        msg = "ERROR: Multiple containers defined with name '%s'" % name
+      if base.cyprus_membrane_lookup_table.get(name, None):
+        msg = f"ERROR: Multiple containers defined with name: {name}"
         raise Exception(msg)
-      cyprus_membrane_lookup_table[name] = env
+      base.cyprus_membrane_lookup_table[name] = env
     return env
   
   def buildmembrane(self, e):
 
     name, parent, contents, membranes, rules = self.buildcontainer(e)
     mem = Membrane(name, parent, contents, membranes, rules)
+
     if name:
-      if cyprus_membrane_lookup_table.get(name, None):
-        msg = "ERROR: Multiple containers defined with name '%s'" % name
+      if base.cyprus_membrane_lookup_table.get(name, None):
+        msg = f"ERROR: Multiple containers defined with name: {name}"
         raise Exception(msg)
-      cyprus_membrane_lookup_table[name] = mem
+      base.cyprus_membrane_lookup_table[name] = mem
+
     return mem
   
   def executestatement(self, stmt):
@@ -267,7 +246,6 @@ class CyprusProgram(object):
     return out
     
   def buildrule(self, stmt:Statement):
-    # global cyprus_rule_lookup_table
 
     name = None
     req = []
@@ -328,18 +306,18 @@ class CyprusProgram(object):
     rule = Rule(name, req, out, pri)
 
     if name:
-      if cyprus_rule_lookup_table.get(name, None):
+      if base.cyprus_rule_lookup_table.get(name, None):
         msg = "ERROR: Multiple reactions defined with name '%s'" % name
         raise Exception(msg)
-      cyprus_rule_lookup_table[name] = rule
+      base.cyprus_rule_lookup_table[name] = rule
     return rule
         
   def setpriority(self, stmt):
     # global cyprus_rule_lookup_table
 
     greatern, lessern = stmt.kids[2].value, stmt.kids[4].value
-    greater = cyprus_rule_lookup_table.get(greatern, None)
-    lesser = cyprus_rule_lookup_table.get(lessern, None)
+    greater = base.cyprus_rule_lookup_table.get(greatern, None)
+    lesser = base.cyprus_rule_lookup_table.get(lessern, None)
 
     if not greater:
       msg = f"ERROR: No reactions defined with name {greatern}"
