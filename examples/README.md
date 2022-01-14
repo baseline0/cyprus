@@ -1,6 +1,6 @@
 # Example programs
 
-Here's an annotated example program, (test/test.cyp) that generates 
+Here's an annotated example program, (example1.cyp) that generates 
 perfect squares:
 
 ```

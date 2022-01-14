@@ -101,7 +101,9 @@ class CyprusEnvironment(object):
 
   ## apply all rules maximally, non-deterministically
   def stage1(self):
-    for m in self.membranes: m.stage1()
+    for m in self.membranes: 
+      m.stage1()
+
     for p in sorted(self.ruleranks.keys(), reverse=True):
       rs = self.ruleranks[p]
       shuffle(rs)
@@ -112,10 +114,14 @@ class CyprusEnvironment(object):
   ## apply changes from stage 1, including dissolutions and osmosis
   def stage2(self):
     global cyprus_membrane_lookup_table
-    for m in self.membranes: m.stage2()
+
+    for m in self.membranes: 
+      m.stage2()
+
     self.contents.extend(self.staging_area)
     self.staging_area = []
     contentcopy = list(self.contents)
+    
     for s in contentcopy:
       if isinstance(s, CyprusDissolveParticle):
         self.contents.remove(s)
@@ -415,15 +421,18 @@ if __name__ == '__main__':
   except:
     usage()
     sys.exit()
+
   ptree, pversion, phelp, pverbose = False, False, False, False
   for opt, a in opts:
     if   opt == '-p': ptree = True
     elif opt == "-V": pverbose = True
     elif opt == '-v': pversion = True
     elif opt == '-h': phelp = True
+
   if pversion:
     version()
     sys.exit()
+
   if len(args) != 1 or phelp:
     usage()
     sys.exit()

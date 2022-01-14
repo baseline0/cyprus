@@ -2,4 +2,4 @@
 
 # python3 cyprus.py ./test/test.cyp
 
-python3 cyprus.py ./test/hello.cyp
+python3 cyprus.py -V ./examples/hello.cyp
