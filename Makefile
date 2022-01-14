@@ -7,11 +7,11 @@ install_deps:
 lexertest: 
 	python3 ./test/lexertest.py
 
-test1: 
-	python3 cyprus.py ./test/test1.cyp
+example1: 
+	python3 cyprus.py -p ./examples/example1.cyp
 
-test2: 
-	python3 cyprus.py ./test/test2.cyp
+example2: 
+	python3 cyprus.py ./examples/example2.cyp
 
 hello:
-	python3 cyprus.py ./test/hello.cyp
+	python3 cyprus.py ./examples/hello.cyp
