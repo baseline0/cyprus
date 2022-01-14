@@ -18,21 +18,21 @@ Terminology
 Cyprus uses several unique terms when it comes to programming languages.
 These are described below.
 
-Container - an object that holds membranes, particles, and reaction definitons.
+**Container** - an object that holds membranes, particles, and reaction definitons.
 
-Environment - a container that cannot be dissolved, nor whose walls can
+**Environment** - a container that cannot be dissolved, nor whose walls can
 be permeated.  A Cyprus program consists of at least one, possibly many,
 environment definitions.
 
-Membrane - a container nested within an environment or another membrane.
+**Membrane** - a container nested within an environment or another membrane.
 Membranes can be dissolved and their walls can be permeated.
 
-Particle - a chemical, required for reactions to take place, and produced
+**Particle** - a chemical, required for reactions to take place, and produced
 by reactions.
 
-Reaction - a rule governing the interaction of particles within a membrane.
+**Reaction** - a rule governing the interaction of particles within a membrane.
 
-Priority - an ordering of reactions.  Reactions with a higher priority
+**Priority** - an ordering of reactions.  Reactions with a higher priority
 will be maximally applied before those with a lower priority.
 
 How Cyprus Works
@@ -51,6 +51,7 @@ their parent container.  Environments cannot dissolve.
 
 Particles may also osmose through their containing membrane's walls, either
 targeting their container's parent, or a specific membrane by way of names.
+
 Using named targets, a particle can osmose deeper into nested membranes,
 or pass through multiple containing membranes.  Environments cannot be 
 osmosed through, though particles may osmose over environmental boundaries.
@@ -66,7 +67,7 @@ Getting Cyprus
 --------------
 Getting Cyprus is simple:
 
-  1. Ensure you have Python 2.7 installed (not Python 3+!)
+  1. Ensure you have Python3 ~~2.7 installed (not Python 3+!)~~
   2. Install funcparser lib with `pip install funcparserlib`
   3. Clone this repo
     
@@ -74,22 +75,31 @@ You've got a working Cyprus distribution now.
 
 Using Cyprus
 ------------
-Cyprus may be invoked like so:
+Cyprus may be invoked as:
 
+```
     python cyprus.py
+```
+
+or edit
+
+```    
+    run.sh 
+```
     
-But this will give you errors:
+or add to Makefile.
+
+Usage:
 
     $ python cyprus.py
     usage: python cyprus.py [-p | -V] <filename.cyp>
            python cyprus.py -v
            python cyprus.py -h
-      -p: pretty-print a parse tree and exit
+      -p: pretty-print(a parse tree and exit
       -V: display verbose output of the program's execution
       -v: display version info and exit
       -h: display this help text and exit
       
-I'm sure you can figure it out from here.
 
 Cyprus' grammar
 ---------------
@@ -179,3 +189,8 @@ Planned features
   - Variable membrane permeability
   - Syntactic sugar for catalysts (`reaction~ *x :: x` == `reaction~ x :: x x`)
   - Clean up code (remove globals, comment, etc.)
+
+WIP
+---
+
+python3 compatibility

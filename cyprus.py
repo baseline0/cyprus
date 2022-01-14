@@ -1,3 +1,5 @@
+#!/use/bin/python
+
 ## cyprus
 ## language logic and runner
 ## PeckJ 20121204
@@ -14,7 +16,7 @@ from funcparserlib.parser import NoParseError
 from funcparserlib.lexer import Token
 
 # global state
-cyprus_version = 20121205
+cyprus_version = 20220113
 cyprus_rule_lookup_table = {}
 cyprus_membrane_lookup_table = {}
 cyprus_state_rule_applied = True
@@ -26,15 +28,15 @@ class CyprusClock(object):
     self.envs = envs
   
   def printstatus(self):
-    print "Clock tick: %s" % self._tick
+    print("Clock tick: %s" % self._tick)
     for e in self.envs: e.printstatus()
   
   def printfinalcontents(self):
     for e in self.envs:
       if e.name:
-        print "%s: %s" % (e.name, e.contents)
+        print("%s: %s" % (e.name, e.contents))
       else:
-        print "Unnamed env %d: %s" % (self.envs.index(e), e.contents)
+        print("Unnamed env %d: %s" % (self.envs.index(e), e.contents))
   
   def tick(self):
     self._tick += 1
@@ -55,14 +57,14 @@ class CyprusEnvironment(object):
 
   def printstatus(self, depth=0):
     spaces = " " * (depth * 2)
-    print '%s[name: %s' % (spaces, self.name)
-    print '%s symbols: %s' % (spaces, self.contents)
-    print '%s rules: %s' % (spaces, self.rules)
-    print '%s staging area: %s' % (spaces, self.staging_area)
-    print '%s Membranes:' % spaces
+    print('%s[name: %s' % (spaces, self.name))
+    print('%s symbols: %s' % (spaces, self.contents))
+    print('%s rules: %s' % (spaces, self.rules))
+    print('%s staging area: %s' % (spaces, self.staging_area))
+    print('%s Membranes:' % spaces)
     for m in self.membranes:
       m.printstatus(depth + 1)
-    print '%s]' % spaces
+    print('%s]' % spaces)
   
   def tick(self):
     self.stage1()
@@ -151,14 +153,14 @@ class CyprusMembrane(CyprusEnvironment):
   
   def printstatus(self, depth=0):
     spaces = " " * (depth * 4)
-    print '%s(name: %s' % (spaces, self.name)
-    print '%s symbols: %s' % (spaces, self.contents)
-    print '%s rules: %s' % (spaces, self.rules)
-    print '%s staging area: %s' % (spaces, self.staging_area)
-    print '%s Membranes:' % spaces
+    print('%s(name: %s' % (spaces, self.name))
+    print('%s symbols: %s' % (spaces, self.contents))
+    print('%s rules: %s' % (spaces, self.rules))
+    print('%s staging area: %s' % (spaces, self.staging_area))
+    print('%s Membranes:' % spaces)
     for m in self.membranes:
       m.printstatus(depth + 1)
-    print '%s)' % spaces
+    print('%s)' % spaces)
   
 class CyprusParticle(object):
   def __init__(self, name, charge=''):
@@ -297,9 +299,9 @@ class CyprusProgram(object):
         self.setpriority(stmt)
         return None
       else:
-        print "ERROR: %s" % stmt
+        print("ERROR: %s" % stmt)
     else:
-      print "ERROR: %s" % stmt
+      print("ERROR: %s" % stmt)
   
   def buildparticles(self, stmt):
     particles = stmt.kids[2:]
@@ -392,19 +394,19 @@ class CyprusProgram(object):
     self.clock.printfinalcontents()
       
 def usage():
-  print "usage: python cyprus.py [-p | -V] <filename.cyp>"
-  print "       python cyprus.py -v"
-  print "       python cyprus.py -h"
-  print "  -p: pretty-print a parse tree and exit"
-  print "  -V: display verbose output of the program's execution"
-  print "  -v: display version info and exit"
-  print "  -h: display this help text and exit"
+  print("usage: python cyprus.py [-p | -V] <filename.cyp>")
+  print("       python cyprus.py -v")
+  print("       python cyprus.py -h")
+  print("  -p: pretty-print(a parse tree and exit")
+  print("  -V: display verbose output of the program's execution")
+  print("  -v: display version info and exit")
+  print("  -h: display this help text and exit")
   
 def version():
   global cyprus_version
-  print "cyprus version %s" % cyprus_version
-  print "Jacob Peck (suspended-chord)"
-  print "http://github.com/gatesphere/cyprus"
+  print("cyprus version %s" % cyprus_version)
+  print("Jacob Peck (suspended-chord)")
+  print("http://github.com/gatesphere/cyprus")
 
 if __name__ == '__main__':
   args = sys.argv[1:]
@@ -430,23 +432,23 @@ if __name__ == '__main__':
   
   if ptree:
     try:
-      print parser.ptree(parser.parse(lexer.tokenizefile(filename)))
+      print(parser.ptree(parser.parse(lexer.tokenizefile(filename))))
     except NoParseError as e:
-      print "Could not parse file:"
-      print e.msg
+      print("Could not parse file:")
+      print(e.msg)
     sys.exit()
   
   ## actual logic
   try:
     tree = parser.parse(lexer.tokenizefile(filename))
   except NoParseError as e:
-    print "Could not parse file:"
-    print e.msg
+    print("Could not parse file:")
+    print(e.msg)
     sys.exit()
   try:
     tree = CyprusProgram(tree)
     tree.run(verbose=pverbose)
   except CyprusException as e:
-    print e.message
+    print(e.message)
   
   sys.exit()

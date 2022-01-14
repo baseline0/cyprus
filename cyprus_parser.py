@@ -32,7 +32,7 @@ make_number = lambda str: float(str)
 def flatten(x):
   result = []
   for el in x:
-    if hasattr(el, "__iter__") and not isinstance(el, basestring):
+    if hasattr(el, "__iter__") and not isinstance(el, str):
       result.extend(flatten(el))
     else:
       result.append(el)
@@ -101,7 +101,7 @@ def parse(tokens):
   
   return program.parse(tokens)
 
-# pretty print a parse tree
+# pretty print(a parse tree
 def ptree(tree):
   def kids(x):
     if isinstance(x, Grouping):
@@ -109,7 +109,7 @@ def ptree(tree):
     else:
       return []
   def show(x):
-    #print "show(%r)" % x
+    #print("show(%r)" % x
     if isinstance(x, Program):
       return '{Program}'
     elif isinstance(x, Environment):
