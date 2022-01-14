@@ -1,46 +1,53 @@
-cyprus
-======
+# cyprus
 
 A membrane-computing oriented programming language
 
-Overview
---------
+## Overview
+
 Cyprus is a programming language based on the concept of a [P System](http://en.wikipedia.org/wiki/P_system).
+
 Computation is modeled as chemical reactions happening within protocellular
 constructions, producing new chemicals.
 
-License
--------
+## License
+
 Cyprus is [BSD Licensed](https://raw.github.com/gatesphere/cyprus/master/license/license.txt).
 
-Terminology
------------
+
+---
+
+# Terminology
+
 Cyprus uses several unique terms when it comes to programming languages.
 These are described below.
 
-**Container** - an object that holds membranes, particles, and reaction definitons.
+- **Container** - an object that holds membranes, particles, and reaction definitons.
 
-**Environment** - a container that cannot be dissolved, nor whose walls can
+- **Environment** - a container that cannot be dissolved, nor whose walls can
 be permeated.  A Cyprus program consists of at least one, possibly many,
 environment definitions.
 
-**Membrane** - a container nested within an environment or another membrane.
+- **Membrane** - a container nested within an environment or another membrane.
 Membranes can be dissolved and their walls can be permeated.
 
-**Particle** - a chemical, required for reactions to take place, and produced
+- **Particle** - a chemical, required for reactions to take place, and produced
 by reactions.
 
-**Reaction** - a rule governing the interaction of particles within a membrane.
+- **Reaction** - a rule governing the interaction of particles within a membrane.
 
-**Priority** - an ordering of reactions.  Reactions with a higher priority
+- **Priority** - an ordering of reactions.  Reactions with a higher priority
 will be maximally applied before those with a lower priority.
 
-How Cyprus Works
-----------------
+---
+
+# How Cyprus Works
+
 Cyprus is governed by a single monolithic clock.  All activity within
 all environments occurs in lockstep with the tick of the clock.  Each
 tick, all reactions that are applicable within a given container are applied
-maximally, obeying reaction priorities.  The clock stops ticking when no more
+maximally, obeying reaction priorities.  
+
+The clock stops ticking when no more
 reaction applications can occur.  At this point, the particles contained by
 the environments are interpreted as the final output of the program,
 with everything else left in the system discarded as leftover state.
@@ -63,32 +70,20 @@ Cyprus is a Turing complete language, though using it for anything other
 than fun and experimentation would be insane.  It is therefore an extremely
 losely defined [Turing Tarpit](http://en.wikipedia.org/wiki/Turing_tarpit).
 
-Getting Cyprus
---------------
-Getting Cyprus is simple:
+---
+
+# Install and Usage
+
+## Getting Cyprus
 
   1. Ensure you have Python3 ~~2.7 installed (not Python 3+!)~~
   2. Install funcparser lib with `pip install funcparserlib`
   3. Clone this repo
     
-You've got a working Cyprus distribution now.
 
-Using Cyprus
-------------
-Cyprus may be invoked as:
+## Using Cyprus
 
 ```
-    python cyprus.py
-```
-
-or edit
-
-```    
-    run.sh 
-```
-    
-or add to Makefile.
-
 Usage:
 
     $ python cyprus.py
@@ -99,10 +94,22 @@ Usage:
       -V: display verbose output of the program's execution
       -v: display version info and exit
       -h: display this help text and exit
-      
+```
 
-Cyprus' grammar
----------------
+Convenience tools include:
+
+Edit
+
+```    
+    run.sh 
+```
+    
+or add to Makefile.
+
+---
+     
+# Cyprus' grammar
+
 Here's the grammar, in a modified EBNF:
 
     program        := {env}
@@ -121,64 +128,8 @@ Here's the grammar, in a modified EBNF:
     symbol         := atom | "!", name, <"!!", name> | "$", [name]
 
 
-Example programs
-----------------
-Here's an annotated example program, (test/test.cyp) that generates 
-perfect squares:
+see [examples/README.md](examples/README.md)
 
-    // generate perfect squares
-    // comments are defined with // to the end of the line
-    [env       // open an environment, call it "env"
-      (1       // open a membrane, call it "1"
-        (2     // open a membrane, call it "2"
-          (3   // open a membrane, call it "3"
-            // seed the membrane "3" with 2 particles, "a" and "c"
-            exists~   a c
-            
-            // define some reactions (in "3")
-            reaction~   a :: a b  // take an "a", produce "a" and "b"
-            reaction~   a :: b $  // take an "a", produce "b" and dissolve self
-                                  // reaction~ a :: b $3 would do the same in
-                                  //                     this situation.
-                                  // reaction~ a :: b $foo would dissolve
-                                  //                       container "foo" 
-            reaction~   c :: c c  // take a "c", produce two "c"s
-          )
-          
-          // define some reactions (in "2")
-          reaction~         b :: d
-          reaction~         d :: d e
-          reaction as c1~ c c :: c  // name this reaction c1
-          reaction as c2~   c :: $  // name this reaction c2
-          
-          // define rule priority
-          priority~        c1 >> c2 // c1 must be maximally applied before c2
-          // named reactions are required for rule priorities
-        )
-        
-        // define a reaction (in "3")
-        reaction~ e :: !e // take an "e", osmose an "e" to parent container
-                          // reaction~ e :: !e!!env would do the same in this
-                          //                        situation.
-                          // reaction~ e :: !e!!foo would make "e" osmose to
-                          //                        container "foo"
-      )
-    ]
-
-The output here is the amount of "e" particles in the environment at the
-end of the program's execution.
-
-Here's another example annotated program (test/hello.cyp), that produces 
-a "hello, world!" effect:
-
-    // hello world in cyprus
-
-    [ // names are optional
-      (
-        exists~ hello
-        reaction~ hello :: hello world $
-      )
-    ]
 
 Those examples, along with the grammar, show pretty much all you need to 
 know about writing Cyprus programs.
