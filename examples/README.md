@@ -69,7 +69,7 @@ a "hello, world!" effect:
 run with:
 
 ```
-make test1
+make example1
 ```
 
 **output**
