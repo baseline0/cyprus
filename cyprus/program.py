@@ -16,7 +16,7 @@ from cyprus.dissolve_particle import DissolveParticle
 from cyprus.osmose_particle import OsmoseParticle
 from cyprus.rule import Rule
 
-from cyprus.parser import Statement, Program, Environment, Membrane
+from cyprus.parser import Statement, SimulationProgram, Environment, Membrane
 from cyprus.parser import flatten, Grouping
 
 # -----------------
@@ -88,14 +88,14 @@ def parse(tokens):
   membrane = (skip(membrane_open) + body + skip(membrane_close)) >> Membrane
   env = (skip(env_open) + body + skip(env_close)) >> Environment
   
-  program = many(env) + skip(finished) >> Program
+  program = many(env) + skip(finished) >> SimulationProgram
   
   return program.parse(tokens)
 
 # pretty print a parse tree
 def ptree(tree):
 
-  def get_kids(x):
+  def kids(x):
     if isinstance(x, Grouping):
       return x.kids
     else:
@@ -103,7 +103,7 @@ def ptree(tree):
 
   def show(x):
     #print("show(%r)" % x
-    if isinstance(x, Program):
+    if isinstance(x, SimulationProgram):
       return '{Program}'
     elif isinstance(x, Environment):
       return '{Environment}'
@@ -113,7 +113,7 @@ def ptree(tree):
       return '{Statement}'
     else:
       return repr(x)
-  return pretty_tree(tree, get_kids, show)
+  return pretty_tree(tree, kids, show)
 
 # -----------------
 
@@ -156,7 +156,7 @@ def tokenizefile(f):
 
 # -----------------
 
-class CyprusProgram(object):
+class SimulationProgram(object):
 
   # TODO
   # enum kw_exists
@@ -169,7 +169,7 @@ class CyprusProgram(object):
   
   def objectify(self):
     out = []
-    for e in self.tree.kids:
+    for e in self.tree[0].kids:
       env = self.buildenvironment(e)
       out.append(env)
     return out
@@ -355,17 +355,17 @@ class CyprusProgram(object):
 
     self.clock.print_final_contents()
 
-  @classmethod
-  def print_tree(fname:str) -> None:      
 
-    try:
-      tokens = tokenizefile(fname)
-      parsed = parse(tokens)
-      tree = ptree(parsed) 
-      print(tree)
+def print_tree(fname:str) -> None:      
 
-    except NoParseError as e:
-      print(f"Could not parse file: {e.msg}")
+  try:
+    tokens = tokenizefile(fname)
+    parsed = parse(tokens)
+    tree = ptree(parsed) 
+    print(tree)
+
+  except NoParseError as e:
+    print(f"Could not parse file: {e.msg}")
       
 def parse_and_run_tree(fname:str, pverbose:bool) -> None:
 
@@ -379,7 +379,8 @@ def parse_and_run_tree(fname:str, pverbose:bool) -> None:
     return
 
   try:
-    p = CyprusProgram(tree)
+    print(tree)
+    p = SimulationProgram(tree)
     p.run(verbose=pverbose)
 
   except Exception as e:

@@ -7,9 +7,8 @@ sys.path.insert(0, parent_dir_path)
 
 import sys, getopt
 
-from funcparserlib.parser import NoParseError
 from cyprus.base import Base
-from cyprus.program import CyprusProgram as Program
+from cyprus.program import print_tree
 
 
 def usage():
@@ -66,7 +65,7 @@ if __name__ == '__main__':
   filename = args[0]
   
   if ptree:
-    Program.print_tree(filename)
+    print_tree(filename)
     sys.exit()
   
   from cyprus.program import parse_and_run_tree

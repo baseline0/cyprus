@@ -18,7 +18,7 @@ class Grouping(object):
     except TypeError:
       self.kids = [kids]
 
-class Program(Grouping):
+class SimulationProgram(Grouping):
   pass
   
 class Environment(Grouping):
