@@ -1,3 +1,8 @@
+import os, sys
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
+sys.path.insert(0, parent_dir_path)
+
 from funcparserlib.lexer import Token
 
 from cyprus.base import get_base
@@ -203,10 +208,10 @@ class CyprusProgram(object):
     env = Environment(name, parent, contents, membranes, rules)
     
     if name:
-      if base.cyprus_membrane_lookup_table.get(name, None):
+      if base.membrane_table.get(name, None):
         msg = f"ERROR: Multiple containers defined with name: {name}"
         raise Exception(msg)
-      base.cyprus_membrane_lookup_table[name] = env
+      base.membrane_table[name] = env
     return env
   
   def buildmembrane(self, e):
@@ -215,15 +220,17 @@ class CyprusProgram(object):
     mem = Membrane(name, parent, contents, membranes, rules)
 
     if name:
-      if base.cyprus_membrane_lookup_table.get(name, None):
+      if base.membrane_table.get(name, None):
         msg = f"ERROR: Multiple containers defined with name: {name}"
         raise Exception(msg)
-      base.cyprus_membrane_lookup_table[name] = mem
+      base.membrane_table[name] = mem
 
     return mem
   
   def executestatement(self, stmt):
+
     x = stmt.kids[0]
+
     if isinstance(x, Membrane):
       return self.buildmembrane(x)
     elif isinstance(x, Token):
@@ -240,8 +247,10 @@ class CyprusProgram(object):
       print(f"ERROR: {stmt}")
   
   def buildparticles(self, stmt:Statement):
+
     particles = stmt.kids[2:]
     out = []
+
     for p in particles:
       out.append(Particle(p.value))
     return out
@@ -307,18 +316,18 @@ class CyprusProgram(object):
     rule = Rule(name, req, out, pri)
 
     if name:
-      if base.cyprus_rule_lookup_table.get(name, None):
+      if base.rule_table.get(name, None):
         msg = "ERROR: Multiple reactions defined with name '%s'" % name
         raise Exception(msg)
-      base.cyprus_rule_lookup_table[name] = rule
+      base.rule_table[name] = rule
     return rule
         
   def setpriority(self, stmt):
     # global cyprus_rule_lookup_table
 
     greatern, lessern = stmt.kids[2].value, stmt.kids[4].value
-    greater = base.cyprus_rule_lookup_table.get(greatern, None)
-    lesser = base.cyprus_rule_lookup_table.get(lessern, None)
+    greater = base.rule_table.get(greatern, None)
+    lesser = base.rule_table.get(lessern, None)
 
     if not greater:
       msg = f"ERROR: No reactions defined with name {greatern}"
@@ -334,35 +343,44 @@ class CyprusProgram(object):
   def run(self, verbose=False):
     # global cyprus_state_rule_applied
 
-    if verbose: self.clock.print_status()
+    if verbose: 
+      self.clock.print_status()
+
     while cyprus_state_rule_applied:
       cyprus_state_rule_applied = False
       self.clock.tick()
-      if verbose: self.clock.print_status()
-    self.clock.printfinalcontents()
+
+      if verbose: 
+        self.clock.print_status()
+
+    self.clock.print_final_contents()
 
   @classmethod
   def print_tree(fname:str) -> None:      
 
     try:
-      print(ptree(parse(tokenizefile(fname))))
+      tokens = tokenizefile(fname)
+      parsed = parse(tokens)
+      tree = ptree(parsed) 
+      print(tree)
+
     except NoParseError as e:
-      print("Could not parse file:")
-      print(e.msg)
-
-
+      print(f"Could not parse file: {e.msg}")
+      
 def parse_and_run_tree(fname:str, pverbose:bool) -> None:
 
   ## actual logic
   try:
-    tree = parse(tokenizefile(fname))
+    tokens = tokenizefile(fname)
+    tree = parse(tokens)
+
   except NoParseError as e:
-    print(f"Could not parse file: {fname}")
-    print(e.args)
+    print(f"Could not parse file: {e.args}")
     return
 
   try:
     p = CyprusProgram(tree)
     p.run(verbose=pverbose)
+
   except Exception as e:
-    print(e.args)
+    print(f'error running program: {e.args}')

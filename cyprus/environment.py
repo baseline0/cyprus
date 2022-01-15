@@ -108,10 +108,10 @@ class Environment(object):
         self.contents.remove(s)
 
         if s.target:
-          if not base.cyprus_membrane_lookup_table.get(s.target, None):
+          if not base.membrane_table.get(s.target, None):
             msg = "ERROR: No containers defined with name '%s'" % s.target
             raise Exception(msg)
-          base.cyprus_membrane_lookup_table[s.target].dissolve()
+          base.membrane_table[s.target].dissolve()
         else:
           self.dissolve()
           break
@@ -119,10 +119,10 @@ class Environment(object):
       if isinstance(s, OsmoseParticle):
         self.contents.remove(s)
         if s.target:
-          if not base.cyprus_membrane_lookup_table.get(s.target, None):
+          if not base.membrane_table.get(s.target, None):
             msg = "ERROR: No containers defined with name '%s'" % s.target
             raise Exception(msg)
-          base.cyprus_membrane_lookup_table[s.target].contents.append(
+          base.membrane_table[s.target].contents.append(
             Particle(s.payload))
         elif self.parent:
           self.parent.contents.append(Particle(s.payload))

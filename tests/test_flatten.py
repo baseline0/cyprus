@@ -14,9 +14,7 @@ class TestFlatten(unittest.TestCase):
         x = ["a", "cat", "dog"]
 
         y = flatten(x)
-        self.assertEquals(x,y)
-
-
+        self.assertEqual(x,y)
 
     def test_nested(self):
 
@@ -24,4 +22,4 @@ class TestFlatten(unittest.TestCase):
 
         y = flatten(x)
         z = ["a", 1, 2, "dog"]
-        self.assertEquals(y,z)
+        self.assertEqual(y,z)

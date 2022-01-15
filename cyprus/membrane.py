@@ -14,7 +14,7 @@ class Membrane(Environment):
     self.rules = []
   
     if self.name:
-      del(base.cyprus_membrane_lookup_table[self.name])
+      del(base.membrane_table[self.name])
   
   def print_status(self, depth=0):
     indent = " " * (depth * 4)

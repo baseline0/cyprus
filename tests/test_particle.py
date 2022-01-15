@@ -1,4 +1,3 @@
-from lib2to3.pgen2.tokenize import untokenize
 import unittest
 
 import os, sys

@@ -1,4 +1,3 @@
-
 class Singleton:
     __instance = None
     def __new__(cls, *args):
@@ -12,9 +11,9 @@ class Base(Singleton):
 
     def __init__(self) -> None:
         
-        self.cyprus_rule_lookup_table = {}
-        self.cyprus_membrane_lookup_table = {}
-        self.cyprus_state_rule_applied = True
+        self.rule_table = {}
+        self.membrane_table = {}
+        self.state_rule_applied = True
 
 
 def get_base() -> Base: 
