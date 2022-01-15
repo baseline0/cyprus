@@ -170,7 +170,7 @@ class CyprusProgram(object):
     return out
   
   def buildcontainer(self, e):
-    
+
     name = None
     parent = None
     contents = []
@@ -201,6 +201,7 @@ class CyprusProgram(object):
 
     name, parent, contents, membranes, rules = self.buildcontainer(e)
     env = Environment(name, parent, contents, membranes, rules)
+    
     if name:
       if base.cyprus_membrane_lookup_table.get(name, None):
         msg = f"ERROR: Multiple containers defined with name: {name}"
@@ -333,11 +334,11 @@ class CyprusProgram(object):
   def run(self, verbose=False):
     # global cyprus_state_rule_applied
 
-    if verbose: self.clock.printstatus()
+    if verbose: self.clock.print_status()
     while cyprus_state_rule_applied:
       cyprus_state_rule_applied = False
       self.clock.tick()
-      if verbose: self.clock.printstatus()
+      if verbose: self.clock.print_status()
     self.clock.printfinalcontents()
 
   @classmethod
@@ -350,14 +351,13 @@ class CyprusProgram(object):
       print(e.msg)
 
 
-
 def parse_and_run_tree(fname:str, pverbose:bool) -> None:
 
   ## actual logic
   try:
     tree = parse(tokenizefile(fname))
   except NoParseError as e:
-    print("Could not parse file:")
+    print(f"Could not parse file: {fname}")
     print(e.args)
     return
 

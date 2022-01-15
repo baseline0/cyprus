@@ -10,7 +10,7 @@ class CyprusClock(object):
     print(f"Clock tick: {self._tick}")
 
     for e in self.envs: 
-      e.printstatus()
+      e.print_status()
   
   def print_final_contents(self):
     for e in self.envs:

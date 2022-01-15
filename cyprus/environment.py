@@ -11,8 +11,12 @@ base = get_base()
 
 from typing import List
 
-# An environment - a container object for rules and particles
+
 class Environment(object):
+  """
+  An environment - a container object for rules and particles
+  """
+
   def __init__(self, 
     name=None, 
     parent=None, 
@@ -26,10 +30,11 @@ class Environment(object):
     self.membranes = membranes
     self.staging_area = []
     self.rules = rules
+
     self.setparents()
     self.setpriorities()
 
-  def printstatus(self, depth=0):
+  def print_status(self, depth=0):
     indent = " " * (depth * 2)
 
     print(f'{indent} [name: {self.name}')
@@ -39,7 +44,7 @@ class Environment(object):
     
     print(f'{ indent} Membranes:')
     for m in self.membranes:
-      m.printstatus(depth + 1)
+      m.print_status(depth + 1)
     print(f'{indent}]')
   
   def tick(self):

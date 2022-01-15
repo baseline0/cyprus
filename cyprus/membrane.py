@@ -16,7 +16,7 @@ class Membrane(Environment):
     if self.name:
       del(base.cyprus_membrane_lookup_table[self.name])
   
-  def printstatus(self, depth=0):
+  def print_status(self, depth=0):
     indent = " " * (depth * 4)
 
     print(f'{indent} (name: {self.name}')
@@ -26,5 +26,5 @@ class Membrane(Environment):
 
     print(f'{indent} Membranes:')
     for m in self.membranes:
-      m.printstatus(depth + 1)
+      m.print_status(depth + 1)
     print(f'{indent}')
