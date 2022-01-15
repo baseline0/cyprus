@@ -3,7 +3,9 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
 sys.path.insert(0, parent_dir_path)
 
+from cyprus.utils import get_pretty_tree
 from funcparserlib.lexer import Token
+from funcparserlib.parser import NoParseError
 
 from cyprus.base import get_base
 base = get_base()
@@ -17,142 +19,9 @@ from cyprus.osmose_particle import OsmoseParticle
 from cyprus.rule import Rule
 
 from cyprus.parser import Statement, SimulationProgram, Environment, Membrane
-from cyprus.parser import flatten, Grouping
+from cyprus.parser import flatten, parse
+from cyprus.lexer import tokenizefile
 
-# -----------------
-
-from funcparserlib.parser import (some, maybe, many, finished, skip, 
-  with_forward_decls, oneplus, NoParseError)
-from funcparserlib.lexer import Token
-from funcparserlib.util import pretty_tree
-
-## grammar
-#
-# program        := {env}
-# env            := "[", body, "]"
-# membrane       := "(", body, ")"
-# body           := <name>, {statement}
-# statement      := membrane | expr
-# expr           := exists | reaction | priority
-# exists         := "exists", "~", name, {name}
-# reaction       := "reaction", <"as", name>, "~", name, {name}, "::",
-#                    {symbol} 
-# priority       := "priority", "~", name, ">>", name
-# name           := number | atom
-# atom           := [A-Za-z], {[A-Za-z0-9]}
-# number         := [0-9], {[0-9]} | {[0-9]}, ".", [0-9], {[0-9]}
-# symbol         := atom | "!", name, <"!!", name> | "$", [name]
-
-tokval = lambda tok: tok.value
-toktype = lambda type: lambda tok: tok.type == type
-make_number = lambda str: float(str)
-
-
-def parse(tokens):
-  ## building blocks
-  kw_priority = some(toktype("kw_priority"))
-  kw_probability = some(toktype("kw_probability"))
-  kw_reaction = some(toktype("kw_reaction"))
-  kw_exists = some(toktype("kw_exists"))
-  kw_as = some(toktype("kw_as"))
-  op_tilde = some(toktype("op_tilde"))
-  op_priority_maximal = some(toktype("op_priority_maximal"))
-  op_production = some(toktype("op_production"))
-  atom = some(toktype("name"))
-  number = some(toktype("number"))
-  dissolve = some(toktype("op_dissolve"))
-  osmose = some(toktype("op_osmose"))
-  osmose_location = some(toktype("op_osmose_location"))
-  env_open = some(toktype("env_open"))
-  env_close = some(toktype("env_close"))
-  membrane_open = some(toktype("membrane_open"))
-  membrane_close = some(toktype("membrane_close"))
-  
-  ## grammar from the bottom up
-  name = atom | number
-  symbol = atom | (dissolve + maybe(name)) | (osmose + name + maybe(osmose_location + name))
-  
-  priority = kw_priority + op_tilde + name + op_priority_maximal + name
-  
-  reaction = (kw_reaction + maybe(kw_as + name) + op_tilde + 
-             oneplus(name) + op_production + many(symbol))
-  
-  exists = kw_exists + op_tilde + oneplus(name)
-  
-  expr = (exists | reaction | priority)
-  
-  statement = with_forward_decls(lambda: membrane | expr) >> Statement
-  
-  body = maybe(name) + many(statement)
-  
-  membrane = (skip(membrane_open) + body + skip(membrane_close)) >> Membrane
-  env = (skip(env_open) + body + skip(env_close)) >> Environment
-  
-  program = many(env) + skip(finished) >> SimulationProgram
-  
-  return program.parse(tokens)
-
-# pretty print a parse tree
-def ptree(tree):
-
-  def kids(x):
-    if isinstance(x, Grouping):
-      return x.kids
-    else:
-      return []
-
-  def show(x):
-    #print("show(%r)" % x
-    if isinstance(x, SimulationProgram):
-      return '{Program}'
-    elif isinstance(x, Environment):
-      return '{Environment}'
-    elif isinstance(x, Membrane):
-      return '{Membrane}'
-    elif isinstance(x, Statement):
-      return '{Statement}'
-    else:
-      return repr(x)
-  return pretty_tree(tree, kids, show)
-
-# -----------------
-
-from funcparserlib.lexer import make_tokenizer, Token, LexerError
-
-ENCODING = 'utf-8'
-
-def tokenize(str):
-  'str -> Sequence(Token)'
-  specs = [
-    ('comment',                 (r'//.*',)),
-    ('newline',                 (r'[\r\n]+',)),
-    ('space',                   (r'[ \t\r\n]+',)),
-    ('name',                    (r'(?!(?:as|exists|priority|reaction)\b)[A-Za-z\200-\377_]([A-Za-z\200-\377_0-9])*',)),
-    ('kw_exists',               (r'exists',)),
-    ('kw_reaction',             (r'reaction',)),
-    ('kw_as',                   (r'as',)),
-    ('kw_priority',             (r'priority',)),
-    ('op_priority_maximal',     (r'>>',)),
-    ('op_tilde',                (r'~',)),
-    ('op_production',           (r'::',)),
-    ('op_dissolve',             (r'\$',)),
-    ('op_osmose_location',      (r'!!',)),
-    ('op_osmose',               (r'!',)),
-    ('mod_catalyst',            (r'\*',)),
-    ('mod_charge_positive',     (r'\+',)),
-    ('mod_charge_negative',     (r'-',)),
-    ('env_open',                (r'\[',)),
-    ('env_close',               (r'\]',)),
-    ('membrane_open',           (r'\(',)),
-    ('membrane_close',          (r'\)',)),
-    ('number',                  (r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)',))
-  ]
-  useless = ['comment', 'space', 'newline']
-  t = make_tokenizer(specs)
-  return [x for x in t(str) if x.type not in useless]
-
-def tokenizefile(f):
-  return tokenize(open(f, 'r').read())
 
 # -----------------
 
@@ -169,9 +38,11 @@ class SimulationProgram(object):
   
   def objectify(self):
     out = []
-    for e in self.tree[0].kids:
+    
+    for e in self.tree.kids:
       env = self.buildenvironment(e)
       out.append(env)
+    
     return out
   
   def buildcontainer(self, e):
@@ -345,6 +216,7 @@ class SimulationProgram(object):
 
     if verbose: 
       self.clock.print_status()
+      print('g')
 
     while cyprus_state_rule_applied:
       cyprus_state_rule_applied = False
@@ -361,13 +233,17 @@ def print_tree(fname:str) -> None:
   try:
     tokens = tokenizefile(fname)
     parsed = parse(tokens)
-    tree = ptree(parsed) 
+    tree = get_pretty_tree(parsed) 
     print(tree)
 
   except NoParseError as e:
     print(f"Could not parse file: {e.msg}")
       
 def parse_and_run_tree(fname:str, pverbose:bool) -> None:
+
+# tree = parser.parse(lexer.tokenizefile(filename))
+# tree = CyprusProgram(tree)
+# tree.run(verbose=pverbose)
 
   ## actual logic
   try:

@@ -1,4 +1,4 @@
-.PHONY: run 
+.PHONY: run clean
 
 install_deps:
 	pip install funcparserlib
