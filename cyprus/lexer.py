@@ -32,5 +32,5 @@ def tokenize(str):
   t = make_tokenizer(specs)
   return [x for x in t(str) if x.type not in useless]
 
-def tokenizefile(f):
-  return tokenize(open(f, 'r').read())
+def tokenizefile(fname:str):
+  return tokenize(open(fname, 'r').read())

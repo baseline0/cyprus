@@ -7,7 +7,7 @@ from cyprus.utils import get_pretty_tree
 from funcparserlib.lexer import Token
 from funcparserlib.parser import NoParseError
 
-from cyprus.base import get_base
+from cyprus.base import get_base, log_info
 base = get_base()
 
 from cyprus.clock import CyprusClock as Clock
@@ -34,6 +34,8 @@ class SimulationProgram(object):
     
     self.tree = tree
     envs = self.objectify()
+    log_info(f"length = {len(envs)}")
+    log_info(envs)
     self.clock = Clock(envs)
   
   def objectify(self):
@@ -79,6 +81,7 @@ class SimulationProgram(object):
     env = Environment(name, parent, contents, membranes, rules)
     
     if name:
+      # TODO. base.membrane_name_in_use 
       if base.membrane_table.get(name, None):
         msg = f"ERROR: Multiple containers defined with name: {name}"
         raise Exception(msg)
@@ -88,15 +91,15 @@ class SimulationProgram(object):
   def buildmembrane(self, e):
 
     name, parent, contents, membranes, rules = self.buildcontainer(e)
-    mem = Membrane(name, parent, contents, membranes, rules)
+    m = Membrane(name, parent, contents, membranes, rules)
 
     if name:
       if base.membrane_table.get(name, None):
         msg = f"ERROR: Multiple containers defined with name: {name}"
         raise Exception(msg)
-      base.membrane_table[name] = mem
+      base.membrane_table[name] = m
 
-    return mem
+    return m
   
   def executestatement(self, stmt):
 
@@ -179,6 +182,7 @@ class SimulationProgram(object):
             osmose, osmosename, osmoselocation = False, False, False
       else:
         particle = Particle(x.value)
+        
       if prod: 
           out.append(particle)
       else: 
@@ -255,7 +259,8 @@ def parse_and_run_tree(fname:str, pverbose:bool) -> None:
     return
 
   try:
-    print(tree)
+    from cyprus.utils import get_pretty_tree
+    log_info(get_pretty_tree(tree))
     p = SimulationProgram(tree)
     p.run(verbose=pverbose)
 

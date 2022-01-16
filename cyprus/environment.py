@@ -1,15 +1,13 @@
 from random import shuffle
 from textwrap import indent
+from typing import List
 
-from cyprus.base import Base
+from cyprus.base import get_base, log_info 
 from cyprus.dissolve_particle import DissolveParticle
 from cyprus.particle import Particle
 from cyprus.osmose_particle import OsmoseParticle
 
-from cyprus.base import get_base
 base = get_base()
-
-from typing import List
 
 
 class Environment(object):
@@ -37,15 +35,15 @@ class Environment(object):
   def print_status(self, depth=0):
     indent = " " * (depth * 2)
 
-    print(f'{indent} [name: {self.name}')
-    print(f'{indent} symbols: {self.contents}')
-    print(f'{indent} rules: {self.rules}')
-    print(f'{indent} staging area: {self.staging_area}')
+    log_info(f'{indent} [name: {self.name}')
+    log_info(f'{indent} symbols: {self.contents}')
+    log_info(f'{indent} rules: {self.rules}')
+    log_info(f'{indent} staging area: {self.staging_area}')
     
-    print(f'{ indent} Membranes:')
+    log_info(f'{ indent} Membranes:')
     for m in self.membranes:
       m.print_status(depth + 1)
-    print(f'{indent}]')
+    log_info(f'{indent}]')
   
   def tick(self):
     self.stage1()
