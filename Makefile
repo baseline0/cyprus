@@ -15,3 +15,6 @@ example2:
 
 hello:
 	python3 -v cyprus.py -V ./examples/hello.cyp >out.txt 2>&1
+
+clean: 
+	echo "clean up cyprus.log"

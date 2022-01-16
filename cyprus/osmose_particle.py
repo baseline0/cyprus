@@ -3,7 +3,7 @@ from cyprus.particle import Particle
 
 class OsmoseParticle(Particle):
 
-  def __init__(self, payload, target=None):
+  def __init__(self, payload:str, target=None):
     
     self.payload = payload
     self.target = target

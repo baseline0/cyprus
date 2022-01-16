@@ -1,4 +1,4 @@
-from cyprus.parser import Grouping, SimulationProgram, Statement, Environment, Membrane
+from cyprus.parser import Grouping, ProgramGroup, StatementGroup, EnvironmentGroup, MembraneGroup
 
 from funcparserlib.util import pretty_tree
 
@@ -13,13 +13,13 @@ def get_pretty_tree(tree):
 
   def show(x):
     #print("show(%r)" % x
-    if isinstance(x, SimulationProgram):
+    if isinstance(x, ProgramGroup):
       return '{Program}'
-    elif isinstance(x, Environment):
+    elif isinstance(x, EnvironmentGroup):
       return '{Environment}'
-    elif isinstance(x, Membrane):
+    elif isinstance(x, MembraneGroup):
       return '{Membrane}'
-    elif isinstance(x, Statement):
+    elif isinstance(x, StatementGroup):
       return '{Statement}'
     else:
       return repr(x)

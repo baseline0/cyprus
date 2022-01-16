@@ -72,10 +72,13 @@ class Environment(object):
     return True
     
   def apply_rule(self, rule):
-    global cyprus_state_rule_applied
+    
     if self.rule_is_applicable(rule):
-      cyprus_state_rule_applied = True
-      for s in rule.requirements: self.contents.remove(s)
+      base.state_rule_applied = True
+
+      for s in rule.requirements: 
+        self.contents.remove(s)
+        
     self.staging_area.extend(rule.output)
 
   ## apply all rules maximally, non-deterministically

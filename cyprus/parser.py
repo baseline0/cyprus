@@ -23,16 +23,16 @@ class Grouping(object):
     except TypeError:
       self.kids = [kids]
 
-class SimulationProgram(Grouping):
+class ProgramGroup(Grouping):
   pass
   
-class Environment(Grouping):
+class EnvironmentGroup(Grouping):
   pass
   
-class Membrane(Grouping):
+class MembraneGroup(Grouping):
   pass
 
-class Statement(Grouping):
+class StatementGroup(Grouping):
   pass
 
 
@@ -91,13 +91,13 @@ def parse(tokens):
   
   expr = (exists | reaction | priority)
   
-  statement = with_forward_decls(lambda: membrane | expr) >> Statement
+  statement = with_forward_decls(lambda: membrane | expr) >> StatementGroup
   
   body = maybe(name) + many(statement)
   
-  membrane = (skip(membrane_open) + body + skip(membrane_close)) >> Membrane
-  env = (skip(env_open) + body + skip(env_close)) >> Environment
+  membrane = (skip(membrane_open) + body + skip(membrane_close)) >> MembraneGroup
+  env = (skip(env_open) + body + skip(env_close)) >> EnvironmentGroup
   
-  program = many(env) + skip(finished) >> SimulationProgram
+  program = many(env) + skip(finished) >> ProgramGroup
   
   return program.parse(tokens)

@@ -18,8 +18,7 @@ from cyprus.dissolve_particle import DissolveParticle
 from cyprus.osmose_particle import OsmoseParticle
 from cyprus.rule import Rule
 
-from cyprus.parser import Statement, SimulationProgram, Environment, Membrane
-from cyprus.parser import flatten, parse
+from cyprus.parser import MembraneGroup, StatementGroup, flatten, parse
 from cyprus.lexer import tokenizefile
 
 
@@ -59,7 +58,7 @@ class SimulationProgram(object):
     for x in e.kids:
       if isinstance(x, Token):
         name = x.value
-      if isinstance(x, Statement):
+      if isinstance(x, StatementGroup):
         stmts.append(self.executestatement(x))
 
     stmts = flatten(stmts)
@@ -81,7 +80,7 @@ class SimulationProgram(object):
     env = Environment(name, parent, contents, membranes, rules)
     
     if name:
-      # TODO. base.membrane_name_in_use 
+      # TODO refector to use: base.membrane_name_in_use 
       if base.membrane_table.get(name, None):
         msg = f"ERROR: Multiple containers defined with name: {name}"
         raise Exception(msg)
@@ -101,11 +100,11 @@ class SimulationProgram(object):
 
     return m
   
-  def executestatement(self, stmt):
+  def executestatement(self, stmt:StatementGroup):
 
     x = stmt.kids[0]
 
-    if isinstance(x, Membrane):
+    if isinstance(x, MembraneGroup):
       return self.buildmembrane(x)
     elif isinstance(x, Token):
       if x.type == 'kw_exists':
@@ -120,7 +119,7 @@ class SimulationProgram(object):
     else:
       print(f"ERROR: {stmt}")
   
-  def buildparticles(self, stmt:Statement):
+  def buildparticles(self, stmt:StatementGroup):
 
     particles = stmt.kids[2:]
     out = []
@@ -129,7 +128,7 @@ class SimulationProgram(object):
       out.append(Particle(p.value))
     return out
     
-  def buildrule(self, stmt:Statement):
+  def buildrule(self, stmt:StatementGroup):
 
     name = None
     req = []
@@ -216,14 +215,12 @@ class SimulationProgram(object):
       greater.priority += 1
   
   def run(self, verbose=False):
-    # global cyprus_state_rule_applied
-
+    
     if verbose: 
       self.clock.print_status()
-      print('g')
 
-    while cyprus_state_rule_applied:
-      cyprus_state_rule_applied = False
+    while base.state_rule_applied:
+      base.state_rule_applied = False
       self.clock.tick()
 
       if verbose: 
@@ -245,11 +242,6 @@ def print_tree(fname:str) -> None:
       
 def parse_and_run_tree(fname:str, pverbose:bool) -> None:
 
-# tree = parser.parse(lexer.tokenizefile(filename))
-# tree = CyprusProgram(tree)
-# tree.run(verbose=pverbose)
-
-  ## actual logic
   try:
     tokens = tokenizefile(fname)
     tree = parse(tokens)
