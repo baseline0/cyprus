@@ -11,13 +11,13 @@ class CyprusClock(object):
     self._tick = 0
     self.envs = envs
   
-  def print_status(self):
+  def log_status(self):
     log_info(f"Clock tick: {self._tick}")
 
     for e in self.envs: 
-      e.print_status()
+      e.log_status()
   
-  def print_final_contents(self):
+  def log_final_contents(self):
     for e in self.envs:
       if e.name:
         log_info(f"{e.name}: {e.contents}")

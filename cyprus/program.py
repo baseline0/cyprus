@@ -220,16 +220,16 @@ class SimulationProgram(object):
   def run(self, verbose=False):
     
     if verbose: 
-      self.clock.print_status()
+      self.clock.log_status()
 
     while base.state_rule_applied:
       base.state_rule_applied = False
       self.clock.tick()
 
       if verbose: 
-        self.clock.print_status()
+        self.clock.log_status()
 
-    self.clock.print_final_contents()
+    self.clock.log_final_contents()
 
 
 def print_tree(fname:str) -> None:      

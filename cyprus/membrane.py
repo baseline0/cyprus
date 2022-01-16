@@ -22,7 +22,7 @@ class Membrane(Environment):
     if self.name:
       del(base.membrane_table[self.name])
   
-  def print_status(self, depth=0):
+  def log_status(self, depth=0):
     indent = " " * (depth * 4)
 
     log_info(f'{indent} (name: {self.name}')
@@ -32,5 +32,5 @@ class Membrane(Environment):
 
     log_info(f'{indent} Membranes:')
     for m in self.membranes:
-      m.print_status(depth + 1)
+      m.log_status(depth + 1)
     log_info(f'{indent}')

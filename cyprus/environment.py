@@ -32,7 +32,7 @@ class Environment(object):
     self.setparents()
     self.setpriorities()
 
-  def print_status(self, depth=0):
+  def log_status(self, depth=0):
     indent = " " * (depth * 2)
 
     log_info(f'{indent} [name: {self.name}')
@@ -42,7 +42,7 @@ class Environment(object):
     
     log_info(f'{ indent} Membranes:')
     for m in self.membranes:
-      m.print_status(depth + 1)
+      m.log_status(depth + 1)
     log_info(f'{indent}]')
   
   def tick(self):
