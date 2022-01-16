@@ -21,6 +21,7 @@ from cyprus.rule import Rule
 from cyprus.parser import MembraneGroup, StatementGroup, flatten, parse
 from cyprus.lexer import tokenizefile
 
+from typing import List
 
 # -----------------
 
@@ -37,7 +38,7 @@ class SimulationProgram(object):
     log_info(envs)
     self.clock = Clock(envs)
   
-  def objectify(self):
+  def objectify(self) -> List[Environment]:
     out = []
     
     for e in self.tree.kids:
@@ -107,6 +108,7 @@ class SimulationProgram(object):
     if isinstance(x, MembraneGroup):
       return self.buildmembrane(x)
     elif isinstance(x, Token):
+
       if x.type == 'kw_exists':
         return self.buildparticles(stmt)
       elif x.type == 'kw_reaction':
@@ -116,6 +118,7 @@ class SimulationProgram(object):
         return None
       else:
         print(f"ERROR: {stmt}")
+        
     else:
       print(f"ERROR: {stmt}")
   
