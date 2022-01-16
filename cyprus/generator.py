@@ -23,11 +23,11 @@ from string import ascii_lowercase
 # number         := [0-9], {[0-9]} | {[0-9]}, ".", [0-9], {[0-9]}
 # symbol         := atom | "!", name, <"!!", name> | "$", [name]
 
-ENV_START   ="["
-ENV_END     ="]"
+ENV_START   ="[\n"
+ENV_END     ="]\n"
 
-MEM_START   ="("
-MEM_END     =")"
+MEM_START   ="(\n"
+MEM_END     =")\n"
 
 
 class AtomConcept:
@@ -64,13 +64,27 @@ class Contents:
 class MembraneConcept:
 
     def __init__(self):
-        pass
+        self.contents = []
+        self.rules = []
+        self.membranes = []
 
     def __repr__(self) -> str:
         pass
 
     def to_file(self, fp:FileIO):
-        pass
+
+        if fp is None:
+            raise ValueError
+
+        fp.write(MEM_START)
+
+        for c in self.contents:
+            c.to_file(fp)
+
+        for m in self.membranes:
+            m.to_file(fp)
+
+        fp.write(MEM_END)
 
 
 class RuleConcept:
@@ -99,11 +113,15 @@ class EnvironmentConcept:
         if fp is None:
             raise ValueError
 
+        fp.write(ENV_START)
+
         for m in self.membranes:
             m.to_file(fp)
 
         for c in self.contents:
             c.to_file(fp)
+
+        fp.write(ENV_END)
 
 
 class Generator:
@@ -137,13 +155,12 @@ class Generator:
 
         r = RuleConcept()
 
-
-
-
         return r
 
 
-    def run(self, fname:str = "generated.cyp"):
+    def run(self, fname_prefix:str = "generated"):
+
+        # TODO - adopt json
 
         # generate:
         #   a random number of atoms
@@ -152,21 +169,20 @@ class Generator:
         #   a random number of rules that dissolve a membrane
         #   a random number of rules that osmose (simplified: just move across membrane)
         #   TODO a random number of rules that osmose (actual gradient must exist for atom to move across membrane)
+
         
-        print('')
 
-
-
-
-        self.save(fname=fname)
+        
+        self.save(fname_prefix=fname_prefix)
 
     def save(self, fname_prefix:str):
 
         # write to file
 
         with open(self.OUT_DIR + fname_prefix + ".cyp", 'w') as fp:
-            fp.write('hello')
-
+            
+            fp.write('// this is a generated file\n')                
+            
             for e in self.envs:
                 e.to_file(fp)
 
@@ -183,3 +199,22 @@ def convert_dot_to_png(fname:str):
 
         import os
         os.system('dot -Tpng generated.dot -o generated.png')
+
+
+# ---------------
+
+if __name__ == "__main__":
+
+    g  = Generator()
+
+    # configure an environment
+
+    e = EnvironmentConcept()
+
+    m = MembraneConcept()
+
+    e.membranes.append(m)
+
+    g.envs.append(e)
+
+    g.run(fname_prefix='test_generated')
