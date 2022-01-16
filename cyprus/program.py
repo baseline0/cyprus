@@ -42,12 +42,12 @@ class SimulationProgram(object):
     out = []
     
     for e in self.tree.kids:
-      env = self.buildenvironment(e)
+      env = self.build_environment(e)
       out.append(env)
     
     return out
   
-  def buildcontainer(self, e):
+  def build_container(self, e):
 
     name = None
     parent = None
@@ -60,7 +60,7 @@ class SimulationProgram(object):
       if isinstance(x, Token):
         name = x.value
       if isinstance(x, StatementGroup):
-        stmts.append(self.executestatement(x))
+        stmts.append(self.execute_statement(x))
 
     stmts = flatten(stmts)
     for x in stmts:
@@ -75,9 +75,9 @@ class SimulationProgram(object):
 
     return [name, parent, contents, membranes, rules]
   
-  def buildenvironment(self, e):
+  def build_environment(self, e):
 
-    name, parent, contents, membranes, rules = self.buildcontainer(e)
+    name, parent, contents, membranes, rules = self.build_container(e)
     env = Environment(name, parent, contents, membranes, rules)
     
     if name:
@@ -88,9 +88,9 @@ class SimulationProgram(object):
       base.membrane_table[name] = env
     return env
   
-  def buildmembrane(self, e):
+  def build_membrane(self, e):
 
-    name, parent, contents, membranes, rules = self.buildcontainer(e)
+    name, parent, contents, membranes, rules = self.build_container(e)
     m = Membrane(name, parent, contents, membranes, rules)
 
     if name:
@@ -101,20 +101,20 @@ class SimulationProgram(object):
 
     return m
   
-  def executestatement(self, stmt:StatementGroup):
+  def execute_statement(self, stmt:StatementGroup):
 
     x = stmt.kids[0]
 
     if isinstance(x, MembraneGroup):
-      return self.buildmembrane(x)
+      return self.build_membrane(x)
     elif isinstance(x, Token):
 
       if x.type == 'kw_exists':
-        return self.buildparticles(stmt)
+        return self.build_particles(stmt)
       elif x.type == 'kw_reaction':
         return self.buildrule(stmt)
       elif x.type == 'kw_priority':
-        self.setpriority(stmt)
+        self.set_priority(stmt)
         return None
       else:
         print(f"ERROR: {stmt}")
@@ -122,7 +122,7 @@ class SimulationProgram(object):
     else:
       print(f"ERROR: {stmt}")
   
-  def buildparticles(self, stmt:StatementGroup):
+  def build_particles(self, stmt:StatementGroup):
 
     particles = stmt.kids[2:]
     out = []
@@ -199,7 +199,7 @@ class SimulationProgram(object):
       base.rule_table[name] = rule
     return rule
         
-  def setpriority(self, stmt):
+  def set_priority(self, stmt):
     # global cyprus_rule_lookup_table
 
     greatern, lessern = stmt.kids[2].value, stmt.kids[4].value
