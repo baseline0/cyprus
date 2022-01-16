@@ -1,0 +1,28 @@
+digraph G {
+
+    nodesep=1.25;
+    splines=false;
+
+    node[width=1, shape=circle];
+    edge[style=invis];
+
+    subgraph cluster_1 {
+        label="Environment";
+        "1-1" -> "1-2" -> "1-3";
+
+
+        subgraph cluster_2 {
+            label="membrane 1";
+            "2-1" -> "2-2" -> "2-3";
+
+            subgraph cluster_3 {
+                label="membrane 2";
+                "3-1" -> "3-2" -> "3-3";
+            }
+
+        }
+    }
+
+    edge[style=solid, penwidth=1, constraint=false];
+    
+}
