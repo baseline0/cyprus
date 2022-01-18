@@ -1,11 +1,220 @@
 
+http://ppage.psystems.eu/
+
+
+# Memory associated with membranes systems
+
+Journal of Membrane Computing volume 3, pages116–132 (2021)
+
+
+
+---
+
+# Using the Formal Framework for P Systems
+
+International Conference on Membrane Computing
+CMC 2013: Membrane Computing pp 56-79
+
+The basic idea of tissue P systems is the principle of symport and antiport
+[35]. Symport rules move objects across a membrane together in one direction,
+whereas antiport rules move objects across a membrane in opposite directions.
+In tissue P systems these two variants were unified as a unique type of rule
+manipulating a certain number of objects
+
+---
+
+# An Excursion Through Quantitative Model Refinement
+
+International Conference on Membrane Computing
+CMC 2015: Membrane Computing pp 25-47
+
+The eukaryotic heat shock response is a conserved regulatory network that acts as a defence mechanism against proteotoxicity arising from environmental stressors such as: elevated temperature, toxins, infections, etc. Elevated temperatures induce protein misfolding leading to the formation of aggregates which hinder protein homeostasis, eventually bringing about apoptosis. The deleterious effects of elevated temperature upon proteins are counterbalanced by a family of molecular chaperones, called heat shock proteins, which bind to misfolded proteins, facilitating their recovery process so as to prevent apotosis. We consider the following basic molecular model for the heat shock response,
+
+![eukaryotic_heat_shock_response](./imgs/eukaryotic_heat_shock_response.png)
+
+---
+
+# Artificial Chemistry
+
+Dittrich P. (2012) ArtificialChemistry. In: Meyers R. (eds) Computational Complexity. Springer, New York, NY. https://doi-org.uwinnipeg.idm.oclc.org/10.1007/978-1-4614-1800-9_13
+
+Autocatalytic Polymer Chemistries
+In order to study the emergence and evolution of autocatalytic sets [19,46,75] Bagley, Farmer, Fontana, Kauffman and others [3,23,47,48,59] have used artificial chemistries where the molecules are character sequences (e. g.,   M={a,b,aa,ab,ba,bb,aaa,aab,…} ) and the reactions are concatenation and cleavage, for example:
+aa+babb⇋aababb(slow).
+(14)
+Additionally, each molecule can act as a catalyst enhancing the rate of a concatenation reaction.
+aa+babb+bbb⇋bbb+aababb(fast).
+(15)
+
+
+
+---
+
+# Some Classes of Generalised Communicating P Systems and Simple Kernel P Systems
+
+Conference on Computability in Europe
+CiE 2013: The Nature of Computation. Logic, Algorithms, Applications pp 284-293
+
+http://spinroot.com/spin/whatispin.html
+
+Tau Tool: A simple front-end tool for Spin, called Tau (short for Tiny Automata) can be downloaded from: http://spinroot.com/spin/tau_v1.tar.gz, and is distributed under LGPL, originally by Caltech, as a teaching tool for formal verification and finite automata.
+
+---
+
+# A survey of gene regulatory networks modelling methods: from differential equations, to Boolean and qualitative bioinspired models
+
+Journal of Membrane Computing volume 2, pages207–226 (2020)
+
+Gene Regulatory Networks (GRNs)
+
+Gillespie’s algorithm
+
+Moreover, several software tools are available for the analysis for GRNs, such as BioTapestry [62], Virtual Cell [61], and GIN-sim [24].
+
+The information flow from the DNA to proteins is a crucial principle of molecular biology, often called the central dogma [31], which consists of two main steps, transcription and translation, known together as gene expression:
+
+
+A Chemical Reaction Network (CRN) is a set of transformations involving one or more chemical species, in a specific situation of volume and temperature [41]. The chemical elements that are transformed are called reactants, and those that are the result of the transformation are called products. A chemical reaction can be represented as an equation, showing all the species involved in the process. A simple example of chemical reaction is the following:
+
+$$ aA + bB \xrightarrow{\text{k1}}  cC + dD $$
+
+In this case, A, B, C and D are the species involved in the process: A and B are the reactants, C and D are the products. The parameters a, b, c and d are called stoichiometric coefficients and represent the multiplicities of reactants and products participating in the reaction. The symbol k1, referred to as kinetic constant, is a positive real number giving information about how fast the process occurs.
+
+After a number of steps, the model typically reaches a state (or sequence of states) known as attractor [43]. An attractor can be of one of these three types:
+
+- Self-loop, which is a single state attractor;
+- Simple loop, which is a cyclic sequence of states;
+- Complex loop, which is the alternation of two or more simple loops.
+
+---
+
+# BioSimWare: A Software for the Modeling, Simulation and Analysis of Biological Systems
+
+International Conference on Membrane Computing
+CMC 2010: Membrane Computing pp 119-143
+
+stochastic simulation algorithm (SSA)
+
+Several stochastic algorithms are implemented in BioSimWare and can be chosen for
+the simulation of the dynamics of single and multi-volume systems. These includes SSA
+[22], tau leaping [10], adaptive tau leaping [11], DPP [49], τ-DPP [14] and Sτ-DPP
+[13]. 
+
+In this section we present one of the simplest prototype chemical system that presents
+a bistable dynamical behavior, the **Schlögl system** [63,66]. 
+Bistability is a capacity exhibited by many biological systems, consisting in the possibility of switching between
+two different stable steady states in response to some chemical signaling (see, e.g.,
+[17,51,65] and references therein). The Schlögl system consists of 4 chemical reactions and 3 molecular species: r1 : A + 2X → 3X,r2 : 3X → A + 2X,r3 : B →
+3X,r4 : X → B, where A, B are chemical species given as input and always kept
+at a constant amount, while X is the species that exhibits the bistable behavior.
+
+The values of stochastic parameters used for the simulations presented in this section are:
+A = 1·105, B = 2·105, X = 250, c1 = 3·10−7, c2 = 1·10−4, c3 = 1·10−3, c4 = 3.5.
+
+The Brussellator is a simplified scheme for the Belousov-Zhabotinskii reaction, a family of inorganic redox reaction systems that exhibit macroscopic temporal oscillations
+and spatial patterns formation
+
+To this aim, we consider a simple **stiff** system, the decaying dimerization (DD) model [23,11], which consists of 4 reactions and 3 molecular species:
+r1 : S1 → λ, r2 : S1 + S1 → S2, r3 : S2 → S1 + S1, r4 : S2 → S3. The system models the irreversible isomerization (or decay) of species S1, coupled with the
+reversible formation of complex S2 (which mimics the dimerization of S1), that can in
+turn be converted into the stable species S3. If the values of constants c2, c3 are sufficiently large, then the decaying of S1 through reaction r1 is superimposed on the fast
+reversible dimerization given by reactions r2, r3. The values of stochastic constants and
+of initial molecular amounts for the simulations presented below have been chosen so
+that the reversible reactions r2, r3 are close to partial equilibrium (besides the initial
+steps), and they are: c1 = 1, c2 = 10, c3 = 1000, c4 = 0.1, S1 = 10000, S2 = S3 = 0.
+
+
+**Chemotaxis** is an efficient signal transduction pathway, tightly regulated by feedback
+mechanisms, that allows bacterial cells to move in ever-changing environments in response to concentration gradients of attractants and repellents. The binding of ligand
+molecules to the chemotactic transmembrane receptors triggers a cascade of proteinprotein interactions, which eventually influence the cytoplasmic amount of the phosphorylated form of a pivotal protein, CheY. CheYp rapidly diffuses through the cytoplasm
+and induces the rotations of flagella: if CheYp interacts with the proteins of the flagellar
+motor, then a clockwise (CW) rotation occurs, otherwise the flagellum will rotate counterclockwise (CCW). When the flagella are turning CW, they are uncoordinated and the
+bacterium performs a tumbling movement, while if all flagella are turning CCW, then they get coordinated in a bundle, thus allowing the bacterium to swim directionally with
+a running movement
+
+The **Fredkin gate** is a boolean gate, whose map FG : {0, 1}3 → {0, 1}3 associates
+input triple (αi, βi, γi) to output triple (αo, βo, γo) according to the formula: αo = αi,
+βo = (¬αi ∧ βi) ∨ (αi ∧ γi), γo = (αi ∧ βi) ∨ (¬αi ∧ γi). The Fredkin gate
+behaves as a conditional switch, where αi can be considered a control line whose
+value determines whether the input values βi and γi have to be exchanged or not:
+FG(1, βi, γi) = (1, γi, βi) and FG(0, βi, γi) = (0, βi, γi) for every βi, γi ∈ {0, 1}.
+The simulation of the Fredkin gate can be done by defining two different types of
+molecular species for each of its lines, one species representing the boolean value 0, the
+other species the value 1. In particular, we use a, A for input αi and output αo on the
+first line (here two different chemical species suffice, since the output bit is always equal
+to the input bit on this line), b,B for input βi and d, D for output βo on the second line,
+c,C for input γi and e,E for output γo on the third line (since these two lines implement
+the logic switch, we need to distinguish among the 0 and 1 bits that are either given
+as input or generated as output). All these chemicals are manipulated inside a single
+volume by using 21 internal reactions: 6 input reactions, needed to produce the input
+chemicals inside the volume, thus simulating the input bits that are given to the gate;
+10 logical reactions, which describe how the output chemicals are produced whenever
+the corresponding input chemicals appear inside the reaction volume; 5 degradation
+reactions, needed to avoid the simultaneous presence of two conflicting species inside
+the volume, representing both the states 0 and 1 on the same gate line
+
+The SBML portal, http://www.sbml.org/
+
+Hucka, M., et al.: The Systems Biology Markup Language (SBML): a medium for representation and exchange of biochemical network models. Bioinformatics 19(4), 524–531 (2003)
+30. The Infobiotic Web Page, http://www.infobiotic.org/
+
+
+---
+
+# Small Universal Non-deterministic Petri Nets with Inhibitor Arcs
+
+International Workshop on Descriptional Complexity of Formal Systems
+DCFS 2014: Descriptional Complexity of Formal Systems pp 186-197
+
+A rather well-known result on the computational power of register machines is
+that there exists a strongly universal machine with 3 registers and a weakly
+universal machine with 2 registers only [Minsky]
+
+Minsky, M.: Size and structure of universal Turing machines using tag systems.
+In: Recursive Function Theory: Proceedings, Symposium in Pure Mathematics,
+Provelence, vol. 5, pp. 229–238 (1962)
+
+Alhazov, A., Verlan, S.: Minimization strategies for maximally parallel multiset
+rewriting systems. Theoretical Computer Science 412(17), 1581–1591 (2011)
+
+# Spatio-temporal Modeling and Simulation of Mycobacterium Pathogenesis Using Petri Nets
+
+International Conference on Bio-Inspired Models of Network, Information, and Computing Systems
+BIONETICS 2011: Bio-Inspired Models of Networks, Information, and Computing Systems pp 236-241
+
+In our approach we propose to model and simulate the pathogenesis of Mycobacterium
+marinum using Petri Net formalism based on data obtained from analysis of
+microscope images and to provide a three dimensional visualization of the whole
+infection process and granuloma formation
+
+---
+
+# Snoopy-A Tool to Design and Execute Graph-Based Formalisms. 
+
+Petri Net Newsletter 74, 8–22 (2008) 
+
+Heiner, M., et al.: Snoopy-A Tool to Design and Execute Graph-Based Formalisms. Petri
+Net Newsletter 74, 8–22 (2008) 
+
+https://www-dssz.informatik.tu-cottbus.de/software/snoopy/snoopy-pnnl-web.pdf
+
+---
 
 # Synthesis Problem for Petri Nets with Localities
 
 Transactions on Petri Nets and Other Models of Concurrency V pp 160-180
 
+In the formal modelling of computational systems there is a growing need to
+faithfully capture real-life systems exhibiting behaviour which can be described
+as ‘globally asynchronous locally (maximally) synchronous’ (GALS). Examples
+can be found in hardware design, where a VLSI chip may contain multiple clocks
+responsible for synchronising different subsets of gates [5], and in biologically
+inspired membrane systems representing cells within which biochemical reactions happen in synchronised pulses [15]. To capture such systems in a formal
+manner, [8] introduced Place/Transition-nets with localities (PTL-nets), with
+each locality identifies a distinct set of transitions which must be executed synchronously, i.e., in a maximally concurrent manner (akin to local maximal concurrency).
 
-
+An abelian monoid is a set S with a commutative and associative binary (composition) operation + on S, and a neutral
+element 0.
 
 ---
 
