@@ -1,9 +1,18 @@
 # a tool to create membranes for cyprus
 
 from io import FileIO
-from typing import TextIO
+from typing import TextIO, List
 
 from string import ascii_lowercase
+
+import json
+
+# concept
+# have the generator write json files.
+# the json files can convert to dot.
+# the json files are written into cyp format for grammar and simulation.
+
+
 
 
 ## grammar
@@ -64,9 +73,11 @@ class Contents:
 class MembraneConcept:
 
     def __init__(self):
+        self.name = 1
         self.contents = []
         self.rules = []
         self.membranes = []
+        
 
     def __repr__(self) -> str:
         pass
@@ -86,6 +97,19 @@ class MembraneConcept:
 
         fp.write(MEM_END)
 
+    def to_dict(self) -> dict:
+        d = {}
+
+        d['name'] = self.name
+        d['exists'] = self.contents
+        d['rules'] = self.rules
+        d['membranes'] = []
+
+        for m in self.membranes:
+            d['membranes'].append(m.to_dict())                
+
+        return d
+
 
 class RuleConcept:
     # for reactions
@@ -98,6 +122,7 @@ class RuleConcept:
     def __repr__(self) -> str:
         pass
 
+
 class EnvironmentConcept:
     def __init__(self) -> None:
         self.membranes = []
@@ -105,8 +130,29 @@ class EnvironmentConcept:
         # a list of atoms
         self.contents = []
         
+        self.name="env1"
+
     def __repr__(self) -> str:
         pass
+
+    def add_membrane(self, m:MembraneConcept) -> None:
+        self.membranes.append(m)
+
+    def add_contents(self, atoms:List[AtomConcept]) -> None:
+        self.contents = atoms
+
+
+    def to_json(self) -> dict:
+
+        d = {}
+
+        d[self.name] = []
+        
+        for m in self.membranes:
+            d[self.name].append
+
+
+        return json.dumps(d)
 
     def to_file(self, fp:TextIO) -> None:
 
@@ -125,7 +171,7 @@ class EnvironmentConcept:
 
 
 class Generator:
-
+    
     def __init__(self) -> None:
         self.OUT_DIR="./sims/"
 

@@ -19,7 +19,7 @@ from cyprus.osmose_particle import OsmoseParticle
 from cyprus.rule import Rule
 
 from cyprus.parser import MembraneGroup, StatementGroup, flatten, parse
-from cyprus.lexer import tokenizefile
+from cyprus.lexer import tokenize_file
 
 from typing import List
 
@@ -235,7 +235,7 @@ class SimulationProgram(object):
 def print_tree(fname:str) -> None:      
 
   try:
-    tokens = tokenizefile(fname)
+    tokens = tokenize_file(fname)
     parsed = parse(tokens)
     tree = get_pretty_tree(parsed) 
     print(tree)
@@ -246,7 +246,7 @@ def print_tree(fname:str) -> None:
 def parse_and_run_tree(fname:str, pverbose:bool) -> None:
 
   try:
-    tokens = tokenizefile(fname)
+    tokens = tokenize_file(fname)
     tree = parse(tokens)
 
   except NoParseError as e:
