@@ -1,6 +1,9 @@
 
+from ast import Sub
+import sys
 import random
 import string
+from typing import TextIO
 
 import networkx as nx
 
@@ -35,85 +38,170 @@ def demo():
     print(adjacency_matrix)
 
     # get a random graph
+    # TODO
+
+
+class Base:
+
+    def start(self, name: str = 'd') -> str:
+        pass
+
+    @classmethod
+    def end(cls) -> str:
+        pass
+
+    def write_contents(self) -> str:
+        pass
+
+    def get_label(self) -> str:
+        pass
+
+def write_cluster(fp:TextIO, c: Base):
+
+    try:
+
+        fp.writelines(c.start())
     
+        fp.writelines(f"{x} \n" for x in c.contents)
+
+        for subcluster in c.clusters:
+            write_cluster(fp, subcluster)
+            
+        fp.write(c.get_label())            
+        fp.writelines(c.end())
+
+    except IOError:
+        sys.exit()
+
 
 # TODO put in dotutils
+class Subgraph(Base):
+    
+    START = "{"
+    END = "}"
+
+    def __init__(self, label=None) -> None:
+        if label is None:
+            self.label = name_gen.get_rand_name()
+        else:
+            self.label = label
+
+    def start(self) -> str:
+        return f"subgraph {self.label} " + Subgraph.START + '\n'
+
+    @classmethod
+    def end(cls) -> str:
+        return Subgraph.END + '\n'
+
+
+class Cluster(Base):
+
+    START = "{"
+    END = "}"
+
+    def __init__(self, name=None, label=None) -> None:
+
+        if name is None:
+            self.name = name_gen.get_rand_name()
+        else:
+            self.name = name
+
+        # the cluster label in diagram
+        if label is None:
+            self.label = name
+        else:            
+            self.label = label 
+
+        # nesting
+        self.clusters = []
+
+        # the objects in the membrane
+        self.contents = []
+
+    def add_cluster(self, c):
+        self.clusters.append(c)
+
+    def start(self) -> str:
+        return f"subgraph cluster_{self.name} {Cluster.START} " + '\n'
+
+    def get_label(self) -> str:
+        if self.label is None:
+            return ''
+        else:
+            s = f"label = \"{self.label}\""
+            return s
+
+    @classmethod
+    def end(cls) -> str:
+        return Cluster.END + '\n'
+
 
 class Digraph:
 
     START = "{"
     END = "}"
 
-    def __init__(self, label=None) -> None:
+    def __init__(self, label: str = 'd') -> None:
         self.label = label
+        self.clusters = []
 
     @classmethod
     def start(cls, name: str = 'd') -> str:
-        return f"digraph {name} " + Digraph.START
+        return f"digraph {name} " + Digraph.START + '\n'
 
     @classmethod
     def end(cls) -> str:
-        return Digraph.END
+        return Digraph.END + '\n'
 
-
-class Subgraph:
-
-    START = "{"
-    END = "}"
-
-    def __init__(self, label=None) -> None:
-        if label is None:
-            self.label = name_gen.get_rand_name()
-        else:
-            self.label = label
-
-    @classmethod
-    def start(cls, name: str = 'd') -> str:
-        return f"subgraph {name} " + Subgraph.START
-
-    @classmethod
-    def end(cls) -> str:
-        return '}'
-
-
-class Cluster:
-
-    START = "{"
-    END = "}"
-
-    def __init__(self, label=None) -> None:
-
-        if label is None:
-            self.label = name_gen.get_rand_name()
-        else:
-            self.label = label
-
-    @staticmethod
-    def start(name: str = 'd') -> str:
-        return f"subgraph cluster_{name} " + Subgraph.START
-
-    @classmethod
-    def end(cls) -> str:
-        return Cluster.END
+    def add_cluster(self, c: Cluster):
+        self.clusters.append(c)
 
 
 class DigraphGenerator:
 
-    @staticmethod
-    def run() -> None:
-        # use of writelines helps to avoid \n
+    def __init__(self):
+        self.digraph = Digraph()
+        self.clusters = []
+        self.fp = None
 
-        with open('graph1.dot', 'w') as fp:
-            fp.writelines('digraph d {')
+    # def write_cluster(self, c: Cluster):
 
-            fp.writelines('}')
+    #     self.fp.writelines(c.start())
+    #     self.fp.writelines(c.label)
+    #     self.fp.writelines(c.end())
+
+    def run(self, fname: str) -> None:
+
+        c = Cluster(name="top")
+        c.contents = ['a', 'b', 'c']
+        
+
+        d = Cluster(name="nested")
+        d.contents = ['d', 'e', 'f']
+        
+        c.add_cluster(d)
+        self.digraph.add_cluster(c)
+      
+
+        # use of writelines helps to avoid appending \n
+
+        self.fp = open(fname, 'w')
+
+        self.fp.writelines(self.digraph.start())
+
+        for c in self.digraph.clusters:
+            write_cluster(self.fp, c)
+
+        self.fp.writelines(self.digraph.end())
+        self.fp.close()
+
 
 # --------------------        
 
 
 if __name__ == "__main__":
 
-    # gen = digraph_generator()
-    # gen.run()
+    gen = DigraphGenerator()
+    gen.run(fname='./viz/out/graph1.dot')
 
-    demo()
+    # demo()

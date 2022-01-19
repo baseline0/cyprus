@@ -1,1 +1,12 @@
-digraph d {subgraph cluster_testcluster {testcluster}}
+digraph d {
+subgraph cluster_top { 
+a 
+b 
+c 
+subgraph cluster_nested { 
+d 
+e 
+f 
+label = "nested"}
+label = "top"}
+}
