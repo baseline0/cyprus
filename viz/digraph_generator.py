@@ -1,22 +1,26 @@
-from lib2to3.pgen2.token import STAR
+
 import random
 import string
 
-class name_generator:
+import networkx as nx
+
+
+class NameGenerator:
     # use as prefix for cluster items
 
     def __init__(self) -> None:
         self.letters = string.ascii_lowercase   
         self.length = 10
 
-    def rand_name(self) -> str:
-        name = ''.join(random.choice(self.letters) for i in range(self.length))
+    def get_rand_name(self) -> str:
+        name = ''
+        for i in range(self.length):
+            name = name.join(random.choice(self.letters))
         return name
 
-name_gen = name_generator()
 
+name_gen = NameGenerator()
 
-import networkx as nx
 
 def demo():
 
@@ -35,82 +39,77 @@ def demo():
 
 # TODO put in dotutils
 
-class digraph:
+class Digraph:
 
-    START="{"
-    END="}"
+    START = "{"
+    END = "}"
 
     def __init__(self, label=None) -> None:
         self.label = label
 
     @classmethod
-    def start(name:str='d') -> str:
-        return f"digraph {name} " + digraph.START
+    def start(cls, name: str = 'd') -> str:
+        return f"digraph {name} " + Digraph.START
 
     @classmethod
-    def end() -> str:
-        return digraph.END
+    def end(cls) -> str:
+        return Digraph.END
 
 
-class subgraph:
+class Subgraph:
 
-    START="{"
-    END="}"
+    START = "{"
+    END = "}"
 
     def __init__(self, label=None) -> None:
         if label is None:
-            label = name_gen.rand_name()
+            self.label = name_gen.get_rand_name()
         else:
             self.label = label
 
     @classmethod
-    def start(name:str='d') -> str:
-        return f"subgraph {name} " + subgraph.START
-
-
+    def start(cls, name: str = 'd') -> str:
+        return f"subgraph {name} " + Subgraph.START
 
     @classmethod
-    def end() -> str:
+    def end(cls) -> str:
         return '}'
 
-class cluster:
 
-    START="{"
-    END="}"
+class Cluster:
+
+    START = "{"
+    END = "}"
 
     def __init__(self, label=None) -> None:
 
         if label is None:
-            label = name_gen.rand_name()
+            self.label = name_gen.get_rand_name()
         else:
             self.label = label
 
-    def start(self, name:str='d') -> str:
-        return f"subgraph cluster_{name} " + subgraph.START
-
-
+    @staticmethod
+    def start(name: str = 'd') -> str:
+        return f"subgraph cluster_{name} " + Subgraph.START
 
     @classmethod
-    def end() -> str:
-        return cluster.END
+    def end(cls) -> str:
+        return Cluster.END
 
 
+class DigraphGenerator:
 
-class digraph_generator:
-    
-
-    def run(self)-> None: 
+    @staticmethod
+    def run() -> None:
         # use of writelines helps to avoid \n
 
         with open('graph1.dot', 'w') as fp:
             fp.writelines('digraph d {')
 
-
-
-
             fp.writelines('}')
 
 # --------------------        
+
 
 if __name__ == "__main__":
 
