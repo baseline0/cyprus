@@ -1,12 +1,99 @@
 
+
+
 http://ppage.psystems.eu/
 
+---
+
+# Quantitative Causality in Membrane Systems
+
+International Conference on Membrane Computing
+CMC 2011: Membrane Computing pp 62-72
+
+
+
+To each multiset w we associate its support, denoted by
+supp(w), which contains those elements of S which have a non-zero image. 
+
+
+A cover $(G, w)$ for a multiset $v$ is defined with respect to a certain evolution step 
+$$ u \xrightarrow{\text{F}} u' $$
+in which $v$ is obtained: $v ≤ u'$.
+
+It is formed from a multiset of rules $G$ and a multiset of objects w such that they both contribute to the apparition of $v$. The main idea is that $G ≤ F$ is a part of the rules used in the evolution step and $w ≤ u−lhs(F)$ is a part of the objects which are not consumed by rules, such
+that $v ≤ w + rhs(G)$. In other words, $v = w + (v − w)$ is obtained from $u$ in one evolution step 
+$u \xrightarrow{\text{F}} u' = u − lhs(F) + rhs(F)$
+, such that w are objects which are
+not consumed by any rule and $v − w$ are objects produced by rules in $G$.
+
+---
+
+# Flattening the Transition P Systems with Dissolution
+
+International Conference on Membrane Computing
+CMC 2010: Membrane Computing pp 53-64
+
+Given a transition P system Π with dissolution, promoters and inhibitors having several membranes, we construct a P system $Π^f$ with promoters and inhibitors and with only one membrane.  The evolution of this “flat” P system $Π^f$ simulates the evolution of initial transition P system Π by replacing any dissolution stage of a configuration in $Π^f$ by specific rules application in a configuration of $Π^f$ The transition P systems without dissolution represent a special case.
+
+![transition_system_config_w](./imgs/transition_system_config_w.png)
+
+---
+
+# Foundations of Reversible Computation
+
+International Conference on Reversible Computation
+RC 2020: Reversible Computation: Extending Horizons of Computing pp 1-40
+
+Reversible computation allows computation to proceed not only in the standard, forward direction, but also backward, recovering past states, and computing inputs from outputs. Reversible computation has attracted interest for multiple applications, covering areas as different as low-power computing [113], simulation [37], robotics [122] and debugging [129]. 
+
+A useful specialisation of dagger categories, in connection with reversible computation, is dagger traced symmetric bimonoidal (or rig) categories, i.e., dagger categories equipped with two symmetric monoidal tensors (usually denoted   −⊕−  and   −⊗− ), interacting through a distributor and an annihilator, yielding the structure of a rig (i.e., a ring without additive inverses). Iteration is modelled by means of a trace operator   Tr  (see [1, 85, 175]) such that   (Trf)†=Tr(f†) . These categories are strongly related to the dagger compact closed categories [3, 174] that serve as the model of choice for the Oxford school of quantum computing.
+
+
+Reversible languages have been reduced to their computational cores:
+
+R-Core [63] is a structured reversible language consisting of a single command for reversible store updates, a single control-flow operator for reversible iteration, and data structures built from a single binary constructor and a single symbol. Despite its extreme simplicity, the language is reversibly universal, which means it is as computationally powerful as any reversible language can be. Its four-line program inverter is as concise as the one for Bennett’s reversible Turing machines. The core language and a recent extension with reversible recursion were equipped with a denotational semantics [61, 63, 64].
+
+R-While [62] adds reversible rewrite rules and pattern matching as syntactic sugar to R-Core, which makes the family of structured reversible languages more accessible to foundational studies and educational purposes than do reversible Turing machines and other reversible devices. The procedural extension [64] draws a distinction between tail-recursion by iteration and general recursion by reversible procedures, a notoriously difficult transformation problem in program inversion [96, 151]. The linear-time self-interpretability makes the language also suitable for foundational studies of computability and complexity from a programming language perspective [84].
+
+CoreFun [80] is a typed reversible functional language that seeks to reduce reversible functional programming [184] to its essentials so that it can serve as a foundation for modern functional language concepts. The language has a formal semantics and a type system to statically check for reversibility of programs.
+
+A term rewriting system (TRS) is specified as a set of rewrite rules of the form   l→r  such that l is a nonvariable term and r is a term whose variables appear in l.
+
+Clavel, M., et al.: Maude: specification and programming in rewriting logic. Theor. Comput. Sci. 285(2), 187–243 (2002)
+
+rocess calculi are a class of algebraic models for concurrent and distributed systems. Process calculi allow one to express the behaviour of a concurrent system in a concise way, abstracting away from implementation details, and focusing on the interaction patterns among the components of the system. Thus, it is possible to express the behaviour of a system in a mathematically precise way and verification techniques can be easily developed on top of it.
+
+Research on reversing process calculi can be perhaps tracked back to the Chemical Abstract Machine [30], a calculus inspired by chemical reactions whose operational semantics defines both forward and reverse reduction relations. The first attempts to reverse existing process calculi can be found in [44, 46], where a reversible extension of CCS [140] was presented. A main contribution of [44] was the definition of the notion of causal-consistent reversibility: any action can be undone, provided that its consequences, if any, are undone first. 
+
+---
+
+# Infobiotics Workbench: A P Systems Based Tool for Systems and Synthetic Biology
+
+Applications of Membrane Computing in Systems and Synthetic Biology pp 1-41
+
+
+### Infobiotics : computer-aided synthetic systems biology - Phd Blakes
+
+Taken together these novel software platforms provide a complete toolchain, from
+design to wet-lab implementation, of synthetic biological circuits, enabling a step
+change in the scale of biological investigations that is orders of magnitude greater
+than could previously be performed in one in silico “pot”.
+
+http://eprints.nottingham.ac.uk/13434/
+
+Phenotypes regulated by quorum sensing in bacteria (taken from [13]). The signalling molecule 3-oxoC12-HSL (centre) is responsible for coordinating biofilm clumping and maturation, swarming motility, exopolysaccharide and virulence factor production in Pseudomonas aeruginosa
+
+---
 
 # Memory associated with membranes systems
 
 Journal of Membrane Computing volume 3, pages116–132 (2021)
 
+The main research directions considered in the field of membrane computing are: modelling power, computational power with respect to the computational power of Turing machines using a limited number of resources [3], and efficiency by providing algorithms to solve NP-complete problems by trading space for time (namely by using an exponential space to obtain a polynomial time solution)
 
+ In the Petri net semantics under the individual token philosophy [14], each token carries the information about which transitions have been executed before to produce it. In this respect, the token get a knowledge of its past, namely it has memory. If we are able to record in this way how a certain object is obtained, we can also suitably reverse some steps of the evolution. In the approach in which the memory is interpreted as a storing device, we keep the objects consumed in the evolution steps in a computer-like memory formed by memory addresses. This view allows to define simplified semantics able to describe both dynamic and static allocation of resources in a membrane system. Two operational semantics for membrane systems with this notion of memory are presented, and proved to be equivalent.
+
+**good notation!!!**
 
 ---
 
