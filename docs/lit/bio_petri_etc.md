@@ -1,8 +1,126 @@
+# lit review: on petri nets and membrane computing. Jan 2022
 
+selections from:
 
+Springer
+
+52 Result(s) for '"petri net" "membrane computing"'
+within 2011 - 2022
+
+---
 
 http://ppage.psystems.eu/
 
+---
+
+# Towards a Petri Net Semantics for Membrane Systems
+
+International Workshop on Membrane Computing
+WMC 2005: Membrane Computing pp 292-309
+
+![membrane_and_its_petri_net](./imgs/membrane_and_its_petri_net.png)
+
+![membrane_as_tree_and_compartments](./imgs/membrane_as_tree_and_compartments.png)
+
+
+a PT-net model of a simple one-producer / two-consumers
+concurrent system, where the producer is represented by the initial token in
+place p and the consumers by the two tokens in place r. Using transition a,
+the producer repeatedly produces new items (tokens) and adds them to place q
+(intuitively, a buffer between the producer and the two consumers) from where
+they can be taken by one of the two consumers, and then used by executing
+transition u. Rather than producing a new item, the producer may at any time
+cancel the production cycle by executing transition c.
+
+![one_producer_two_consumers](./imgs/one_producer_two_consumers.png)
+
+A wellestablished way of developing such a semantics for the standard PT-nets is based
+on a class of acyclic Petri nets, called occurrence nets [22]. What one essentially
+tries to achieve is to trace the changes of markings due to transitions being
+executed along some legal behaviour of the original PT-net, and in doing so
+record which resources were consumed and produced.
+
+
+
+
+---
+
+# Catalytic Petri Nets Are Turing Complete
+
+International Conference on Language and Automata Theory and Applications
+LATA 2012: Language and Automata Theory and Applications pp 192-203
+
+In this paper we introduce a class of Petri nets, called catalytic Petri nets, and a suitable firing strategy where transitions are fired only when they use tokens from specific places, called catalytic places. By establishing a one-to-one relationship with catalytic membrane systems, we can prove that the class of catalytic Petri nets with at least two catalytic places is Turing complete.
+
+In order to make Petri nets Turing complete, different approaches have been
+taken; notably the one which extends the kind of arcs considered. The classic
+extension is the one where inhibitor arcs are considered, i.e., arcs where the
+absence of tokens in certain places is modeled ([14]), or reset arcs, i.e., arcs with
+the characteristic of emptying the preset, regardless of the number of tokens
+present in the place ([8]). Other extensions of Petri Nets, not necessarily always
+Turing complete, allow the introduction of non blocking arcs or transfer arcs
+([11] and [13]) or making the transitions marking dependent ([5]).
+Summing up, to make Petri nets Turing complete either suitable extensions
+of the model have to be considered or quite heavy assumptions on the firing rule
+have to be made. In the former case many among the main features of Petri
+nets are retained, e.g., the locality of firing or the distributed state, whereas in the latter the characteristics that have made Petri nets an appealing and useful model for concurrent and distributed computations are lost.
+
+---
+
+# Triangular Array Token Petri Net and P System
+
+International Conference on Membrane Computing
+CMC 2020: Membrane Computing pp 78-93
+
+![honeycomb1](./imgs/honeycomb1.png)
+
+![honeycomb2](./imgs/honeycomb2.png)
+
+---
+
+# Description of membrane systems with time Petri nets: promoters/inhibitors, membrane dissolution, and priorities
+
+Journal of Membrane Computing volume 2, pages341–354 (2020)
+
+By constructing the simulating time Petri net, we retain one of the main characteristics of the Petri net model; namely, the firings of the transitions can take place in any order, and there is no need to introduce maximal parallelism in the Petri net semantics. 
+
+Place/transition Petri nets are bipartite graphs, the conditions of the events of a distributed system are represented by places, and directed arcs connect the places to the transitions which model the events. The conditions for the events are expressed by tokens: an event can take place, i.e., a transition can fire, if there are enough tokens in the places at the source ends of the incoming arcs of a transition. These places are called preconditions. The outgoing edges of a transition represent the post-condition of the events. Firing of a transition means removing tokens from the preconditions and adding them to the post-conditions. The number of tokens moved in this way is prescribed by the multiplicities of the incoming and outgoing arcs.
+
+---
+
+# Partial Array Token Petri Net and P System
+
+International Conference on Membrane Computing
+CMC 2020: Membrane Computing pp 135-152
+
+A kolam or muggu is a geometrical line drawing composed of straight lines, curves and loops, drawn around a grid pattern of dots.
+
+ A Petri Net structure is a four tuple   $C=(P,T,I,O)$  where   
+
+ $$ P = \left\{ p_{1},p_{2},…,p_{n} \right\} $$ 
+ 
+ is a finite set of places,   $n>0$ ,   
+ 
+ $$ T = \left\{t_{1},t_{2},…,t_{m} \right\} $$  
+ 
+ is a finite set of transitions,   $ m > 0 $ ,   
+ 
+$$ P \cap T = ϕ $$ 
+, 
+
+$$ I : T \rightarrow P^{\infty}  $$ 
+ 
+is the input function from transitions to bags of places and   
+ 
+$$ O : T \rightarrow P^{\infty} $$
+ 
+is the output function from transitions to bags of places, where   
+ 
+$$ P^{\infty} $$ 
+ 
+is the bags of places.
+
+Partial Array Token Petri Net Structure (PATPNS)
 
 ---
 
@@ -11,9 +129,21 @@ http://ppage.psystems.eu/
 International Conference on Membrane Computing
 CMC 2012: Membrane Computing pp 128-144
 
+Mobile membranes with objects on surface represent a rule-based formalism involving parallelism and mobility. We use this class of mobile membranes to model the low-density lipoprotein degradation. A translation of this formalism into colored Petri nets is provided in order to analyze, using CPN Tools, some important properties of mobile membranes: reachability, boundedness, liveness, fairness. In order to show how this translation works, we translate the model of the low-density lipoprotein degradation using mobile membranes into colored Petri nets.
 
+The mobile membranes systems are defined by two features:
 
+1. A spatial structure consisting of a hierarchy of membranes (which are
+either disjoint or included) with multisets of objects on their surface; a
+membrane without any other membrane inside is called elementary, while
+a non-elementary membrane is called a composite membrane.
 
+2. The biologically inspired rules describing the mobility of membranes inside
+the structure: pinocytosis (engulfing zero external membranes), phagocytosis
+(engulfing just one external membrane), and exocytosis (expelling the content of a membrane outside the membrane where it is placed). Pinocytosis
+and phagocytosis represent different types of endocytosis.
+
+www/cs/au.dk/CPNTools
 
 ---
 
