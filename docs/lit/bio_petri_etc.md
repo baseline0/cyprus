@@ -3,6 +3,37 @@
 
 http://ppage.psystems.eu/
 
+
+---
+
+# Mobile Membranes with Objects on Surface as Colored Petri Nets
+
+International Conference on Membrane Computing
+CMC 2012: Membrane Computing pp 128-144
+
+
+
+
+
+---
+
+# Theory of reaction automata: a survey
+
+Journal of Membrane Computing volume 3, pages63–85 (2021)
+
+We show that the computational powers of RAs are Turing universal in both manners of rule applications. The relationship between the space-bounded variants of RA and the Chomsky hierarchy is also discussed. Further, we discuss the notion of chemical reaction automata, which is a simplified variant of RAs with reaction rules that are free from inhibitor functioning.
+
+![yokomori_notation](./imgs/yokomori_notation.png)
+
+![yokomori_morphisms](./imgs/yokomori_morphisms.png)
+
+Kleene star
+
+![reaction_automata_turing_machines_chomsky_hierarchy](./imgs/reaction_automata_turing_machines_chomsky_hierarchy.png)
+
+
+
+
 ---
 
 # Quantitative Causality in Membrane Systems
@@ -25,6 +56,16 @@ that $v ≤ w + rhs(G)$. In other words, $v = w + (v − w)$ is obtained from $u
 $u \xrightarrow{\text{F}} u' = u − lhs(F) + rhs(F)$
 , such that w are objects which are
 not consumed by any rule and $v − w$ are objects produced by rules in $G$.
+
+
+An earlier attempt to define a notion of causality over objects in membrane
+systems was made in [1]. The definition was given in terms of relating multisets
+of objects of form $k · a$. Moreover, the multiplicity $k$ of a could only be taken to be $u(a)$ or $u'(a)$ from an evolution step 
+$$ u \xrightarrow{\text{F}} u'$$
+. 
+The definition in this paper is more general, allowing to relate (specifically) any multiset $v ≤ u$ with a multiset of rules $G$, and implicitly with a multiset of objects 
+$$ lhs(G) + v \setminus rhs(G) ≤ u $$
+.
 
 ---
 
