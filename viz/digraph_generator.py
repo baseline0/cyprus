@@ -17,11 +17,12 @@ class NameGenerator:
 
     def __init__(self) -> None:
         self.letters = string.ascii_lowercase   
-        self.length = 4
+
+        self.num_chars = 4
 
     def get_rand_name(self) -> str:
         name = ''
-        for i in range(self.length):
+        for i in range(self.num_chars):
             name += random.choice(self.letters)
         return name
 
