@@ -9,7 +9,7 @@ import networkx as nx
 from typing import TextIO
 from enum import Enum
 
-from dot_colour import DotColour
+from viz.dot_colour import DotColour, get_rand_colours
 
 
 class NameGenerator:
@@ -46,13 +46,30 @@ def demo():
 
 
 class ContentItem:
-    def __init__(self, name:str=None, colour:DotColour=None) -> None:
+    # these are the items that live in the membranes
+
+    # in dot/graphviz format, 
+    #   abc [color = red]
+
+
+    def __init__(self, name:str=None, colour:str = None) -> None:
+        # colour is string  but we expect it to be :
+        #   str(colour:DotColour.name)
+
         if name is None:
             self.name = name_gen.get_rand_name()
         else:
             self.name = name.replace(' ', '')
 
-        #if colour is None:
+        if colour is None:
+            self.colour = str(get_rand_colours(1)[0].name)        
+        else:
+            self.colour = colour
+
+    def __repr__(self) -> str:
+        
+        s = "[" + self.name + " = " + self.colour + "]"
+        return s
 
 
 class Base:
