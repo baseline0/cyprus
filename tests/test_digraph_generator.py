@@ -7,8 +7,8 @@ sys.path.insert(0, parent_dir_path)
 import unittest
 
 from malta.dot_colour import DotColour
-from malta.digraph_generator import ContentItem, ContentItemFactory, NameGenerator, DigraphGenerator
-from malta.digraph_generator import Cluster
+from malta.malta import ContentItem, ContentItemFactory, NameGenerator, DigraphGenerator
+from malta.malta import Cluster
 
 
 class TestDigraphGenerator(unittest.TestCase):

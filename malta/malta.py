@@ -13,7 +13,7 @@ class NameGenerator:
     # use as prefix for cluster items
 
     def __init__(self) -> None:
-        self.letters = string.ascii_lowercase   
+        self.letters = string.ascii_lowercase
 
         self.num_chars = 4
 
@@ -28,7 +28,6 @@ name_gen = NameGenerator()
 
 
 def demo():
-
     from networkx.generators.random_graphs import random_lobster
 
     n = 10
@@ -49,9 +48,8 @@ class ContentItem:
     # in dot/graphviz format, 
     #   abc [color = red]
 
-
-    def __init__(self, name:str=None, colour:str = None) -> None:
-        # colour is string  but we expect it to be :
+    def __init__(self, name: str = None, colour: str = None) -> None:
+        # colour is string but we expect it to be :
         #   str(colour:DotColour.name)
 
         if name is None:
@@ -66,14 +64,15 @@ class ContentItem:
             self.colour = colour
 
     def __repr__(self) -> str:
-        
+
         s = "[" + self.name + " = " + self.colour + "]"
         return s
+
 
 class ContentItemFactory:
 
     @classmethod
-    def get_items_for_names(cls, names, colour: str = None): # -> List(ContentItem):
+    def get_items_for_names(cls, names, colour: str = None):  # -> List(ContentItem):
         # all same colour
         items = []
         if colour is None:
@@ -84,7 +83,7 @@ class ContentItemFactory:
         return items
 
     @classmethod
-    def get_items(cls, n: int = 10, colour: str = None): # -> List(ContentItem):
+    def get_items(cls, n: int = 10, colour: str = None):  # -> List(ContentItem):
         # same colour
 
         items = []
@@ -99,8 +98,6 @@ class ContentItemFactory:
     # @staticmethod
     # def get_multi_coloured_items(n: int = 10):
     #     # TODO
-
-
 
 
 class Base:
@@ -118,27 +115,26 @@ class Base:
     def get_label(self) -> str:
         pass
 
-def write_cluster(fp:TextIO, c: Base):
 
+def write_cluster(fp: TextIO, c: Base):
     try:
 
         fp.writelines(c.start())
-    
+
         fp.writelines(f"{x} \n" for x in c.contents)
 
         for subcluster in c.clusters:
             write_cluster(fp, subcluster)
 
-        fp.write(c.get_label())            
+        fp.write(c.get_label())
         fp.writelines(c.end())
 
     except IOError:
         sys.exit()
 
 
-# TODO put in dotutils
+# TODO put in dot_utils
 class Subgraph(Base):
-    
     START = "{"
     END = "}"
 
@@ -157,7 +153,6 @@ class Subgraph(Base):
 
 
 class Cluster(Base):
-
     START = "{"
     END = "}"
 
@@ -172,10 +167,10 @@ class Cluster(Base):
         # the cluster label in diagram
         if label is None:
             self.label = name
-        else:            
-            self.label = label 
+        else:
+            self.label = label
 
-        # nesting
+            # nesting
         self.clusters = []
 
         # the objects in the membrane
@@ -200,7 +195,6 @@ class Cluster(Base):
 
 
 class Digraph:
-
     START = "{"
     END = "}"
 
@@ -227,8 +221,7 @@ class DigraphGenerator:
         self.clusters = []
         self.fp = None
 
-    def run(self, fname: str) -> None:     
-
+    def run(self, fname: str) -> None:
         # use of writelines helps to avoid appending \n
 
         self.fp = open(fname, 'w')
@@ -242,13 +235,10 @@ class DigraphGenerator:
         self.fp.close()
 
 
-
-
-# --------------------        
+# --------------------
 
 
 if __name__ == "__main__":
-
     # demo1()
     demo2()
 

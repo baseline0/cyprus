@@ -1,11 +1,10 @@
 import json
-from loader import Loader
 
 def prettyprint_json(data):
     json.dumps(data, indent=4, sort_keys=True)
 
 
-class Simulation(Loader):
+class Simulation():
 
     def __init__(self) -> None:
 
