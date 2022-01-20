@@ -6,10 +6,10 @@ import string
 
 import networkx as nx
 
-from typing import TextIO
+from typing import TextIO, List
 from enum import Enum
 
-from viz.dot_colour import DotColour, get_rand_colours
+from viz.dot_colour import DotColour, get_rand_colours, get_rand_colour
 
 
 class NameGenerator:
@@ -17,12 +17,12 @@ class NameGenerator:
 
     def __init__(self) -> None:
         self.letters = string.ascii_lowercase   
-        self.length = 10
+        self.length = 4
 
     def get_rand_name(self) -> str:
         name = ''
         for i in range(self.length):
-            name = name.join(random.choice(self.letters))
+            name += random.choice(self.letters)
         return name
 
 
@@ -62,7 +62,8 @@ class ContentItem:
             self.name = name.replace(' ', '')
 
         if colour is None:
-            self.colour = str(get_rand_colours(1)[0].name)        
+            # self.colour = str(get_rand_colours(1)[0].name)        
+            self.colour = get_rand_colour()
         else:
             self.colour = colour
 
@@ -70,6 +71,38 @@ class ContentItem:
         
         s = "[" + self.name + " = " + self.colour + "]"
         return s
+
+class ContentItemFactory:
+
+    @classmethod
+    def get_items_for_names(cls, names, colour: str = None): # -> List(ContentItem):
+        # all same colour
+        items = []
+        if colour is None:
+            colour = get_rand_colour()
+
+        for n in names:
+            items.append(ContentItem(name=n, colour=colour))
+        return items
+
+    @classmethod
+    def get_items(cls, n: int = 10, colour: str = None): # -> List(ContentItem):
+        # same colour
+
+        items = []
+
+        if colour is None:
+            colour = get_rand_colour()
+
+        for n in range(n):
+            items.append(ContentItem(colour=colour))
+        return items
+
+    # @staticmethod
+    # def get_multi_coloured_items(n: int = 10):
+    #     # TODO
+
+
 
 
 class Base:

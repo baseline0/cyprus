@@ -688,6 +688,9 @@ class DotColour(str, Enum):
     yellowgreen = 'yellowgreen'
 
 
+def get_rand_colour() -> str:
+    return sample(colors, 1)
+
 def get_rand_colours(n: int = 10) -> List[str]:
     # of course random colours could be quite garish 
     palette = []

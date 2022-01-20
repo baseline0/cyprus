@@ -7,7 +7,7 @@ sys.path.insert(0, parent_dir_path)
 import unittest
 
 from viz.dot_colour import DotColour, get_rand_colours
-from viz.digraph_generator import ContentItem
+from viz.digraph_generator import ContentItem, ContentItemFactory, NameGenerator
 
 
 class TestDigraphGenerator(unittest.TestCase):
@@ -18,3 +18,22 @@ class TestDigraphGenerator(unittest.TestCase):
 
         c = ContentItem(name="cod", colour=color)
         print(c)
+
+    def test_2(self):
+
+        factory = ContentItemFactory()
+
+        items = factory.get_items(4)
+
+        for i in items:
+            print(i)
+
+    def test_3(self):
+
+        ng = NameGenerator()
+
+        names = []
+        for i in range(5):
+            names.append(ng.get_rand_name())
+            
+        print(names)
