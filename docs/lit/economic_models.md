@@ -2,11 +2,8 @@
 
 Springer 
 
-82 Result(s) for '"membrane computing" economics model Paun'
-
-
-also 
-155 Result(s) for p-system security membrane
+- 82 Result(s) for '"membrane computing" economics model Paun'
+- 155 Result(s) for p-system security membrane
 
 excerpts from selections follow
 
@@ -21,9 +18,6 @@ Reaction systems, introduced by Ehrenfeucht and Rozenberg, are elementary comput
 If $S$ is any finite set, then the cardinality of $S$ is denoted by $|S|$ and the power set of $S$ is denoted by $2^S$.
 
 A reaction in $S$ is a triple $a=(R_a,I_a,P_a)$, where $R_a$ and $I_a$ are (possibly empty) disjoint subsets of $S$ and $P_a$ is a nonempty subset of $S$. The sets $R_a$, $I_a$, and $P_a$ are the reactant set, inhibitor set, and product set respectively. The pair $(R_a,I_a)$ is the core of $a$.
-
-
-
 
 ---
 

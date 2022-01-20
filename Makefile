@@ -16,5 +16,12 @@ example2:
 hello:
 	python3 -v cyprus.py -V ./examples/hello.cyp >out.txt 2>&1
 
+demo:
+	./run.sh
+
+tests:
+	./do_tests.sh
+
 clean: 
-	echo "clean up cyprus.log"
+	rm ./cyprus.log
+	echo "removed cyprus.log"
