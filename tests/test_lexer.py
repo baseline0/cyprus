@@ -1,21 +1,21 @@
 import os, sys
-dir_path = os.path.dirname(os.path.realpath(__file__))
-parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
-sys.path.insert(0, parent_dir_path)
-
 import unittest
 
 from cyprus.program import tokenize_file
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
+sys.path.insert(0, parent_dir_path)
+
+
 class LexerTest(unittest.TestCase):
 
-  def test_unicode(self):  
+    def test_unicode(self):
+        ts = tokenize_file('./examples/example1.cyp')
+        print(ts[0])
+        self.assertEqual(str(ts[0]), "3,1-3,1: env_open '['")
 
-    ts = tokenize_file('./tests/examples/example1.cyp')
-    #for t in ts:
-    
-
-    correct = """
+        correct = """
     3,1-3,1: env_open '['
     3,2-3,4: name 'env'
     4,3-4,3: membrane_open '('
@@ -89,4 +89,4 @@ class LexerTest(unittest.TestCase):
     22,1-22,1: env_close ']'
     """
 
-    # self.assertEqual(t, correct)
+        # self.assertEqual(t, correct)

@@ -1,7 +1,3 @@
-import json
-
-def prettyprint_json(data):
-    json.dumps(data, indent=4, sort_keys=True)
 
 
 class Simulation():

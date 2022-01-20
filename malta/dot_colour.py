@@ -689,22 +689,20 @@ class DotColour(str, Enum):
 
 
 def get_rand_colour() -> str:
-    return sample(colors, 1)
+    return str(sample(colors, 1))
+
 
 def get_rand_colours(n: int = 10) -> List[str]:
     # of course random colours could be quite garish 
-    palette = []
-
-    # works
-    # example output. 
+    # example output.
     #   yellow DotColour.yellow
     # for name, value in DotColour.__members__.items():
     #     print(name, value)
 
-    palette = sample(colors, n)
+    selected = sample(colors, n)
     # print(palette)
 
-    return palette
+    return selected
 
 
 colors = []
