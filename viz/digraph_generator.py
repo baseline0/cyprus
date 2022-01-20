@@ -3,9 +3,13 @@ from ast import Sub
 import sys
 import random
 import string
-from typing import TextIO
 
 import networkx as nx
+
+from typing import TextIO
+from enum import Enum
+
+from dot_colour import DotColour
 
 
 class NameGenerator:
@@ -41,6 +45,16 @@ def demo():
     # TODO
 
 
+class ContentItem:
+    def __init__(self, name:str=None, colour:DotColour=None) -> None:
+        if name is None:
+            self.name = name_gen.get_rand_name()
+        else:
+            self.name = name.replace(' ', '')
+
+        #if colour is None:
+
+
 class Base:
 
     def start(self, name: str = 'd') -> str:
@@ -66,7 +80,7 @@ def write_cluster(fp:TextIO, c: Base):
 
         for subcluster in c.clusters:
             write_cluster(fp, subcluster)
-            
+
         fp.write(c.get_label())            
         fp.writelines(c.end())
 
@@ -104,7 +118,8 @@ class Cluster(Base):
         if name is None:
             self.name = name_gen.get_rand_name()
         else:
-            self.name = name
+            # whitespace in names confounds dot
+            self.name = name.replace(' ', '')
 
         # the cluster label in diagram
         if label is None:
@@ -164,24 +179,7 @@ class DigraphGenerator:
         self.clusters = []
         self.fp = None
 
-    # def write_cluster(self, c: Cluster):
-
-    #     self.fp.writelines(c.start())
-    #     self.fp.writelines(c.label)
-    #     self.fp.writelines(c.end())
-
-    def run(self, fname: str) -> None:
-
-        c = Cluster(name="top")
-        c.contents = ['a', 'b', 'c']
-        
-
-        d = Cluster(name="nested")
-        d.contents = ['d', 'e', 'f']
-        
-        c.add_cluster(d)
-        self.digraph.add_cluster(c)
-      
+    def run(self, fname: str) -> None:     
 
         # use of writelines helps to avoid appending \n
 
@@ -196,12 +194,55 @@ class DigraphGenerator:
         self.fp.close()
 
 
+def demo1():
+    # simple. small. nested one deep
+
+        c = Cluster(name="top")
+        c.contents = ['a', 'b', 'c']
+        
+
+        d = Cluster(name="nested")
+        d.contents = ['d', 'e', 'f']
+        
+        c.add_cluster(d)
+
+        dg = DigraphGenerator()
+        dg.digraph.add_cluster(c)
+
+        dg.run(fname='./viz/out/graph1.dot')
+
+
+def demo2():
+    
+        c = Cluster(name="top")
+        c.contents = ['a', 'b', 'c']
+        
+        peer = Cluster(name="peer")
+        peer.contents = ['a1', 'b1', 'c1']
+        
+        d = Cluster(name="nested")
+        d.contents = ['d', 'e', 'f']
+
+        e = Cluster(name="nested_2")
+        e.contents = ['g', 'h', 'i']
+
+        d.add_cluster(e)
+        c.add_cluster(d)
+
+
+        dg = DigraphGenerator()
+        dg.digraph.add_cluster(c)
+        dg.digraph.add_cluster(peer)
+
+        dg.run(fname='./viz/out/graph2.dot')
+
+
 # --------------------        
 
 
 if __name__ == "__main__":
 
-    gen = DigraphGenerator()
-    gen.run(fname='./viz/out/graph1.dot')
+    # demo1()
+    demo2()
 
     # demo()
