@@ -1,6 +1,6 @@
 import unittest
 
-from viz.dot_colour import get_rand_colours, DotColour
+from malta.dot_colour import get_rand_colours
 
 
 class TestDotColour(unittest.TestCase):

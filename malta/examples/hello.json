@@ -1,0 +1,24 @@
+{
+    "env1": [
+        {
+            "name": "hello-example",
+            "type": "global-rules",
+            "contents": [],
+            "membranes": [
+                {
+                    "name": "1",
+                    "exists": [
+                        "hello"
+                    ],
+                    "reactions": [
+                        {
+                            "input": "hello",
+                            "output": "hello world",
+                            "catalyst": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,15 +1,12 @@
-
-from ast import Sub
 import sys
 import random
 import string
 
 import networkx as nx
 
-from typing import TextIO, List
-from enum import Enum
+from typing import TextIO
 
-from viz.dot_colour import DotColour, get_rand_colours, get_rand_colour
+from malta.dot_colour import get_rand_colour
 
 
 class NameGenerator:
@@ -245,47 +242,6 @@ class DigraphGenerator:
         self.fp.close()
 
 
-def demo1():
-    # simple. small. nested one deep
-
-        c = Cluster(name="top")
-        c.contents = ['a', 'b', 'c']
-        
-
-        d = Cluster(name="nested")
-        d.contents = ['d', 'e', 'f']
-        
-        c.add_cluster(d)
-
-        dg = DigraphGenerator()
-        dg.digraph.add_cluster(c)
-
-        dg.run(fname='./viz/out/graph1.dot')
-
-
-def demo2():
-    
-        c = Cluster(name="top")
-        c.contents = ['a', 'b', 'c']
-        
-        peer = Cluster(name="peer")
-        peer.contents = ['a1', 'b1', 'c1']
-        
-        d = Cluster(name="nested")
-        d.contents = ['d', 'e', 'f']
-
-        e = Cluster(name="nested_2")
-        e.contents = ['g', 'h', 'i']
-
-        d.add_cluster(e)
-        c.add_cluster(d)
-
-
-        dg = DigraphGenerator()
-        dg.digraph.add_cluster(c)
-        dg.digraph.add_cluster(peer)
-
-        dg.run(fname='./viz/out/graph2.dot')
 
 
 # --------------------        

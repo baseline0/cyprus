@@ -32,4 +32,4 @@ label = "top"}
 
 ```
 
-![graph1](./imgs/graph1.png)
+![graph1](imgs/graph1.png)
