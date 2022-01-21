@@ -6,6 +6,114 @@ source: springer
 
 155 Result(s) for 'p-system security membrane'
 
+
+
+
+
+
+---
+
+# Integrated Membrane Computing Framework for Modeling Intrusion Detection Systems
+
+International Conference on Bio-Inspired Computing: Theories and Applications
+BIC-TA 2016: Bio-inspired Computing – Theories and Applications pp 336-346
+
+two of the models were evaluated using KDD Cup dataset.
+
+---
+
+# Membrane computing inspired protocol to enhance security in cloud network
+
+The Journal of Supercomputing volume 75, pages2181–2192 (2019)
+
+![membrane_hierarchy](./imgs/membrane_hierarchy.png)
+
+![defence_network](./imgs/defence_network.png)
+
+---
+
+# Formal verification of cP systems using Coq
+
+Journal of Membrane Computing volume 3, pages205–220 (2021)
+
+cP systems share the fundamental features of cell-like [1] and tissue P systems [3]. Membranes and objects in a top-level cell are represented as labelled nested multiset-based terms, and top-level cells can be organized in graph networks. Each top-level cell has evolution rules, and sub-cells are only used to represent local data. Different from most of P system variants, evolution rules in cP systems are generic, and contain first-order variables
+
+---
+
+# Formal verification of cP systems using PAT3 and ProB
+
+Journal of Membrane Computing volume 2, pages80–94 (2020)
+
+The first version of Process Analysis Toolkit (PAT) model checker was proposed in 2008 [38], which aimed to analyze event-based compositional systems. CSP# is a model checking language extended from the Communicating Sequential Processes (CSP) formal notation. It is used in PAT model checker to describe system specifications and provide refinement checking, Linear Temporal Logic (LTL) checking and system simulation. A fully automatic approach on checking fairness properties using PAT was presented later by Sun et al. [40]. The second main release of PAT was focused on handling system analysis under fairness [39]. The latest version of PAT is PAT3, which has a four-layer structure: modeling layer, abstraction layer, intermediate representation layer and analysis layer. The four layers contain domain-specific components, abstraction and reduction techniques, semantic models and model checking algorithms, respectively [26]. PAT3 can be extended with custom modeling languages, model checking algorithms and reduction techniques.
+
+---
+
+# A Faster P Solution for the Byzantine Agreement Problem
+
+International Conference on Membrane Computing
+CMC 2010: Membrane Computing pp 175-197
+
+Exponential Information Gathering (EIG) trees
+
+An Exponential Information Gathering (EIG) tree $T_{N,L}$, $N ≥ L ≥ 0$, is a labelled
+(ordered) rooted tree of height $L$ that is defined recursively as follows. The tree $T_{N,0}$
+is a rooted tree with just one node, its root, labelled $λ$. For $L ≥ 1$, $T_{N,L}$ is a rooted
+tree with $1 + N|T_{N−1,L−1}|$ nodes (where $|T|$ is the size of tree $T$ ), root $λ$, having $N$
+subtrees, where each subtree is isomorphic with $T_{N−1,L−1}$ and each node, except the
+root, is labelled by the least element of $[1, N]$ that is different from any ancestor node
+or any left sibling node. Alternatively, $T_{N,L−1} is isomorphic and identically labelled
+with the tree obtained from $T_{N,L}$ by deleting all its leaves. It is straightforward to see
+that there is a bijective correspondence between the permutations of $P(N,L)$ and the
+sequences (concatenations) of labels on all paths from root to the leaves of $T_{N,L}$. Thus,
+each node $σ$ in an EIG tree $T_{N,L}$ is uniquely identified by a permutation $πσ ∈ P(N,l)$,
+where $l ∈ [0, L]$ is also $σ$’s depth, and, vice-versa, each such permutation π has a
+corresponding node $σπ$.
+
+![eig_tree](./imgs/eig_tree.png)
+
+![byzantine](./imgs/byzantine.png)
+
+Besides objects of the initial alphabet, rules can also use generic symbols. A generic
+symbol, abbreviated as sym, can be instantiated to one of the already existing objects or as a new object (thereby extending the initial alphabet).
+– Cells can be designated as external definitions. An external definition indicates either the start or the end of a potential arc and is abbreviated as $def_↑$ or as $def_↓$,
+respectively.
+– Arcs can be designated as external arcs, indicating potential arcs between existing
+cells and external definitions of other modules. An external arc has one uninstantiated start or end cell, called an external reference, which is abbreviated as $ref_↑$ or
+as $ref_↓$, respectively.
+– An external arc can be instantiated by identifying its external reference to a matching external definition from another module, i.e. either its $ref_↓$ reference to a $def_↓$
+definition, or its $ref_↑$ reference to a $def_↑$ definition.
+
+## Definition 1 (P module). 
+A $P$ module is a system $Π = (O, K, δ, S, D_↑, D_↓, R_↑, R_↓)$,
+where:
+1. $O$ is a finite non-empty alphabet of objects;
+2. $K$ is a finite set of cells;
+3. $δ$ is a subset of $(K × K) ∪ (K × R_↓) ∪ (R_↑ × K)$, i.e. a set of parent-child
+structural arcs, representing duplex or simplex communication channels, between
+two existing cells or between an existing cell and an external reference;
+4. $S$ is a finite alphabet, disjoint of $O$, of generic sym objects;
+5. $D_↑$ is a subset of $K$, representing $def_↑$ definitions;
+6. $D_↓$ is a subset of $K$, representing $def_↓$ definitions;
+7. $R_↑$ is a finite set, disjoint of $K$, representing $ref_↑$ references;
+8. $R_↓$ is a finite set, disjoint of $K$, representing $ref_↓$ references.
+
+Let $O¯ = O ∪ S$ be the original alphabet extended with the generic symbols. Each cell,
+$σ ∈ K$, has the form $σ = (Q,s0, w0, R)$, where:
+– $Q$ is a finite set of states;
+– $s_0 ∈ Q$ is the initial state;
+– $w_0 ∈ O¯∗$ is the initial multiset of objects;
+– $R$ is a finite ordered set of multiset rewriting rules of the general form: 
+
+$$s x →α s x (u)βγ $$
+
+, where $s, s ∈ Q$, $x$, $x ∈ O¯∗$, $u ∈ O¯∗$, $α ∈ {min, max}$, $β ∈ {↑
+, ↓, !, ↔}$, $γ ∈ {one, spread, repl} ∪ K ∪ R_↑ ∪ R_↓$. If $u = λ$, this rule can be
+abbreviated as $s x →α s x$
+. The semantics of the rules and of the $α$, $β$, $γ$ operators
+are further described in the rest of this section.
+
+![gcd](./imgs/gcd.png)
+
 ---
 
 # An Analysis of a Public Key Protocol with Membranes
@@ -14,7 +122,8 @@ Applications of Membrane Computing pp 283-302
 
 MGS
 
-
+MGS embeds a complete, impure, dynamically typed, strict, functional language. We describe here only the major differences between the constructions available in MGS with respect to functional languages like OCAML [15] or
+HASKELL [12].
 
 ---
 
