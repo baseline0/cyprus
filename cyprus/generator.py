@@ -13,8 +13,6 @@ import json
 # the json files are written into cyp format for grammar and simulation.
 
 
-
-
 ## grammar
 #
 # program        := {env}
@@ -32,24 +30,26 @@ import json
 # number         := [0-9], {[0-9]} | {[0-9]}, ".", [0-9], {[0-9]}
 # symbol         := atom | "!", name, <"!!", name> | "$", [name]
 
-ENV_START   ="[\n"
-ENV_END     ="]\n"
+ENV_START = "[\n"
+ENV_END = "]\n"
 
-MEM_START   ="(\n"
-MEM_END     =")\n"
+MEM_START = "(\n"
+MEM_END = ")\n"
 
 
 class AtomConcept:
-    def __init__(self, name:str) -> None:
-        self.name=name
+    def __init__(self, name: str) -> None:
+        self.name = name
 
     def __repr__(self) -> str:
         return self.name
 
+
 class AtomQuantity:
-    def __init__(self, a:AtomConcept) -> None:
+    def __init__(self, a: AtomConcept) -> None:
         self.atom = a
         self.count = 0
+
 
 class Contents:
     # things that are in a environment or membrane at the start.
@@ -59,7 +59,7 @@ class Contents:
         # a dict of tuples -the atom name and its quantity 
         self.inventory = {}
 
-    def add(self, atom:AtomConcept, count:int):
+    def add(self, atom: AtomConcept, count: int):
 
         if count < 0:
             raise ValueError
@@ -77,12 +77,11 @@ class MembraneConcept:
         self.contents = []
         self.rules = []
         self.membranes = []
-        
 
     def __repr__(self) -> str:
         pass
 
-    def to_file(self, fp:FileIO):
+    def to_file(self, fp: FileIO):
 
         if fp is None:
             raise ValueError
@@ -106,7 +105,7 @@ class MembraneConcept:
         d['membranes'] = []
 
         for m in self.membranes:
-            d['membranes'].append(m.to_dict())                
+            d['membranes'].append(m.to_dict())
 
         return d
 
@@ -118,7 +117,7 @@ class RuleConcept:
         self.catalyst = []
         self.input = []
         self.output = []
-        
+
     def __repr__(self) -> str:
         pass
 
@@ -129,32 +128,30 @@ class EnvironmentConcept:
 
         # a list of atoms
         self.contents = []
-        
-        self.name="env1"
+
+        self.name = "env1"
 
     def __repr__(self) -> str:
         pass
 
-    def add_membrane(self, m:MembraneConcept) -> None:
+    def add_membrane(self, m: MembraneConcept) -> None:
         self.membranes.append(m)
 
-    def add_contents(self, atoms:List[AtomConcept]) -> None:
+    def add_contents(self, atoms: List[AtomConcept]) -> None:
         self.contents = atoms
-
 
     def to_json(self) -> dict:
 
         d = {}
 
         d[self.name] = []
-        
+
         for m in self.membranes:
             d[self.name].append
 
-
         return json.dumps(d)
 
-    def to_file(self, fp:TextIO) -> None:
+    def to_file(self, fp: TextIO) -> None:
 
         if fp is None:
             raise ValueError
@@ -171,16 +168,16 @@ class EnvironmentConcept:
 
 
 class Generator:
-    
+
     def __init__(self) -> None:
-        self.OUT_DIR="./sims/"
+        self.OUT_DIR = "./sims/"
 
         self.envs = []
-        
-        self.n_atoms=0
+
+        self.n_atoms = 0
         # self.n_membranes=0
 
-    def set_n_atoms(self, num:int=10):
+    def set_n_atoms(self, num: int = 10):
 
         if num < 0:
             raise ValueError
@@ -189,7 +186,7 @@ class Generator:
             print('max 26 atoms at this time')
             num = 26
 
-        self.n_atoms=num
+        self.n_atoms = num
         self.atoms = []
 
         names = ascii_lowercase[:num]
@@ -203,8 +200,7 @@ class Generator:
 
         return r
 
-
-    def run(self, fname_prefix:str = "generated"):
+    def run(self, fname_prefix: str = "generated"):
 
         # TODO - adopt json
 
@@ -216,24 +212,19 @@ class Generator:
         #   a random number of rules that osmose (simplified: just move across membrane)
         #   TODO a random number of rules that osmose (actual gradient must exist for atom to move across membrane)
 
-        
-
-        
         self.save(fname_prefix=fname_prefix)
 
-    def save(self, fname_prefix:str):
+    def save(self, fname_prefix: str):
 
         # write to file
 
         with open(self.OUT_DIR + fname_prefix + ".cyp", 'w') as fp:
-            
-            fp.write('// this is a generated file\n')                
-            
+            fp.write('// this is a generated file\n')
+
             for e in self.envs:
                 e.to_file(fp)
 
-
-    def to_dot(self, fname_prefix:str):
+    def to_dot(self, fname_prefix: str):
         # write in dot format
 
         with open(fname_prefix + '.png', 'w') as fp:
@@ -241,17 +232,16 @@ class Generator:
 
             fp.write('}')
 
-def convert_dot_to_png(fname:str):
 
-        import os
-        os.system('dot -Tpng generated.dot -o generated.png')
+def convert_dot_to_png(fname: str):
+    import os
+    os.system('dot -Tpng generated.dot -o generated.png')
 
 
 # ---------------
 
 if __name__ == "__main__":
-
-    g  = Generator()
+    g = Generator()
 
     # configure an environment
 

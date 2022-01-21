@@ -5,9 +5,7 @@ import unittest
 from malta.dot_colour import DotColour
 from malta.util import NameGenerator
 from malta.dot import ContentItem, ContentItemFactory, DigraphGenerator
-from malta.dot import Cluster
-
-from malta.factory import Factory
+from malta.dot import Factory
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
