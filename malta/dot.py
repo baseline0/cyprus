@@ -182,18 +182,26 @@ class Digraph(Delimited):
 class DigraphGenerator:
 
     def __init__(self):
+
+        self.data = None
+        self.digraph = None
+        self.clusters = []
+        self._tick_index = 0
         self._reset()
 
+        # self.simulation_prefix
         self.output_dir = "./out/"
         self.png_prefix = 'tick_'
 
-    def _get_next_tick_index(self):
-        self._tick_index += 1
+    def _get_tick_index(self) -> int:
         return self._tick_index
 
-    def _reset(self):
+    def _incr_tick_index(self) -> None:
+        self._tick_index += 1
+
+    def _reset(self) -> None:
         self.digraph = Digraph()
-        self.clusters = []
+        # self.clusters = []
         self._tick_index = 0
 
     def run(self):
@@ -211,14 +219,18 @@ class DigraphGenerator:
         self._reset()
 
     def load_json(self, fname: str) -> None:
+
+        self._reset()
+
         try:
             data = json.load(fname)
         except IOError:
             print(f"unable to load digraph from: {fname}")
 
-        self._reset()
+        self.digraph = data
 
     def save_png(self, fname: str) -> None:
+        idx = self._get_next_tick_index()
         pass
 
     def save_dot(self, fname: str) -> None:

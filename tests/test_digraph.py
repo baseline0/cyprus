@@ -4,13 +4,14 @@ import unittest
 
 from malta.dot_colour import DotColour
 from malta.util import NameGenerator
-from malta.digraph import ContentItem, ContentItemFactory, DigraphGenerator
-from malta.digraph import Cluster
+from malta.dot import ContentItem, ContentItemFactory, DigraphGenerator
+from malta.dot import Cluster
+
+from malta.factory import Factory
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
 sys.path.insert(0, parent_dir_path)
-
 
 
 class TestDigraphGenerator(unittest.TestCase):
@@ -42,15 +43,8 @@ class TestDigraphGenerator(unittest.TestCase):
         print(names)
 
     def test_demo1(self):
-        # simple. small. nested one deep
 
-        c = Cluster(name="top")
-        c.contents = ['a', 'b', 'c']
-
-        d = Cluster(name="nested")
-        d.contents = ['d', 'e', 'f']
-
-        c.add_cluster(d)
+        c = Factory.get_cluster_1()
 
         dg = DigraphGenerator()
         dg.digraph.add_cluster(c)
@@ -60,24 +54,10 @@ class TestDigraphGenerator(unittest.TestCase):
 
     def test_demo2(self):
 
-        c = Cluster(name="top")
-        c.contents = ['a', 'b', 'c']
-
-        peer = Cluster(name="peer")
-        peer.contents = ['a1', 'b1', 'c1']
-
-        d = Cluster(name="nested")
-        d.contents = ['d', 'e', 'f']
-
-        e = Cluster(name="nested_2")
-        e.contents = ['g', 'h', 'i']
-
-        d.add_cluster(e)
-        c.add_cluster(d)
+        [c, peer] = Factory.get_cluster_2()
 
         dg = DigraphGenerator()
         dg.digraph.add_cluster(c)
         dg.digraph.add_cluster(peer)
 
         dg.save_dot(fname='./out/graph2.dot')
-
