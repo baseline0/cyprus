@@ -12,7 +12,7 @@ class TestMalta(unittest.TestCase):
         pass
 
     def test_multiset(self):
-        # basics of multiset
+        # basics of multiset. yes use this.
         #
         # initial membrane has:
         #     {a, b, b, c, c, c}
