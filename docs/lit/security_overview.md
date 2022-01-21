@@ -8,6 +8,151 @@ source: springer
 
 ---
 
+# An Analysis of a Public Key Protocol with Membranes
+
+Applications of Membrane Computing pp 283-302
+
+MGS
+
+
+
+---
+
+# A Membrane Algorithm to Stabilize a Distributed Computing System
+
+International Conference on Contemporary Computing
+IC3 2011: Contemporary Computing pp 16-28
+
+the algorithm successfully
+stabilizes the system on the event of arbitrary failure (i.e. lysis, in biological terms) of
+the nodes or on self-detection of network partitions. The distinguishing features of the
+algorithm are, (a) self-detection of lysis and transformation and, (b) self-stabilization
+of the system
+
+
+It is important to note that the outermost membrane of a cell (skin c1) never
+dissolves. However, the intra-cellular membranes may be dissolved at any time
+exposing the corresponding intra-structural cellular matrix to the exterior matrix of
+the cytoplasm of the cell. Translating the cellular model into computing domain, the
+skin is numerically numbered as one (1) and the other intra-cellular membranes are
+numerically numbered distinctly as illustrated in Figure 1. There exists a set of
+evolution rules within each region of the cytoplasm and the rules control the ongoing
+computation of the corresponding region bounded by the membranes. The
+numerically numbered membrane structure can be conceptually represented as a tree
+in the domain of computing systems [6]. The spanning-tree representation of cellular
+membranes is illustrated in Figure 2.
+
+![biological_cell](./imgs/biological_cell.png)
+
+![spanning_tree](./imgs/spanning_tree.png)
+
+---
+
+# Comparative Analysis of Statistical Model Checking Tools
+
+International Conference on Membrane Computing
+CMC 2016: Membrane Computing pp 119-135
+
+To overcome the state-space explosion problem, the statistical model checking (SMC) approach does not analyse the entire state space, but instead generates a number of independent simulation traces and uses statistical (e.g., Monte Carlo) methods to generate an approximate measure of system correctness. This approach does not guarantee the absolute correctness of the system, but it allows much larger models be verified (within specified confidence limits) in a faster manner [12, 35, 47, 49]. This approach allows verifying much larger models with significantly improved performance.
+
+---
+
+# An efficient labelled nested multiset unification algorithm
+
+Journal of Membrane Computing volume 3, pages194–204 (2021)
+
+Similar to the term definition in cP systems [2], we consider functors as labels of multisets. For example: f(abc) is a multiset labelled with f, which contains three atom a, b, and c. Similarly, f(g(h)) is a multiset labelled with f, which contains a submultiset with label g, which contains an atom h. Thus, the order of “parameters” of a functor does not matter. For instance, both f(aab) and f(baa) represent a multiset labelled with f, which contains three atoms a, a, and b.
+
+---
+
+# Proximity-Based Federation of Smart Objects: Liberating Ubiquitous Computing from Stereotyped Application Scenarios
+
+International Conference on Knowledge-Based and Intelligent Information and Engineering Systems
+KES 2010: Knowledge-Based and Intelligent Information and Engineering Systems pp 14-30
+
+Such formal computation models of process calculi include Chemical Abstract Machine [3],
+Mobile Ambients [4], P-Systems [5], Bigraphical Reactive System [6], Seal Calculus [7], Kell Calculus [8], and LMNtal [9].
+
+Here we use the term ‘federation’ to denote the
+definition and execution of interoperation among resources that are accessible either
+through the Internet or through peer-to-peer ad hoc communication. This term was
+probably first introduced to IT areas by Dennis Heimbigner in the context of a federated database architecture [13], and then secondarily in late 90s, by Bill Joy in a different context, namely, federation of services [14]. Federation is different from integration
+in which member resource objects involved are assumed to have previously designed
+standard interoperation interface.
+
+A collectively autocatalytic set is a network of catalytic
+reactions in which a product of each reaction may work as a source material of another reaction or as a catalyst to enhance or to repress another reaction. Each reaction
+is either a composition to produce a compound product from more primitive source
+materials, or a decomposition to decompose a source material into its component
+materials. 
+
+---
+
+# On the Teaching Complexity of Linear Sets
+
+International Conference on Algorithmic Learning Theory
+ALT 2015: Algorithmic Learning Theory pp 102-116
+
+Prior work has investigated the learnability of linear sets and semilinear sets in three models – Valiant’s PAC-learning model, Gold’s learning in the limit model, and Angluin’s query learning model.
+
+A linear set L is defined by a nonnegative lattice point (called a constant) and
+a finite set of nonnegative lattice sets (called periods); the members of L are
+generated by adding to the constant an arbitrary finite sequence of the periods
+(allowing repetitions of the same period in the sequence). A semilinear set is a
+finite union of linear sets. Semilinear sets are not only objects of mathematical
+interest, but have also been linked to finite-state machines and formal languages.
+One of the earliest and most important results on the connection between semilinear sets and context-free languages is Parikh’s theorem [9], which states that
+any context-free language is mapped to a semilinear set via a function known as
+the Parikh vector of a string. Another interesting result, due to Ibarra [6], characterises semilinear sets in terms of reversal-bounded multicounter machines.
+Moving beyond abstract theory, semilinear sets have also recently been applied
+in the fields of DNA self-assembly [3] and membrane computing [7].
+
+
+
+
+
+
+
+---
+
+# Computational Thinking in Biology
+
+Transactions on Computational Systems Biology VIII pp 63-76
+
+---
+
+# Robustness in Nature as a Design Principle for Artificial Intelligence
+
+Robust Intelligent Systems pp 164-186
+
+a robust system is a system that tolerates faults
+
+---
+
+# The Contribution of Theoretical Chemistry to the Drug Design in Photodynamic Therapy
+
+Photosensitizers in Medicine, Environment, and Security pp 121-134 
+
+(a false positive for our search terms but interesting nonetheless)
+
+The possibility to design new photosensitizers active in photodynamic therapy starting from computed chemical physics electronic and geometrical properties by using the density functional theory is presented. In particular, we were concerned with the porphyrin-like systems able to activate the singlet O2 excited state (Type II reactions). The investigated properties include the energy gap between ground and excited states with different spin multiplicities (Singlet-Triplet) and the electronic excitation energies (Q band of the UV-Vis spectra).
+
+![jablonski_pdt](./imgs/jablonski_pdt.png)
+
+The practical clinical cycle include the following steps:
+
+1. a non toxic photosensitizer is introduced in the body of the appropriate target;
+ 
+2. the target is irradiated with light of appropriate wavelength, ranging from 600 to 900 nm (the so-called therapeutic window), in order to excite the photosensitizer from its ground state (S0) to a shorter-lived first excited state (S1);
+ 
+3. S1 can undergo conversion to the first excited triplet state (T1) by intersystem crossing. Then the T1 state of the sensitizer can release its energy to the surrounding biological tissue exciting the O2 from its triplet to the highly reactive singlet state that induces an oxidative cellular damage leading the apoptosis or necrosis of the cells;
+ 
+4. finally, the photosensitizer returns to its ground state and the cycle can be repeated with a new light irradiation. At the end of the therapeutic cycle the sensitizer is eliminated from the body.
+
+
+
+---
+
 # The Complexity of Small Universal Turing Machines: A Survey
 
 International Conference on Current Trends in Theory and Practice of Computer Science
@@ -36,7 +181,31 @@ F(0, 1, 0) = 1 \hspace{2em}         F(1, 1, 0) = 1  \\
 F(0, 1, 1) = 1 \hspace{2em}         F(1, 1, 1) = 0  \\
 $$
 
+Langton’s ant [29] is usually described as an ant that lives on a 2D grid of
+binary-valued cells. The ant chooses which adjacent cell to move to based on
+(a) the current cell’s binary value and (b) the ant’s current orientation. The ant
+flips the current cell’s bit as it moves away. So Langton’s ant is a 2D Turing
+machine with 2 symbols and 4 states (North, South, East and West).
 
+There are many ways
+to define terminal configuration sequence, some examples are:
+– a configuration sequence that goes through a specified sequence of states,
+– a configuration sequence that contains two identical configurations,
+– a configuration that contains a specific subword
+
+The term busy beaver was introduced by
+Rado [83] who put forward a game where the goal for a given $k ∈ N$ is to find,
+out of all the k-state, 2-symbol Turing machines, the machine that prints the
+most 1s and then halts when started on a blank tape. The busy beaver function
+$Σ : N \rightarrow N$ is then defined by letting $Σ(k)$ be the maximum number of 1’s printed
+by any halting k-state, 2-symbol Turing machine. Busy beavers essentially adhere to the standard Turing machine model described in previous sections (one
+tape, one head, usual blank symbol, deterministic). It is known that $Σ(1) = 1$
+(trivial), $Σ(2) = 4$ [83], $Σ(3) = 6$ [30], and $Σ(4) = 13$ [6]. However for 5 states
+or more the best we currently have are lower bounds. For example, Michel [50]
+cites $Σ(5) ≥ 4098$ to Marxen and Buntrock [47], and $Σ(6) ≥ 3.5 × 1018267$ to
+Pavel Kropitz. $S(k)$, the step-counting analogue of $Σ(k)$, is also considered. In
+fact, both $Σ$ and $S$ grow faster than any computable function [83]. Green [16]
+has given a lower bound on the growth of the function $Σ$.
 
 ---
 
