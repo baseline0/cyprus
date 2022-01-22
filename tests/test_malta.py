@@ -2,6 +2,8 @@ import unittest
 
 # from malta.malta import Rule
 from multiset import Multiset
+from malta.malta import multiset_to_dict
+import json
 
 
 class TestMalta(unittest.TestCase):
@@ -64,3 +66,22 @@ class TestMalta(unittest.TestCase):
 
         # the membrane after the rule is applied
         print(f"final membrane has: {membrane_contents}")
+
+    def test_dict(self):
+
+        m = Multiset()
+        m.add('a')
+        m.add('b', 2)
+        m.add('c', 3)
+        print(m)
+
+        # with open('multiset.json', 'w') as f:
+        #     json.dump(m.__str__, f, indent=2)
+
+    def test_multiset_to_dict(self):
+        m = Multiset()
+        m.add('a')
+        d = multiset_to_dict(m)
+        expected = {'a': 1}
+        self.assertEqual(d, expected)
+        print(d)

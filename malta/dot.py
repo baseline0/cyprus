@@ -1,4 +1,5 @@
 import json
+import sys
 from typing import TextIO, List
 
 from malta.dot_colour import get_rand_colour
@@ -73,7 +74,7 @@ class ContentItemFactory:
     #     # TODO
 
 
-class Base:
+class Base(Delimited):
 
     def write_contents(self) -> str:
         pass
@@ -229,9 +230,9 @@ class DigraphGenerator:
 
         self.digraph = data
 
-    def save_png(self, fname: str) -> None:
-        idx = self._get_next_tick_index()
-        pass
+    # def save_png(self, fname: str) -> None:
+    #     idx = self._get_next_tick_index()
+    #     pass
 
     def save_dot(self, fname: str) -> None:
         # use of writelines helps to avoid appending \n
@@ -251,7 +252,6 @@ class DigraphGenerator:
 
 
 class Factory:
-    
 
     @classmethod
     def get_cluster_1(cls) -> Cluster:

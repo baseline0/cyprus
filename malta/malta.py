@@ -1,7 +1,32 @@
+import json
 from typing import List
 from multiset import Multiset
 
-from malta.util import prettyprint_json
+from malta.util import name_gen, prettyprint_json
+from malta.dot_colour import get_rand_colour
+
+
+def multiset_to_dict(m: Multiset) -> dict:
+    # multiset does not have __dict__
+    # but we want to use json load/dump
+    # works for m.__str__ = {'a'}
+
+    d = {}
+
+    s = m.__str__()
+    s = s.replace("{", '')
+    s = s.replace("}", '')
+    s = s.replace("'", '')
+
+    tokens = s.split(':')
+
+    for t in tokens:
+        if t in d.keys():
+            d[t] += 1
+        else:
+            d[t] = 1
+
+    return d
 
 
 class MembraneItem:
@@ -22,35 +47,60 @@ class MembraneItem:
         self.description = descr
 
         # the dot colour string.
-        self.colour = colour
+        if colour is None:
+            self.colour = get_rand_colour()
+        else:
+            self.colour = colour
+
+
+def get_rand_membrane_item() -> MembraneItem:
+    name = name_gen.get_rand_name()
+    mi = MembraneItem(name=name, descr=name, colour=get_rand_colour())
+    return mi
 
 
 class Membrane:
     # https://pythonhosted.org/multiset/
 
-    def __init__(self, name: str, descr: str = None, contents=Multiset[MembraneItem]):
+    def __init__(self, name: str, descr: str = None, contents=None):
+        # =List[MembraneItem]):
         self.name = name
         self.descr = descr
-        self.contents = contents
+        if contents is None:
+            self.contents = []
+        else:
+            self.contents = contents
 
 
 class Rule:
-    def __init__(self):
+    def __init__(self, name: str, descr: str, catalyst: Multiset, rule_input: Multiset, rule_output: Multiset):
+
+        self.name = name
+        self.descr = descr
+
         # what is necessary for the rule to fire but what is not consumed
-        self.catalyst = Multiset()
+        if catalyst is None:
+            self.catalyst = Multiset()
+        else:
+            self.catalyst = catalyst
 
         # what is consumed by the firing of the rule
-        self.input = Multiset()
+        if rule_input is None:
+            self.rule_input = Multiset()
+        else:
+            self.rule_input = rule_input
 
         # what is produced by the firing of the rule
-        self.output = Multiset()
+        if rule_output is None:
+            self.rule_output = Multiset()
+        else:
+            self.rule_output = rule_output
 
     def __repr__(self) -> str:
         s = "rule\n"
         s += f"\tcatalysts: {self.catalyst}\n"
-        s += f"\tinput: {self.input}\n"
-        s += f"\toutput: {self.output}\n"
-
+        s += f"\tinput: {self.rule_input}\n"
+        s += f"\toutput: {self.rule_output}\n"
         return s
 
 
@@ -74,7 +124,7 @@ class RuleSet:
 
         if not self.alphabet:
             # if None or empty list
-            # generate the alphabet from the implict use in rules
+            # generate the alphabet from their presence in rules
             self.detect_alphabet_from_rules()
             # end state: alphabet and rules are consistent
         else:
@@ -90,7 +140,7 @@ class RuleSet:
         temp = set()
 
         for r in self.rules:
-            for c in r.catalysts:
+            for c in r.catalyst:
                 temp.update(c)
             for c in r.input:
                 temp.update(c)
@@ -100,17 +150,17 @@ class RuleSet:
         self.alphabet = list(temp)
 
 
-def apply(rule: Rule, m: Membrane):
+def apply(r: Rule, m: Membrane):
     # fire once if possible.
     # Future - apply as many times as possible
     # Future - apply probabilistically
 
-    if rule.catalysts.issubset(m.contents):
+    if r.catalyst.issubset(m.contents):
         # catalysts present
-        if rule.input.issubset(m.contents):
+        if r.rule_input.issubset(m.contents):
             # inputs here. fire rule.
-            m.contents.remove(rule.input)
-            m.contents.add(rule.output)
+            m.contents -= r.rule_input
+            m.contents += r.rule_output
 
 
 class Environment:
@@ -119,7 +169,7 @@ class Environment:
     """
 
     def __init__(self, membranes: List[Membrane],
-                 rules: List[Rule],
+                 rules: RuleSet,
                  contents: List[MembraneItem]):  # , stop ):
 
         # a list of items not in a membrane but in environment
@@ -136,57 +186,97 @@ class Environment:
         # TODO - randomize rule order or add in rule priority
         # TODO - randomize membrane selection ?
 
-        for r in self.rules():
+        for r in self.rules.rules:
             # does it apply? run it. update contents of the respective membrane
             for m in self.membranes:
                 apply(r, m)
 
 
-class Simulation():
+class Simulation:
+
+    MAX_TICKS = 10
+    COMPLETE = False
 
     def __init__(self) -> None:
-
         self.grammar = None
+        self.output_dir = "./out/"
+
+        # useful for when we use index to trigger file saves or image output
+        self.current_index = 0
+
+        # need to load config or programmatically populate: Environment()
+        self.membrane_env = None
+
+    def save(self, fname: str):
+        with open(fname, 'w') as f:
+            json.dump(self.membrane_env.__dict__, f, indent=4)
 
     def load(self, fname: str):
-
+        # read in config file
         with open(fname, "r") as f:
             data = json.load(f)
 
             prettyprint_json(data=data)
 
         print(data)
+        membranes = data['membranes']
+        rules = data['rules']
+        contents = data['contents']
+        self.membrane_env = Environment(membranes, rules, contents)
+        # self._generate_grammar()
 
-    def load_config(self, fname: str):
-        """
-        read in config file
-
-        """
-
-        try:
-            self._generate_grammar()
-        except:
-            raise Exception
-
-    def _generate_grammar(self):
-        pass
+    # def _generate_grammar(self):
+    #     pass
 
     def next(self):
         # do next tick
         # go through each membrane. apply rules.
         # if no change, is complete or HALT condition.
 
-        print('tick')
+        print(f'tick: {self.current_index}')
+        self.current_index += 1
+        self.membrane_env.apply_rules()
+
+        # if self.current_index == 5:
+        #     print('save img')
 
     def run(self):
+        self.current_index = 0
 
-        MAX_TICKS = 10
-        COMPLETE = False
-        i = 0
-
-        while i < MAX_TICKS and not COMPLETE:
+        while self.current_index < Simulation.MAX_TICKS and not Simulation.COMPLETE:
             self.next()
-            i += 1
+
+
+def run1():
+    sim = Simulation()
+
+    mi1 = MembraneItem('b', descr='broccoli')
+    mi2 = MembraneItem('c', descr='carrot')
+    membrane_contents = [mi1, mi2]
+    m = Membrane(name='m1', descr='hello', contents=membrane_contents)
+
+    r_catalyst = Multiset()
+    r_catalyst.add('b')
+
+    r_input = Multiset()
+    r_input.add('c')
+
+    r_output = Multiset()
+    r_output.add('w')
+
+    r = Rule(name='r1', descr='', catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
+
+    env_contents = MembraneItem(name='a', descr='apple')
+
+    ruleset = RuleSet()
+    ruleset.rules = [r]
+
+    e = Environment(membranes=[m], rules=ruleset, contents=[env_contents])
+    sim.membrane_env = e
+    sim.save("./examples/run1.json")
+
+    # sim.load("./examples/run1.json")
+    # sim.run()
 
 
 # --------------------
@@ -194,7 +284,4 @@ class Simulation():
 
 if __name__ == "__main__":
 
-    sim = Simulation()
-
-    sim.load_config("./examples/hello.json")
-    sim.run()
+    run1()
