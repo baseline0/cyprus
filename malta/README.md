@@ -23,3 +23,10 @@ https://graphviz.org/docs/outputs/json/
 
 https://github.com/caleb531/automata
 
+
+https://pypi.org/project/jsons/ 
+
+
+---
+
+https://www.conventionalcommits.org/en/v1.0.0/#summary

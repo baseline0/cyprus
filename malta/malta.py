@@ -2,8 +2,31 @@ import json
 from typing import List
 from multiset import Multiset
 
-from malta.util import name_gen, prettyprint_json
-from malta.dot_colour import get_rand_colour
+from util import name_gen, prettyprint_json
+from dot_colour import get_rand_colour
+
+
+
+
+def json_serialize(m: Multiset) -> dict:
+
+    d = {}
+    s = m.__str__()
+    s = s.replace("{", '')
+    s = s.replace("}", '')
+    s = s.replace("'", '')
+    s = s.replace(":", '')
+    s = s.replace(",", '')
+
+    # may need to split into tuples here?
+    tokens = s.split(' ')
+
+    for t in tokens:
+        if t in d.keys():
+            d[t] += 1
+        else:
+            d[t] = 1
+    return d
 
 
 def multiset_to_dict(m: Multiset) -> dict:
@@ -18,6 +41,7 @@ def multiset_to_dict(m: Multiset) -> dict:
     s = s.replace("}", '')
     s = s.replace("'", '')
 
+    # may need to split into tuples here?
     tokens = s.split(':')
 
     for t in tokens:
@@ -51,6 +75,9 @@ class MembraneItem:
             self.colour = get_rand_colour()
         else:
             self.colour = colour
+
+    def json_serialize(self):
+        pass
 
 
 def get_rand_membrane_item() -> MembraneItem:
