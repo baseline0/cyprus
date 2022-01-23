@@ -2,9 +2,9 @@ import unittest
 
 # from malta.malta import Rule
 from multiset import Multiset
+from malta.malta import MembraneItem
 from malta.malta import multiset_to_dict
 import json
-
 
 import jsons
 
@@ -92,7 +92,6 @@ class TestMalta(unittest.TestCase):
         print(f"final membrane has: {membrane_contents}")
 
     def test_dict(self):
-
         m = Multiset()
         m.add('a')
         m.add('b', 2)
@@ -125,7 +124,6 @@ class TestMalta(unittest.TestCase):
         self.assertTrue(b, c)
 
     def test_shape2(self):
-
         x = Shape2(1)
 
         # Encoding to JSON. Note the output is a string, not a dictionary.
@@ -145,7 +143,6 @@ class TestMalta(unittest.TestCase):
         print(y)
 
     def test_foo(self):
-
         class Foo:
             __slots__ = ["bar"]
 
@@ -160,11 +157,13 @@ class TestMalta(unittest.TestCase):
 
     def test_foo2(self):
         __slots__ = ['m']
+
         # works. use this.
 
-
         class Foo2(Multiset):
+
             def __init__(self):
+                Multiset.__init__(self)
                 self.m = Multiset()
 
             def json_serialize(self):
@@ -172,3 +171,22 @@ class TestMalta(unittest.TestCase):
 
         y = json.dumps(Foo2(), default=lambda o: o.json_serialize())
         print(f"Foo2 multiset: {y}")
+
+        x = json.loads(y) #, object_hook=Foo2)
+        print(x)
+
+    def test_serialize_membrane_item(self):
+        def as_membrane_item(d: dict = None):
+            if '__MembraneItem__' in d:
+                return MembraneItem(name=d["name"])
+            return d
+
+        mi = MembraneItem(name="gold", descr="ounces")
+        out = json.dumps(mi, indent=4, default=lambda o: o.json_serialize())
+        print(out)
+        # y = json.loads(out, object_hook=as_membrane_item())
+        y = json.loads(out) # , object_hook=MembraneItem)
+        print(y)
+
+        # AssertionError: 'gold' != {'name': 'gold', 'symbol': 'gold', 'descr': 'ounces', 'colour': "['wheat2']"}
+        self.assertEqual(mi.name, y["name"])
