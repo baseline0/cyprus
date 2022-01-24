@@ -1,5 +1,6 @@
 from typing import List
 
+from malta.environment import Environment
 from malta.dot_colour import get_rand_colour
 from malta.dot import ContentItem
 from malta.membrane_item import MembraneItem
@@ -46,6 +47,11 @@ class Factory:
         name = NameGenerator.get_rand_name()
         mi = MembraneItem(name=name, descr=name, colour=get_rand_colour())
         return mi
+
+    @staticmethod
+    def get_environment1() -> Environment:
+        e = Environment()
+        return e
 
 
 class ContentItemFactory:

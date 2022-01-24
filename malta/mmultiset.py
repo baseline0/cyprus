@@ -25,6 +25,31 @@ class MMultiset(Multiset):
                 d[t] = 1
         return d
 
+    def as_simple_string(self) -> str:
+        s = self.__str__()
+        s = s.replace("{", '')
+        s = s.replace("}", '')
+        s = s.replace("'", '')
+        s = s.replace(":", '')
+        s = s.replace(",", '')
+
+        return s
+
+    def as_dot(self) -> str:
+        """
+        helper for writing digraph content
+        """
+        s = self.as_simple_string()
+
+        formatted = ''
+
+        tokens = s.split(' ')
+
+        for t in tokens:
+            formatted += f"{t}\n"
+
+        return formatted
+
 
 def json_serialize(m: Multiset) -> dict:
     d = {}

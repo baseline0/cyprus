@@ -2,6 +2,9 @@ import os
 import sys
 import unittest
 
+from malta.membrane import Membrane
+from malta.membrane_item import MembraneItem
+from malta.simulation import get_multiset_of_item_names_from_membrane_items
 from malta.dot_colour import DotColour
 from malta.util import NameGenerator
 from malta.dot import ContentItem, DigraphGenerator, ClusterFactory
@@ -59,3 +62,25 @@ class TestDigraphGenerator(unittest.TestCase):
         dg.digraph.add_cluster(peer)
 
         dg.save_dot(fname='./out/graph2.dot')
+
+    def test_membrane_to_dot(self):
+
+        fname = './out/test_membrane.dot'
+
+        mi1 = MembraneItem(name='a', descr='apple')
+        mi2 = MembraneItem(name='b', descr='bread')
+        contents = get_multiset_of_item_names_from_membrane_items([mi1, mi2])
+        m = Membrane('membrane', descr='descr', contents=contents)
+
+        s = m.as_dot()
+        print(s)
+
+        self.assertTrue('subgraph ' in s)
+        self.assertTrue('cluster_membrane ' in s)
+        self.assertTrue('a ' in s)
+        self.assertTrue('b ' in s)
+
+        with open(fname, 'w') as f:
+            f.write('digraph d {')
+            f.write(s)
+            f.write('}')

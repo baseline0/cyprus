@@ -1,5 +1,7 @@
 import unittest
 
+from malta.factory import Factory
+
 from malta.environment import Environment, apply
 from malta.membrane import Membrane
 from malta.mmultiset import MMultiset
@@ -41,3 +43,11 @@ class TestEnvironment(unittest.TestCase):
         expected.add('b')
         expected.add('w')
         self.assertEqual(m.contents, expected)
+
+    def test_save(self):
+
+        fname = 'out/environment_example.dot'
+
+        e = Factory.get_environment1()
+
+        e.save_as_dot_digraph(fname)

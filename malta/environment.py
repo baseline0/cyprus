@@ -2,6 +2,7 @@ from typing import List
 
 from malta.ruleset import RuleSet
 from malta.rule import Rule
+from malta.mmultiset import MMultiset
 from malta.membrane_item import MembraneItem
 from malta.membrane import Membrane
 
@@ -26,7 +27,7 @@ class Environment:
 
     def __init__(self, membranes: List[Membrane],
                  rules: RuleSet,
-                 contents: List[str],
+                 contents: MMultiset,
                  all_items: List[MembraneItem]):
 
         self.membranes = membranes
@@ -51,5 +52,23 @@ class Environment:
             # does it apply? run it. update contents of the respective membrane
             for m in self.membranes:
                 apply(r, m)
+
+    def save_as_dot_digraph(self, fname:str):
+        """
+        create a .dot file with a digraph which corresponds
+        to the membrane structure and contents.
+        """
+
+        with open(fname, 'w') as f:
+            f.write('digraph d {')
+
+            s = self.contents.as_dot()
+            f.write(s)
+
+            for m in self.membranes:
+                f.write(m.as_dot())
+
+            f.write('}')
+
 
 

@@ -35,6 +35,26 @@ class Membrane:
         d["contents"] = self.contents
         return d
 
+    def as_dot(self) -> str:
+        """
+        return a subgraph cluster_NAME which can be used as part of a
+        dot digraph file for visualization
+        """
+
+        s = f'subgraph cluster_{self.name} {{ \n'
+
+        # TODO - add in indent
+
+        # TODO - how to show mulitplicity
+        # option1: duplciate the visual object
+        # option2: use a label on the object with quantity
+        for c in self.contents:
+            s += f'{c} \n'
+
+        s += '}'
+
+        return s
+
 
 def deserialize(d: dict) -> Membrane:
     m = Membrane()
