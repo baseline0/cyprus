@@ -23,3 +23,5 @@ class NameGenerator:
 
 
 name_gen = NameGenerator()
+
+

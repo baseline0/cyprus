@@ -1,7 +1,8 @@
 import json
 from typing import List
-from multiset import Multiset
+from mmultiset import MMultiset
 
+from multiset import Multiset
 from util import name_gen, prettyprint_json
 from dot_colour import get_rand_colour
 
@@ -138,14 +139,45 @@ def get_rand_membrane_item() -> MembraneItem:
 class Membrane:
     # https://pythonhosted.org/multiset/
 
+    __slots__ = ["name", "descr", "contents"]
+
     def __init__(self, name: str, descr: str = None, contents=None):
         # =List[MembraneItem]):
-        self.name = name
+        if  isinstance(name, str):
+            self.name = name
+        else:
+            raise ValueError
+
         self.descr = descr
+
+        # We expect a multiset of MembraneItems
         if contents is None:
-            self.contents = []
+            self.contents = MMultiset()  # adds json_serialize
+            # self.contents = Multiset()
         else:
             self.contents = contents
+
+    def json_serialize(self) -> dict:
+        d = {}
+        d["name"] = self.name
+        d["descr"] = self.descr
+        d["contents"] = self.contents
+        return d
+
+
+def deserialize(d: dict) -> Membrane:
+    m = Membrane()
+
+    if "name" in d.keys():
+        m.name = d["name"]
+
+    if "descr" in d.keys():
+        m.descr = d["descr"]
+
+    if "contents" in d.keys():
+        m.contents = d["colour"]
+
+    return m
 
 
 class Rule:
@@ -379,7 +411,7 @@ def run1():
 
     e = Environment(membranes=[m], rules=ruleset, contents=[env_contents])
     sim.membrane_env = e
-    sim.save("./examples/run1.json")
+    sim.save("./output/run1.json")
 
     # sim.load("./examples/run1.json")
     # sim.run()
