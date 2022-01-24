@@ -40,6 +40,6 @@ def deserialize(d: dict) -> Membrane:
         m.descr = d["descr"]
 
     if "contents" in d.keys():
-        m.contents = d["colour"]
+        m.contents = d["contents"]
 
     return m

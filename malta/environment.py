@@ -26,14 +26,19 @@ class Environment:
 
     def __init__(self, membranes: List[Membrane],
                  rules: RuleSet,
-                 contents: List[MembraneItem]):  # , stop ):
-
-        # a list of items not in a membrane but in environment
-        self.contents = contents
+                 contents: List[str],
+                 all_items: List[MembraneItem]):
 
         self.membranes = membranes
 
         self.rules = rules
+
+        # a list of items not in a membrane but in environment
+        self.contents = contents
+
+        # the details on the items that are in the membranes and in the environment.
+        # useful for legends, status updates.
+        self.all_items = all_items
 
         # the stop / halting condition
         # self.stop = stop

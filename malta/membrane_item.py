@@ -5,6 +5,12 @@ class MembraneItem:
     """
     an object that lives within a membrane,
     interacts with other objects with respect to defined rules
+
+    The complete list of membrane items is useful for a legend for a diagram.
+    The environment contains this description list (to avoid duplicating in every membrane)
+    The membrane itself, in the contents attr, contains the multiset of identifiers (membrane_item.name)
+    The rules operate on  membrane_item.name.
+    Thus, the apply_rule(r, m) method that is called by Environment has the same types for set operations on catalyst, rule_inputs and rule_outputs.
     """
 
     __slots__ = ["name", "symbol", "descr", "colour"]
