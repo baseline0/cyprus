@@ -1,15 +1,12 @@
 import json
-from typing import List
-from mmultiset import MMultiset
 
-from multiset import Multiset
-from util import name_gen, prettyprint_json
-from dot_colour import get_rand_colour
-
-
-
-
-
+from malta.environment import Environment
+from malta.membrane_item import MembraneItem
+from malta.membrane import Membrane
+from malta.mmultiset import MMultiset
+from malta.rule import Rule
+from malta.ruleset import RuleSet
+from malta.util import prettyprint_json
 
 
 class Simulation:
@@ -69,21 +66,18 @@ class Simulation:
 def run1():
     sim = Simulation()
 
-    from tests.factory import Factory
-
-
     mi1 = MembraneItem('b', descr='broccoli')
     mi2 = MembraneItem('c', descr='carrot')
     membrane_contents = [mi1, mi2]
     m = Membrane(name='m1', descr='hello', contents=membrane_contents)
 
-    r_catalyst = Multiset()
+    r_catalyst = MMultiset()
     r_catalyst.add('b')
 
-    r_input = Multiset()
+    r_input = MMultiset()
     r_input.add('c')
 
-    r_output = Multiset()
+    r_output = MMultiset()
     r_output.add('w')
 
     r = Rule(name='r1', descr='', catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
@@ -97,9 +91,8 @@ def run1():
     sim.membrane_env = e
     sim.save("./output/run1.json")
 
-    # sim.load("./examples/run1.json")
-    # sim.run()
-
+    # TODO sim.load("./examples/run1.json")
+    sim.run()
 
 # --------------------
 
