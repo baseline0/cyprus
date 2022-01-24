@@ -17,7 +17,7 @@ class Simulation:
 
     def __init__(self) -> None:
         self.grammar = None
-        self.output_dir = "./out/"
+        self.output_dir = "./sims/"
 
         # useful for when we use index to trigger file saves or image output
         self.current_index = 0
@@ -61,8 +61,13 @@ class Simulation:
     def run(self):
         self.current_index = 0
 
+        print('running membrane simulation')
+        print(f'see output: {self.output_dir}')
+
         while self.current_index < Simulation.MAX_TICKS and not Simulation.COMPLETE:
             self.next()
+
+        print('DONE.')
 
 
 def get_item_names_from_content_items(items: List[MembraneItem], names: List[str] = None) -> List[str]:

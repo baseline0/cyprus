@@ -194,10 +194,9 @@ class DigraphGenerator:
 
         try:
             data = json.load(fname)
+            self.digraph = data
         except IOError:
             print(f"unable to load digraph from: {fname}")
-
-        self.digraph = data
 
     # def save_png(self, fname: str) -> None:
     #     idx = self._get_next_tick_index()
@@ -210,7 +209,6 @@ class DigraphGenerator:
         print(f"writing digraph to: {fname}")
 
         with open(fname, 'w') as fp:
-
             fp.writelines(self.digraph.start())
 
             for c in self.digraph.clusters:
@@ -241,7 +239,6 @@ class ClusterFactory:
 
     @classmethod
     def get_cluster_2(cls) -> List[Cluster]:
-
         c = Cluster(name="top")
         c.contents = ['a', 'b', 'c']
 

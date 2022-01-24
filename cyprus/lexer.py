@@ -4,7 +4,9 @@ ENCODING = 'utf-8'
 
 
 def tokenize(str):
-    'str -> Sequence(Token)'
+    """
+    str -> Sequence(Token)
+    """
     specs = [
         ('comment', (r'//.*',)),
         ('newline', (r'[\r\n]+',)),

@@ -147,7 +147,7 @@ class EnvironmentConcept:
         d[self.name] = []
 
         for m in self.membranes:
-            d[self.name].append
+            d[self.name].append(m.name)
 
         return json.dumps(d)
 
