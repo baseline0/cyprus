@@ -4,6 +4,7 @@ import json
 
 from cyprus.generator import MembraneConcept
 
+
 class TestMembraneConcept(unittest.TestCase):
 
     def test_1(self):

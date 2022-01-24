@@ -28,6 +28,7 @@ class Environment(object):
     self.membranes = membranes
     self.staging_area = []
     self.rules = rules
+    self.ruleranks = {}
 
     self.setparents()
     self.setpriorities()

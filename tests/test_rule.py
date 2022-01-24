@@ -61,7 +61,26 @@ class TestRule(unittest.TestCase):
         # the membrane after the rule is applied
         print(f"final membrane has: {membrane_contents}")
 
-    def test_rules(self):
-        # r = Rule()
-        # print(r)
-        pass
+    def test1(self):
+        catalyst = Multiset()
+        catalyst.add('a')
+
+        rule_input = Multiset()
+        rule_input.add('b', 3)
+
+        rule_output = Multiset()
+        rule_output.add('z', 10)
+
+        r = Rule(name="test rule",
+                 descr="abc",
+                 catalyst=catalyst,
+                 rule_input=rule_input,
+                 rule_output=rule_output)
+
+        out = json.dumps(r, default=lambda o: o.json_serialize(), indent=2)
+        prettyprint_json(out)
+
+        y = json.loads(out)
+
+        print(y)
+        self.assertTrue(y, r)
