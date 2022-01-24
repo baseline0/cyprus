@@ -4,7 +4,7 @@ import json
 
 from multiset import Multiset
 
-from malta.malta import multiset_to_dict
+from malta.mmultiset import multiset_to_dict, json_serialize
 
 
 class TestMMultiset(unittest.TestCase):
@@ -15,8 +15,6 @@ class TestMMultiset(unittest.TestCase):
         m.add('b', 2)
         m.add('c', 3)
         print(m)
-
-        from malta.malta import json_serialize
 
         x = json.dumps(m, default=lambda o: json_serialize(o))
         print(f"X IS: {x}")

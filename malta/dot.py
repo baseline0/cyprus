@@ -3,7 +3,7 @@ import sys
 from typing import TextIO, List
 
 from malta.dot_colour import get_rand_colour
-from malta.util import name_gen
+from malta.util import NameGenerator
 
 
 class Delimited:
@@ -27,7 +27,7 @@ class ContentItem:
         #   str(colour:DotColour.name)
 
         if name is None:
-            self.name = name_gen.get_rand_name()
+            self.name = NameGenerator().get_rand_name()
         else:
             self.name = name.replace(' ', '')
 
@@ -41,37 +41,6 @@ class ContentItem:
 
         s = "[" + self.name + " = " + self.colour + "]"
         return s
-
-
-class ContentItemFactory:
-
-    @classmethod
-    def get_items_for_names(cls, names, colour: str = None):  # -> List(ContentItem):
-        # all same colour
-        items = []
-        if colour is None:
-            colour = get_rand_colour()
-
-        for n in names:
-            items.append(ContentItem(name=n, colour=colour))
-        return items
-
-    @classmethod
-    def get_items(cls, n: int = 10, colour: str = None):  # -> List(ContentItem):
-        # same colour
-
-        items = []
-
-        if colour is None:
-            colour = get_rand_colour()
-
-        for n in range(n):
-            items.append(ContentItem(colour=colour))
-        return items
-
-    # @staticmethod
-    # def get_multi_coloured_items(n: int = 10):
-    #     # TODO
 
 
 class Base(Delimited):
@@ -106,7 +75,7 @@ class Subgraph(Delimited):
 
     def __init__(self, label=None) -> None:
         if label is None:
-            self.label = name_gen.get_rand_name()
+            self.label = NameGenerator.get_rand_name()
         else:
             self.label = label
 
@@ -125,7 +94,7 @@ class Cluster(Delimited):
     def __init__(self, name=None, label=None) -> None:
 
         if name is None:
-            self.name = name_gen.get_rand_name()
+            self.name = NameGenerator().get_rand_name()
         else:
             # whitespace in names confounds dot
             self.name = name.replace(' ', '')
@@ -251,7 +220,10 @@ class DigraphGenerator:
             # fp.close()
 
 
-class Factory:
+class ClusterFactory:
+    """
+    for writing out a subgraph cluster_NAME in dot format
+    """
 
     @classmethod
     def get_cluster_1(cls) -> Cluster:

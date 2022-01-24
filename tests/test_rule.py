@@ -2,7 +2,7 @@ import unittest
 
 from multiset import Multiset
 
-from malta.malta import Rule
+from malta.rule import Rule
 
 
 class TestRule(unittest.TestCase):

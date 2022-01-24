@@ -4,8 +4,8 @@ import unittest
 
 from malta.dot_colour import DotColour
 from malta.util import NameGenerator
-from malta.dot import ContentItem, ContentItemFactory, DigraphGenerator
-from malta.dot import Factory
+from malta.dot import ContentItem, DigraphGenerator, ClusterFactory
+from malta.factory import ContentItemFactory
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
@@ -42,7 +42,7 @@ class TestDigraphGenerator(unittest.TestCase):
 
     def test_demo1(self):
 
-        c = Factory.get_cluster_1()
+        c = ClusterFactory.get_cluster_1()
 
         dg = DigraphGenerator()
         dg.digraph.add_cluster(c)
@@ -52,7 +52,7 @@ class TestDigraphGenerator(unittest.TestCase):
 
     def test_demo2(self):
 
-        [c, peer] = Factory.get_cluster_2()
+        [c, peer] = ClusterFactory.get_cluster_2()
 
         dg = DigraphGenerator()
         dg.digraph.add_cluster(c)

@@ -1,16 +1,13 @@
 import unittest
 
 import json
-import jsons
 
-from typing import List
-
-from tests.factory import Factory
+from factory import Factory
 
 from util import prettyprint_json
 from mmultiset import Multiset
-from malta.malta import Rule
-from malta.malta import Membrane, MembraneItem
+from malta.rule import Rule
+from malta.membrane_item import MembraneItem
 
 
 class TestMalta(unittest.TestCase):

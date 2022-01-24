@@ -20,8 +20,3 @@ class NameGenerator:
         for i in range(self.num_chars):
             name += random.choice(self.letters)
         return name
-
-
-name_gen = NameGenerator()
-
-
