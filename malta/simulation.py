@@ -70,7 +70,7 @@ class Simulation:
         print('DONE.')
 
 
-def get_item_names_from_content_items(items: List[MembraneItem], names: List[str] = None) -> List[str]:
+def get_item_names_from_membrane_items(items: List[MembraneItem], names: List[str] = None) -> List[str]:
     """
     the environment needs a list of MembraneContents
     but the membrane and rule just use the names as identifiers.
@@ -81,7 +81,10 @@ def get_item_names_from_content_items(items: List[MembraneItem], names: List[str
         # process the list
         for mi in items:
             names.append(mi.name)
-            return names
+
+        print(f'number of items is: {len(names)}')
+        print(f'{names}')
+        return names
     elif isinstance(names, List):
         # we are appending to an existing list
         # convert the existing list into a set.
@@ -92,8 +95,29 @@ def get_item_names_from_content_items(items: List[MembraneItem], names: List[str
     else:
         raise ValueError
 
-    print(f'number of items is: {len(names)}')
-    print(f'{names}')
+
+def get_multiset_of_item_names_from_membrane_items(items: List[MembraneItem], names: List[str] = None) -> MMultiset:
+    """
+    the environment needs a list of MembraneContents
+    but the membrane and rule just use the names as identifiers.
+    """
+    # FIXME - add in multiplicity of items to initialization
+
+    if names is None:
+        names = MMultiset()
+        # process the list
+        for mi in items:
+            names.add(mi.name)
+        return names
+    elif isinstance(names, List):
+        # we are appending to an existing list
+        # convert the existing list into a set.
+        # process the list.
+        # convert back to a list
+        print('TODO')
+        raise ValueError("FIXME")
+    else:
+        raise ValueError
 
 
 class SimulationFactory:
@@ -106,7 +130,7 @@ class SimulationFactory:
         mi2 = MembraneItem('c', descr='carrot')
         membrane_contents = [mi1, mi2]
 
-        ids_only = get_item_names_from_content_items(membrane_contents)
+        ids_only = get_item_names_from_membrane_items(membrane_contents)
         m = Membrane(name='m1', descr='hello', contents=ids_only)
 
         r_catalyst = MMultiset()

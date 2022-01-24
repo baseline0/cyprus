@@ -1,12 +1,18 @@
 from malta.mmultiset import MMultiset
 
+from typing import List
+
 
 class Membrane:
+    """
+    contents is a list of strings that are the names of the membrane items
+    contents needs to be a multiset so it is compatible with set operations for rules.
+    """
     # https://pythonhosted.org/multiset/
 
     __slots__ = ["name", "descr", "contents"]
 
-    def __init__(self, name: str, descr: str = None, contents=None):
+    def __init__(self, name: str, descr: str, contents=List[str]):
         # =List[MembraneItem]):
         if  isinstance(name, str):
             self.name = name
@@ -15,10 +21,10 @@ class Membrane:
 
         self.descr = descr
 
-        # We expect a multiset of MembraneItems
-        if contents is None:
-            self.contents = MMultiset()  # adds json_serialize
-            # self.contents = Multiset()
+        # We expect a Multiset where the items in the multiset are the names of the corresponding
+        # MembraneItems
+        if not isinstance(contents, MMultiset):
+            raise ValueError
         else:
             self.contents = contents
 
