@@ -114,6 +114,21 @@ class MembraneItem:
         return d
 
 
+def membrane_item_deserialize(d: dict) -> MembraneItem:
+    mi = MembraneItem()
+
+    if "name" in d.keys():
+        mi.name = d["name"]
+    if "descr" in d.keys():
+        mi.descr = d["descr"]
+    if "symbol" in d.keys():
+        mi.symbol = d["symbol"]
+    if "colour" in d.keys():
+        mi.colour = d["colour"]
+
+    return mi
+
+
 def get_rand_membrane_item() -> MembraneItem:
     name = name_gen.get_rand_name()
     mi = MembraneItem(name=name, descr=name, colour=get_rand_colour())
@@ -134,7 +149,14 @@ class Membrane:
 
 
 class Rule:
+
+    __slots__ = ["name", "descr", "catalyst", "rule_input", "rule_output"]
+
     def __init__(self, name: str, descr: str, catalyst: Multiset, rule_input: Multiset, rule_output: Multiset):
+
+        if isinstance(name, dict):
+            self.set_from_dict(d=name)
+            return
 
         self.name = name
         self.descr = descr
@@ -163,6 +185,30 @@ class Rule:
         s += f"\tinput: {self.rule_input}\n"
         s += f"\toutput: {self.rule_output}\n"
         return s
+
+    def set_from_dict(self, d: dict):
+
+        if "name" in d.keys():
+            self.name = d["name"]
+        if "descr" in d.keys():
+            self.descr = d["descr"]
+        if "catalyst" in d.keys():
+            self.catalyst = d["catalyst"]
+        if "rule_input" in d.keys():
+            self.rule_input = d["rule_input"]
+        if "rule_output" in d.keys():
+            self.rule_output = d["rule_output"]
+
+    def json_serialize(self):
+        d = {}
+
+        d["name"] = self.name
+        d["descr"] = self.descr
+        d['catalyst'] = self.catalyst.__str__()
+        d['rule_input'] = self.rule_input.__str__()
+        d['rule_output'] = self.rule_output.__str__()
+
+        return d
 
 
 class RuleSet:

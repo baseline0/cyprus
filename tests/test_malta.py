@@ -1,7 +1,8 @@
 import unittest
 
-# from malta.malta import Rule
+from util import prettyprint_json
 from multiset import Multiset
+from malta.malta import Rule
 from malta.malta import MembraneItem
 from malta.malta import multiset_to_dict
 import json
@@ -156,11 +157,10 @@ class TestMalta(unittest.TestCase):
         print(y)
 
     def test_foo2(self):
-        __slots__ = ['m']
-
         # works. use this.
 
         class Foo2(Multiset):
+            __slots__ = ['m']
 
             def __init__(self):
                 Multiset.__init__(self)
@@ -172,7 +172,7 @@ class TestMalta(unittest.TestCase):
         y = json.dumps(Foo2(), default=lambda o: o.json_serialize())
         print(f"Foo2 multiset: {y}")
 
-        x = json.loads(y) #, object_hook=Foo2)
+        x = json.loads(y)  # , object_hook=Foo2)
         print(x)
 
     def test_serialize_membrane_item(self):
@@ -181,12 +181,45 @@ class TestMalta(unittest.TestCase):
                 return MembraneItem(name=d["name"])
             return d
 
+        from malta.malta import membrane_item_deserialize
+
         mi = MembraneItem(name="gold", descr="ounces")
         out = json.dumps(mi, indent=4, default=lambda o: o.json_serialize())
         print(out)
         # y = json.loads(out, object_hook=as_membrane_item())
-        y = json.loads(out) # , object_hook=MembraneItem)
+        # y = json.loads(out, object_hook=lambda d: membrane_item_deserialize(dict))
+
+        # works w hack isinstance in __init__
+        y = json.loads(out)
         print(y)
 
         # AssertionError: 'gold' != {'name': 'gold', 'symbol': 'gold', 'descr': 'ounces', 'colour': "['wheat2']"}
         self.assertEqual(mi.name, y["name"])
+
+
+class TestRules(unittest.TestCase):
+
+    def test1(self):
+
+        catalyst = Multiset()
+        catalyst.add('a')
+
+        rule_input = Multiset()
+        rule_input.add('b',3)
+
+        rule_output = Multiset()
+        rule_output.add('z', 10)
+
+        r = Rule(name="test rule",
+                 descr="abc",
+                 catalyst=catalyst,
+                 rule_input=rule_input,
+                 rule_output=rule_output)
+
+        out = json.dumps(r, default= lambda o: o.json_serialize(), indent=2)
+        prettyprint_json(out)
+
+        y = json.loads(out)
+
+        print(y)
+        self.assertTrue(y, r)

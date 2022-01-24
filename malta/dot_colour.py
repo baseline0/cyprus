@@ -689,7 +689,7 @@ class DotColour(str, Enum):
 
 
 def get_rand_colour() -> str:
-    return str(sample(colors, 1))
+    return str(sample(colors, 1).pop())
 
 
 def get_rand_colours(n: int = 10) -> List[str]:
