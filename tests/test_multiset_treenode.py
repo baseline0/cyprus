@@ -1,10 +1,12 @@
 import unittest
 
+from mmultiset import MMultiset
 from anytree import Node, RenderTree, PostOrderIter
 from anytree.exporter import DotExporter
 from anytree.walker import Walker
 
-from malta.multiset_treenode import MultisetTreeFactory, MultisetTreeNode, show_multiset_tree, add_items, get_alphabet1, get_random_selection_from_alphabet, randomly_populate
+from malta.multiset_treenode import MultisetTreeFactory, MultisetTreeNode, show_multiset_tree, add_items, get_alphabet1, \
+    get_random_selection_from_alphabet, randomly_populate
 
 
 class TestMembraneTree(unittest.TestCase):
@@ -62,9 +64,8 @@ class TestMembraneTree(unittest.TestCase):
         # walk
 
     def test2(self):
-        from anytree import Node
-        from mmultiset import MMultiset
-        root = Node(name="root", contents = MMultiset())
+
+        root = Node(name="root", contents=MMultiset())
 
         contents = MMultiset()
         contents.add('a', 1)

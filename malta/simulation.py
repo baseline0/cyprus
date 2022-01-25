@@ -1,14 +1,12 @@
-import json
-
 from typing import List
+
+from anytree import Node, RenderTree, PostOrderIter
 
 from malta.environment import Environment
 from malta.membrane_item import MembraneItem
-from malta.membrane import Membrane
 from malta.mmultiset import MMultiset
 from malta.rule import Rule
 from malta.ruleset import RuleSet
-from malta.util import prettyprint_json
 
 
 class Simulation:
@@ -16,35 +14,33 @@ class Simulation:
     COMPLETE = False
 
     def __init__(self) -> None:
-        self.grammar = None
         self.output_dir = "./sims/"
 
         # useful for when we use index to trigger file saves or image output
         self.current_index = 0
 
         # need to load config or programmatically populate: Environment()
-        self.membrane_env = None
+        self.environment = None
 
     def save(self, fname: str):
-        with open(fname, 'w') as f:
-            json.dump(self.membrane_env.__dict__, f, indent=4)
+        # with open(fname, 'w') as f:
+        #     json.dump(self.membrane_env.__dict__, f, indent=4)
+        pass
 
     def load(self, fname: str):
-        # read in config file
-        with open(fname, "r") as f:
-            data = json.load(f)
-
-            prettyprint_json(data=data)
-
-        print(data)
-        membranes = data['membranes']
-        rules = data['rules']
-        contents = data['contents']
-        self.membrane_env = Environment(membranes, rules, contents)
-        # self._generate_grammar()
-
-    # def _generate_grammar(self):
-    #     pass
+        # # read in config file
+        # with open(fname, "r") as f:
+        #     data = json.load(f)
+        #
+        #     prettyprint_json(data=data)
+        #
+        # print(data)
+        # membranes = data['membranes']
+        # rules = data['rules']
+        # contents = data['contents']
+        # self.membrane_env = Environment(membranes, rules, contents)
+        # # self._generate_grammar()
+        pass
 
     def next(self):
         # do next tick
@@ -53,7 +49,7 @@ class Simulation:
 
         print(f'tick: {self.current_index}')
         self.current_index += 1
-        self.membrane_env.apply_rules()
+        self.environment.apply_rules(self.root)
 
         # if self.current_index == 5:
         #     print('save img')
@@ -126,13 +122,17 @@ class SimulationFactory:
     def get_sim1() -> Simulation:
         sim = Simulation()
 
-        mi1 = MembraneItem('b', descr='broccoli')
-        mi2 = MembraneItem('c', descr='carrot')
-        membrane_contents = [mi1, mi2]
+        alphabet = ['a', 'b', 'c', 'w']
 
-        ids_only = get_item_names_from_membrane_items(membrane_contents)
-        m = Membrane(name='m1', descr='hello', contents=ids_only)
+        # details on the membranes items for summary report
+        m_a = MembraneItem('a', descr='asset')
+        m_b = MembraneItem('b', descr='budget')
+        m_c = MembraneItem('c', descr='capital')
+        m_w = MembraneItem('w', descr='win')
+        all_items = [m_a, m_b, m_c, m_w]
 
+        # ---------------------
+        # make rules
         r_catalyst = MMultiset()
         r_catalyst.add('b')
 
@@ -144,16 +144,28 @@ class SimulationFactory:
 
         r = Rule(name='r1', descr='', catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
 
-        env_contents = MembraneItem(name='a', descr='apple')
-
         ruleset = RuleSet()
         ruleset.rules = [r]
 
-        e = Environment(membranes=[m], rules=ruleset, contents=[env_contents], all_items=membrane_contents)
-        sim.membrane_env = e
+        # ---------------------
+        # make membrane tree
+        root = Node(name="root", contents=MMultiset())
+
+        contents = MMultiset()
+        contents.add('a', 1)
+        contents.add('b', 4)
+        s0 = Node(name="sub0", parent=root, contents=contents)
+
+        e = Environment(tree=root, rules=ruleset, all_items=all_items)
+        sim.environment = e
+        sim.root = root
 
         return sim
 
+
+# def set_cataysts()
+# def set_rule_inputs()
+# def set_rule_outputs()
 
 def run1():
     sim = SimulationFactory.get_sim1()
@@ -167,3 +179,41 @@ def run1():
 
 if __name__ == "__main__":
     run1()
+
+
+# CURRENT STATE
+#
+# /usr/bin/python3.8 /home/mark/projects/baseline0/cyprus/malta/simulation.py
+# running membrane simulation
+# see output: ./sims/
+# tick: 0
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 1
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 2
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 3
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 4
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 5
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 6
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 7
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 8
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# tick: 9
+# sub0 has: {a, b, b, b, b}
+# root has: {}
+# DONE.
