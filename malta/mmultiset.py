@@ -38,6 +38,7 @@ class MMultiset(Multiset):
     def as_dot(self) -> str:
         """
         helper for writing digraph content
+        but for colour, access through environment
         """
         s = self.as_simple_string()
 

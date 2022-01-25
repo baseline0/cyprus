@@ -49,5 +49,4 @@ class TestEnvironment(unittest.TestCase):
         fname = 'out/environment_example.dot'
 
         e = Factory.get_environment1()
-
         e.save_as_dot_digraph(fname)

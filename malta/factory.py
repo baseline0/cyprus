@@ -6,6 +6,10 @@ from malta.dot import ContentItem
 from malta.membrane_item import MembraneItem
 from malta.membrane import Membrane
 from malta.util import NameGenerator
+from malta.rule import Rule
+from malta.mmultiset import MMultiset
+from simulation import get_multiset_of_item_names_from_membrane_items
+from malta.ruleset import RuleSet
 
 
 class Factory:
@@ -50,7 +54,38 @@ class Factory:
 
     @staticmethod
     def get_environment1() -> Environment:
-        e = Environment()
+        """
+        special case:
+            CONSTRAINT:
+                the environment has items that also exist in a membrane
+        """
+
+        mi1 = MembraneItem('b', descr='broccoli')
+        mi2 = MembraneItem('c', descr='carrot')
+        membrane_contents = [mi1, mi2]
+
+        names_only = get_multiset_of_item_names_from_membrane_items(membrane_contents)
+        m = Membrane(name='m1', descr='hello', contents=names_only)
+
+        r_catalyst = MMultiset()
+        r_catalyst.add('b')
+
+        r_input = MMultiset()
+        r_input.add('c')
+
+        r_output = MMultiset()
+        r_output.add('w')
+
+        r = Rule(name='r1', descr='', catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
+
+        env_contents = MMultiset()
+        env_contents.add('b')
+        # MembraneItem(name='a', descr='apple')
+
+        ruleset = RuleSet()
+        ruleset.rules = [r]
+
+        e = Environment(membranes=[m], rules=ruleset, contents=env_contents, all_items=membrane_contents)
         return e
 
 

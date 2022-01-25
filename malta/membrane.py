@@ -10,7 +10,7 @@ class Membrane:
     """
     # https://pythonhosted.org/multiset/
 
-    __slots__ = ["name", "descr", "contents"]
+    __slots__ = ["name", "descr", "contents", "membranes"]
 
     def __init__(self, name: str, descr: str, contents=List[str]):
         # =List[MembraneItem]):
@@ -27,6 +27,10 @@ class Membrane:
             raise ValueError
         else:
             self.contents = contents
+
+
+        # TODO - add in submembranes
+        self.membranes = None
 
     def json_serialize(self) -> dict:
         d = {}
@@ -45,8 +49,9 @@ class Membrane:
 
         # TODO - add in indent
 
-        # TODO - how to show mulitplicity
-        # option1: duplciate the visual object
+        #TODO - add in colour
+        # TODO - how to show multiplicity
+        # option1: duplicate the visual object
         # option2: use a label on the object with quantity
         for c in self.contents:
             s += f'{c} \n'
