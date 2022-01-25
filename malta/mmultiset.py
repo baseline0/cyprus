@@ -6,6 +6,9 @@ from multiset import Multiset
 
 class MMultiset(Multiset):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def json_serialize(self) -> dict:
         d = {}
         s = self.__str__()
