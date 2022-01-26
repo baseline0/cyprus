@@ -4,9 +4,8 @@ from mmultiset import MMultiset
 from anytree import Node, RenderTree, PostOrderIter
 from anytree.exporter import DotExporter
 from anytree.walker import Walker
-
-from malta.multiset_treenode import MultisetTreeFactory, MultisetTreeNode, show_multiset_tree, add_items, get_alphabet1, \
-    get_random_selection_from_alphabet, randomly_populate
+from malta.util import get_alphabet1
+from malta.multiset_treenode import MultisetTreeFactory, show_multiset_tree, get_random_selection_from_alphabet
 
 
 class TestMembraneTree(unittest.TestCase):

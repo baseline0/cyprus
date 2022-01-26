@@ -1,6 +1,8 @@
 import json
 import random
 import string
+from string import ascii_lowercase
+from typing import List
 
 
 def prettyprint_json(data):
@@ -10,13 +12,25 @@ def prettyprint_json(data):
 class NameGenerator:
     # use as prefix for cluster items
 
-    def __init__(self) -> None:
-        self.letters = string.ascii_lowercase
+    @staticmethod
+    def get_rand_name(letters=string.ascii_lowercase, num_chars: int = 4, prefix: str = None) -> str:
+        if prefix:
+            name = prefix + '_'
+        else:
+            name = ''
 
-        self.num_chars = 4
-
-    def get_rand_name(self) -> str:
-        name = ''
-        for i in range(self.num_chars):
-            name += random.choice(self.letters)
+        for i in range(num_chars):
+            name += random.choice(letters)
         return name
+
+
+def get_alphabet1(num: int) -> List[str]:
+    """
+    return a list of 1 character strings
+    """
+
+    if num > 26:
+        num = 26
+        print('limiting to ascii lowercase. write a new alphabet getter')
+
+    return ascii_lowercase[0:num - 1]

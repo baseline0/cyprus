@@ -1,13 +1,14 @@
 import json
 from typing import List
 
-from anytree import Node, RenderTree, PostOrderIter
-
+from malta.multiset_treenode import get_membrane_tree1
+from anytree import Node
+from malta.membrane_item import load_membrane_items_from_file
 from malta.environment import Environment
 from malta.membrane_item import MembraneItem
 from malta.mmultiset import MMultiset, make_mmultiset
 from malta.rule import Rule, make_rule
-from malta.ruleset import RuleSet
+from malta.ruleset import RuleSet, get_ruleset_1
 
 
 class Simulation:
@@ -172,6 +173,8 @@ class SimulationFactory:
 
         sim = Simulation()
 
+        # items in alphabet are used explicity in the following rules and contents but the data structure (list) is not yet part of params.
+        # Future - generate rules and contents from a defined alphabet
         alphabet = ['a', 'b', 'c', 'w']
 
         # details on the membranes items for summary report
@@ -211,16 +214,44 @@ class SimulationFactory:
 
         return sim
 
+    @staticmethod
+    def get_sim3() -> Simulation:
+        """
+        now alphabet is used as a param.
 
-def run1():
-    sim = SimulationFactory.get_sim1()
-    # sim.save("./output/run1.json")
-    # TODO sim.load("./examples/run1.json")
-    sim.run()
+        FUTURE - alphabet will be defined/determined by the json file.
+        """
+
+        sim = Simulation()
+
+        fname = "./config/sim1_items.json"
+        all_items = load_membrane_items_from_file(fname)
+
+        alphabet = ['a', 'b', 'c', 'w']
+        ruleset = get_ruleset_1(alphabet)
+        root = get_membrane_tree1(alphabet)
+
+        e = Environment(tree=root, rules=ruleset, all_items=all_items)
+        sim.environment = e
+        sim.root = root
+        return sim
+
+    @staticmethod
+    def get_sim4() -> Simulation:
+        sim = Simulation()
+        return sim
 
 
-def run2():
-    sim = SimulationFactory.get_sim2()
+def run(idx: int = 1):
+    if idx == 1:
+        sim = SimulationFactory.get_sim1()
+    elif idx == 2:
+        sim = SimulationFactory.get_sim2()
+    elif idx == 3:
+        sim = SimulationFactory.get_sim3()
+    elif idx == 4:
+        sim = SimulationFactory.get_sim4()
+
     sim.run()
 
 
@@ -228,10 +259,153 @@ def run2():
 
 
 if __name__ == "__main__":
-    # run1()
-    run2()
+    run(3)
 
-# CURRENT STATE
+
+# CURRENT STATE - sim3
+# making random rules from alphabet: ['a', 'b', 'c', 'w']
+# running membrane simulation
+# see output: ./sims/
+# tick: 0
+# sub0 has: {a, b, b, c, c, c, w, w, w, w}
+# firing rule: rule
+# 	catalysts: {b}
+# 	input: {a}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {c}
+# 	output: {a}
+#
+# firing rule: rule
+# 	catalysts: {a}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {b}
+# 	input: {a}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {c}
+# 	input: {w}
+# 	output: {b}
+#
+# root has: {}
+# tick: 1
+# sub0 has: {c, c, c, c, c, c, w, w, w, b}
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {c}
+# 	output: {a}
+#
+# firing rule: rule
+# 	catalysts: {a}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {a}
+# 	output: {b}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {c}
+# 	input: {w}
+# 	output: {b}
+#
+# root has: {}
+# tick: 2
+# sub0 has: {c, c, c, c, c, c, c, w, w, b}
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {c}
+# 	output: {a}
+#
+# firing rule: rule
+# 	catalysts: {a}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {a}
+# 	output: {b}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {c}
+# 	input: {w}
+# 	output: {b}
+#
+# root has: {}
+# tick: 3
+# sub0 has: {c, c, c, c, c, c, c, c, w, b}
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {c}
+# 	output: {a}
+#
+# firing rule: rule
+# 	catalysts: {a}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {a}
+# 	output: {b}
+#
+# firing rule: rule
+# 	catalysts: {w}
+# 	input: {b}
+# 	output: {c}
+#
+# firing rule: rule
+# 	catalysts: {c}
+# 	input: {w}
+# 	output: {b}
+#
+# root has: {}
+# tick: 4
+# sub0 has: {c, c, c, c, c, c, c, c, c, b}
+# root has: {}
+# tick: 5
+# sub0 has: {c, c, c, c, c, c, c, c, c, b}
+# root has: {}
+# tick: 6
+# sub0 has: {c, c, c, c, c, c, c, c, c, b}
+# root has: {}
+# tick: 7
+# sub0 has: {c, c, c, c, c, c, c, c, c, b}
+# root has: {}
+# tick: 8
+# sub0 has: {c, c, c, c, c, c, c, c, c, b}
+# root has: {}
+# tick: 9
+# sub0 has: {c, c, c, c, c, c, c, c, c, b}
+# root has: {}
+# DONE.
+
+# ====================================
+
+# CURRENT STATE - sim2
 # running membrane simulation
 # see output: ./sims/
 # tick: 0

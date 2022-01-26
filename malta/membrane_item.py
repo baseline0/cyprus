@@ -1,4 +1,7 @@
+import json
+
 from dot_colour import get_rand_colour
+from typing import List
 
 
 class MembraneItem:
@@ -84,3 +87,20 @@ def membrane_item_deserialize(d: dict) -> MembraneItem:
         mi.colour = d["colour"]
 
     return mi
+
+
+def load_membrane_items_from_file(fname:str) -> List[MembraneItem]:
+    """
+    file is in json format.
+        key must be from alphabet that is used in rules
+        value must be a positive integer and is multiplicity of the key in the membrane
+    """
+    # details on the membranes items for summary report
+    with open(fname) as f:
+        out = json.load(f)
+
+    all_items = []
+    for k, v in out.items():
+        all_items.append(MembraneItem(k, descr=v))
+
+    return all_items

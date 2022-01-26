@@ -7,7 +7,7 @@ from anytree import NodeMixin, Node
 
 from multiset import Multiset
 
-from mmultiset import MMultiset
+from mmultiset import MMultiset, make_mmultiset
 
 
 class MultisetTreeNode(MMultiset, NodeMixin):
@@ -75,21 +75,9 @@ def add_items(mt: Node, items: dict):
         mt.add(k, v)
 
 
-def show_multiset_tree(x: MultisetTreeNode):
+def show_multiset_tree(x: Node):
     for pre, fill, node in RenderTree(x):
         print("%s%s" % (pre, node.name))
-
-
-def get_alphabet1(num: int) -> List[str]:
-    """
-    return a list of 1 character strings
-    """
-
-    if num > 26:
-        num = 26
-        print('limiting to ascii lowercase. write a new alphabet getter')
-
-    return ascii_lowercase[0:num - 1]
 
 
 def get_random_selection_from_alphabet(num: int, alphabet: List[str], max_samples: int=10) -> dict:
@@ -124,3 +112,35 @@ def randomly_populate(mt: MultisetTreeNode, alphabet: List[str]):
         items = get_random_selection_from_alphabet(alphabet)
         for k, v in items.items():
             node.add(k, v)
+
+
+def get_membrane_tree1(alphabet: List[str]) -> Node:
+    """
+    use anytree.node with additional attr: contents = multiset
+    tree must have node named: root
+    """
+
+    if not alphabet:
+        print('expecting a list of membrane identifiers')
+        raise ValueError
+
+    # outer membrane has no initial objects (empty multiset)
+    root = Node(name="root", contents=MMultiset())
+
+    # manually make tree for now
+    # FUTURE - call random networkx generator
+
+    # make a single internal membrane with all items
+    # guaranteed to have catalyst
+    # FUTURE - add a utility that ensures that the contents are avaialble for a specific rule to fire.
+    items = {}
+    count = 1
+    for x in alphabet:
+        items[x] = count
+        count += 1
+
+    contents = make_mmultiset(items)
+
+    s0 = Node(name="sub0", parent=root, contents=contents)
+
+    return root
