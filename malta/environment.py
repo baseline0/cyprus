@@ -1,13 +1,11 @@
 from typing import List, TextIO
 
-from anytree import Node, RenderTree, PostOrderIter
+from anytree import Node, PostOrderIter
 from malta.ruleset import RuleSet
-from malta.rule import Rule
+from malta.rule import apply
 from malta.mmultiset import MMultiset
 from malta.membrane_item import MembraneItem
 from malta.membrane import Membrane
-
-
 
 
 class Environment:
@@ -51,21 +49,26 @@ class Environment:
         """
 
         with open(fname, 'w') as f:
-            f.write('digraph d {\n')
+            f.write('update for use of anytree')
 
-            f.write('\nnode[style=filled];\n')
+        raise Exception
 
-            if not isinstance(self.contents, MMultiset):
-                raise ValueError
-            else:
-                for c in self.contents:
-                    s = self.get_items_details_as_dot(c)
-                    f.write(s)
-
-            for m in self.membranes:
-                self.process_membrane_as_dot(f, m)
-
-            f.write('}')
+        # with open(fname, 'w') as f:
+        #     f.write('digraph d {\n')
+        #
+        #     f.write('\nnode[style=filled];\n')
+        #
+        #     if not isinstance(self.contents, MMultiset):
+        #         raise ValueError
+        #     else:
+        #         for c in self.contents:
+        #             s = self.get_items_details_as_dot(c)
+        #             f.write(s)
+        #
+        #     for m in self.membranes:
+        #         self.process_membrane_as_dot(f, m)
+        #
+        #     f.write('}')
 
     def process_membrane_as_dot(self, f: TextIO, m: Membrane):
         """

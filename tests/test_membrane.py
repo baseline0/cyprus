@@ -28,16 +28,4 @@ class TestMembraneItem(unittest.TestCase):
         self.assertEqual(mi.name, y["name"])
 
 
-class TestMembrane(unittest.TestCase):
-
-    def test1(self):
-        m = Factory.get_membrane_example1()
-
-        out = json.dumps(m, default=lambda o: o.json_serialize(), indent=2)
-        prettyprint_json(out)
-
-        y = json.loads(out)
-
-        print(y)
-        self.assertTrue(y, m)
 

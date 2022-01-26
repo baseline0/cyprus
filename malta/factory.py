@@ -36,18 +36,6 @@ class Factory:
         return [mi1, mi2, mi3, mi4, mi5]
 
     @staticmethod
-    def get_membrane_example1() -> Membrane:
-        m = Membrane(name='example1', descr='test json ops')
-        membrane_items = Factory.get_membrane_item_collection1()
-
-        num = 1
-        for mi in membrane_items:
-            m.contents.add(mi.name, num)
-            num += 1
-
-        return m
-
-    @staticmethod
     def get_rand_membrane_item() -> MembraneItem:
         name = NameGenerator.get_rand_name()
         mi = MembraneItem(name=name, descr=name, colour=get_rand_colour())

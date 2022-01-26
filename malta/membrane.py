@@ -28,7 +28,6 @@ class Membrane:
         else:
             self.contents = contents
 
-
         # TODO - add in submembranes
         self.membranes = None
 

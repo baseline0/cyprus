@@ -11,9 +11,10 @@ from malta.multiset_treenode import MultisetTreeFactory, MultisetTreeNode, show_
 
 class TestMembraneTree(unittest.TestCase):
 
-    def test_1(self):
-        x = 1
-        mt = MultisetTreeNode(name="test", length=4, width=4)
+    # def test_1(self):
+    #     x = 1
+    #     # mt = MultisetTreeNode("test", 4, 4)
+    #     mt = MultisetTreeNode(name="test", length=4, width=4)
 
     def test_anytree(self):
 
@@ -55,13 +56,14 @@ class TestMembraneTree(unittest.TestCase):
         x = get_random_selection_from_alphabet(5, alphabet)
         print(x)
 
-    def test_randomly_populate(self):
-        alphabet = get_alphabet1(10)
-        mt = MultisetTreeNode(name="test_rp", length=4, width=3)
-        randomly_populate(mt, alphabet)
-
-        print(mt)
-        # walk
+    # def test_randomly_populate(self):
+    #     alphabet = get_alphabet1(10)
+    #     # mt = MultisetTreeNode(name="test_rp", length=4, width=3)
+    #     mt = MultisetTreeNode("test_rp", 4, 3)
+    #     randomly_populate(mt, alphabet)
+    #
+    #     print(mt)
+    #     # walk
 
     def test2(self):
 
