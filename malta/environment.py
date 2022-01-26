@@ -8,7 +8,7 @@ from malta.membrane_item import MembraneItem
 from malta.membrane import Membrane
 
 
-def apply(r: Rule, m: MMultiset):
+def apply(r: Rule, m: MMultiset) -> MMultiset:
     # fire once if possible.
     # Future - apply as many times as possible
     # Future - apply probabilistically
@@ -16,9 +16,11 @@ def apply(r: Rule, m: MMultiset):
     if r.catalyst.issubset(m):
         # catalysts present
         if r.rule_input.issubset(m):
-            # inputs here. fire rule.
+            print(f'firing rule: {r}')
+            # inputs also present. fire rule.
             m -= r.rule_input
             m += r.rule_output
+    return m
 
 
 class Environment:
@@ -53,7 +55,7 @@ class Environment:
 
             for r in self.rules.rules:
                 # does it apply? run it. update contents of the respective membrane
-                apply(r, node.contents)
+                node.contents = apply(r, node.contents)
 
     def save_as_dot_digraph(self, fname: str):
         """

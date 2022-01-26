@@ -1,3 +1,4 @@
+import json
 from typing import List
 
 from anytree import Node, RenderTree, PostOrderIter
@@ -154,6 +155,54 @@ class SimulationFactory:
         contents = MMultiset()
         contents.add('a', 1)
         contents.add('b', 4)
+        contents.add('c', 2)
+        s0 = Node(name="sub0", parent=root, contents=contents)
+
+        e = Environment(tree=root, rules=ruleset, all_items=all_items)
+        sim.environment = e
+        sim.root = root
+
+        return sim
+
+    @staticmethod
+    def get_sim2() -> Simulation:
+        """
+        same as sim1 but with more convenience functions
+        """
+
+        sim = Simulation()
+
+        alphabet = ['a', 'b', 'c', 'w']
+
+        # details on the membranes items for summary report
+        with open("./config/sim1_items.json") as f:
+            out = json.load(f)
+
+        all_items = []
+        for k, v in out.items():
+            all_items.append(MembraneItem(k, descr=v))
+
+        # ---------------------
+        # make rules
+        catalyst = {'b': 1}
+        r_input = {'c': 1}
+        r_output = {'w': 1}
+        r = make_rule(name='r1', descr="make w from c when b present", catalyst=catalyst, rule_input=r_input, rule_output=r_output)
+
+        ruleset = RuleSet()
+        ruleset.rules.append(r)
+
+        # ---------------------
+        # make membrane tree
+        root = Node(name="root", contents=MMultiset())
+
+
+        items = {}
+        items['a'] = 1
+        items['b'] = 2
+        items['c'] = 3
+        contents = make_mmultiset(items)
+
         s0 = Node(name="sub0", parent=root, contents=contents)
 
         e = Environment(tree=root, rules=ruleset, all_items=all_items)
@@ -163,9 +212,40 @@ class SimulationFactory:
         return sim
 
 
-# def set_cataysts()
-# def set_rule_inputs()
-# def set_rule_outputs()
+def make_mmultiset(d: dict) -> MMultiset:
+    """
+    we do intend that multiplicity is > 0
+    but not testing for it.
+    """
+
+    mm = MMultiset()
+
+    for k, v in d.items():
+        mm.add(k, v)
+
+    return mm
+
+
+def make_rule(name: str, descr: str, catalyst: dict, rule_input: dict, rule_output: dict) -> Rule:
+    """
+    params are dict with k = multiset item and v = multiplicity
+    """
+
+    if not isinstance(catalyst, dict):
+        raise ValueError
+    if not isinstance(rule_input, dict):
+        raise ValueError
+    if not isinstance(rule_output, dict):
+        raise ValueError
+
+    r_catalyst = make_mmultiset(catalyst)
+    r_input = make_mmultiset(rule_input)
+    r_output = make_mmultiset(rule_output)
+
+    r = Rule(name=name, descr=descr, catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
+
+    return r
+
 
 def run1():
     sim = SimulationFactory.get_sim1()
@@ -174,46 +254,65 @@ def run1():
     sim.run()
 
 
+def run2():
+    sim = SimulationFactory.get_sim2()
+    sim.run()
+
+
 # --------------------
 
 
 if __name__ == "__main__":
-    run1()
+    #run1()
+    run2()
 
 
 # CURRENT STATE
-#
-# /usr/bin/python3.8 /home/mark/projects/baseline0/cyprus/malta/simulation.py
-# running membrane simulation
+#running membrane simulation
 # see output: ./sims/
 # tick: 0
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, c, c, c}
+# firing rule: rule
+# 	catalysts: {b}
+# 	input: {c}
+# 	output: {w}
+#
 # root has: {}
 # tick: 1
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, c, c, w}
+# firing rule: rule
+# 	catalysts: {b}
+# 	input: {c}
+# 	output: {w}
+#
 # root has: {}
 # tick: 2
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, c, w, w}
+# firing rule: rule
+# 	catalysts: {b}
+# 	input: {c}
+# 	output: {w}
+#
 # root has: {}
 # tick: 3
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, w, w, w}
 # root has: {}
 # tick: 4
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, w, w, w}
 # root has: {}
 # tick: 5
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, w, w, w}
 # root has: {}
 # tick: 6
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, w, w, w}
 # root has: {}
 # tick: 7
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, w, w, w}
 # root has: {}
 # tick: 8
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, w, w, w}
 # root has: {}
 # tick: 9
-# sub0 has: {a, b, b, b, b}
+# sub0 has: {a, b, b, w, w, w}
 # root has: {}
 # DONE.
