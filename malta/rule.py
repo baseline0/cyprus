@@ -1,4 +1,4 @@
-from malta.mmultiset import MMultiset
+from malta.mmultiset import MMultiset, make_mmultiset
 
 
 class Rule:
@@ -63,3 +63,38 @@ class Rule:
 
         return d
 
+
+def make_rule(name: str, descr: str, catalyst: dict, rule_input: dict, rule_output: dict) -> Rule:
+    """
+    params are dict with k = multiset item and v = multiplicity
+    """
+
+    if not isinstance(catalyst, dict):
+        raise ValueError
+    if not isinstance(rule_input, dict):
+        raise ValueError
+    if not isinstance(rule_output, dict):
+        raise ValueError
+
+    r_catalyst = make_mmultiset(catalyst)
+    r_input = make_mmultiset(rule_input)
+    r_output = make_mmultiset(rule_output)
+
+    r = Rule(name=name, descr=descr, catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
+
+    return r
+
+
+def apply(r: Rule, m: MMultiset) -> MMultiset:
+    # fire once if possible.
+    # Future - apply as many times as possible
+    # Future - apply probabilistically
+
+    if r.catalyst.issubset(m):
+        # catalysts present
+        if r.rule_input.issubset(m):
+            print(f'firing rule: {r}')
+            # inputs also present. fire rule.
+            m -= r.rule_input
+            m += r.rule_output
+    return m

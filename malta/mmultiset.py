@@ -97,3 +97,17 @@ def multiset_to_dict(m: Multiset) -> dict:
             d[t] = 1
 
     return d
+
+
+def make_mmultiset(d: dict) -> MMultiset:
+    """
+    we do intend that multiplicity is > 0
+    but not testing for it.
+    """
+
+    mm = MMultiset()
+
+    for k, v in d.items():
+        mm.add(k, v)
+
+    return mm

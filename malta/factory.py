@@ -1,20 +1,21 @@
 from typing import List
 
+import json
+from anytree import Node
 from malta.environment import Environment
 from malta.dot_colour import get_rand_colour
 from malta.dot import ContentItem
 from malta.membrane_item import MembraneItem
 from malta.membrane import Membrane
 from malta.util import NameGenerator
-from malta.rule import Rule
-from malta.mmultiset import MMultiset
-from simulation import get_multiset_of_item_names_from_membrane_items
+from malta.rule import make_rule
+from malta.mmultiset import MMultiset, make_mmultiset
 from malta.ruleset import RuleSet
 
 
 class Factory:
     """
-    provide known and constructed examples of key classes for tests
+    provide known and constructed examples of key classes for tests and simulation reference code
     """
 
     @staticmethod
@@ -58,34 +59,44 @@ class Factory:
         special case:
             CONSTRAINT:
                 the environment has items that also exist in a membrane
+
+        update for tree
         """
 
-        mi1 = MembraneItem('b', descr='broccoli')
-        mi2 = MembraneItem('c', descr='carrot')
-        membrane_contents = [mi1, mi2]
+        alphabet = ['a', 'b', 'c', 'w']
 
-        names_only = get_multiset_of_item_names_from_membrane_items(membrane_contents)
-        m = Membrane(name='m1', descr='hello', contents=names_only)
+        # details on the membranes items for summary report
+        with open("./config/sim1_items.json") as f:
+            out = json.load(f)
 
-        r_catalyst = MMultiset()
-        r_catalyst.add('b')
+        all_items = []
+        for k, v in out.items():
+            all_items.append(MembraneItem(k, descr=v))
 
-        r_input = MMultiset()
-        r_input.add('c')
-
-        r_output = MMultiset()
-        r_output.add('w')
-
-        r = Rule(name='r1', descr='', catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
-
-        env_contents = MMultiset()
-        env_contents.add('b')
-        # MembraneItem(name='a', descr='apple')
+        # ---------------------
+        # make rules
+        catalyst = {'b': 1}
+        r_input = {'c': 1}
+        r_output = {'w': 1}
+        r = make_rule(name='r1', descr="make w from c when b present", catalyst=catalyst, rule_input=r_input, rule_output=r_output)
 
         ruleset = RuleSet()
-        ruleset.rules = [r]
+        ruleset.rules.append(r)
 
-        e = Environment(membranes=[m], rules=ruleset, contents=env_contents, all_items=membrane_contents)
+        # ---------------------
+        # make membrane tree
+        root = Node(name="root", contents=MMultiset())
+
+        items = {}
+        items['a'] = 1
+        items['b'] = 2
+        items['c'] = 3
+        contents = make_mmultiset(items)
+
+        s0 = Node(name="sub0", parent=root, contents=contents)
+
+        e = Environment(tree=root, rules=ruleset, all_items=all_items)
+
         return e
 
 

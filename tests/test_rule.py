@@ -1,8 +1,11 @@
 import unittest
 
+import json
 from multiset import Multiset
+from malta.util import prettyprint_json
 
-from malta.rule import Rule
+from malta.rule import Rule, apply
+from mmultiset import MMultiset
 
 
 class TestRule(unittest.TestCase):
@@ -84,3 +87,35 @@ class TestRule(unittest.TestCase):
 
         print(y)
         self.assertTrue(y, r)
+
+    def test_make_rule(self):
+        # self.assertTrue(isinstance(r, Rule))
+        pass
+
+    def test_apply_rule(self):
+
+        r_catalyst = MMultiset()
+        r_catalyst.add('b')
+
+        r_input = MMultiset()
+        r_input.add('c')
+
+        r_output = MMultiset()
+        r_output.add('w')
+
+        r = Rule(name='r1', descr='', catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
+
+        m = MMultiset()
+        m.add('b')
+        m.add('c')
+
+        m = apply(r, m)
+
+        # expected end state:
+        #   catalyst b is preserved
+        #   the presence of catalyst (b) and rule input (c) causes rule to fire.
+        #   the firing of the rule consumes (c) and produces w
+        expected = MMultiset()
+        expected.add('b')
+        expected.add('w')
+        self.assertEqual(m, expected)

@@ -5,8 +5,8 @@ from anytree import Node, RenderTree, PostOrderIter
 
 from malta.environment import Environment
 from malta.membrane_item import MembraneItem
-from malta.mmultiset import MMultiset
-from malta.rule import Rule
+from malta.mmultiset import MMultiset, make_mmultiset
+from malta.rule import Rule, make_rule
 from malta.ruleset import RuleSet
 
 
@@ -187,7 +187,8 @@ class SimulationFactory:
         catalyst = {'b': 1}
         r_input = {'c': 1}
         r_output = {'w': 1}
-        r = make_rule(name='r1', descr="make w from c when b present", catalyst=catalyst, rule_input=r_input, rule_output=r_output)
+        r = make_rule(name='r1', descr="make w from c when b present", catalyst=catalyst, rule_input=r_input,
+                      rule_output=r_output)
 
         ruleset = RuleSet()
         ruleset.rules.append(r)
@@ -195,7 +196,6 @@ class SimulationFactory:
         # ---------------------
         # make membrane tree
         root = Node(name="root", contents=MMultiset())
-
 
         items = {}
         items['a'] = 1
@@ -210,41 +210,6 @@ class SimulationFactory:
         sim.root = root
 
         return sim
-
-
-def make_mmultiset(d: dict) -> MMultiset:
-    """
-    we do intend that multiplicity is > 0
-    but not testing for it.
-    """
-
-    mm = MMultiset()
-
-    for k, v in d.items():
-        mm.add(k, v)
-
-    return mm
-
-
-def make_rule(name: str, descr: str, catalyst: dict, rule_input: dict, rule_output: dict) -> Rule:
-    """
-    params are dict with k = multiset item and v = multiplicity
-    """
-
-    if not isinstance(catalyst, dict):
-        raise ValueError
-    if not isinstance(rule_input, dict):
-        raise ValueError
-    if not isinstance(rule_output, dict):
-        raise ValueError
-
-    r_catalyst = make_mmultiset(catalyst)
-    r_input = make_mmultiset(rule_input)
-    r_output = make_mmultiset(rule_output)
-
-    r = Rule(name=name, descr=descr, catalyst=r_catalyst, rule_input=r_input, rule_output=r_output)
-
-    return r
 
 
 def run1():
@@ -263,12 +228,11 @@ def run2():
 
 
 if __name__ == "__main__":
-    #run1()
+    # run1()
     run2()
 
-
 # CURRENT STATE
-#running membrane simulation
+# running membrane simulation
 # see output: ./sims/
 # tick: 0
 # sub0 has: {a, b, b, c, c, c}

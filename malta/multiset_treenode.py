@@ -15,7 +15,7 @@ class MultisetTreeNode(MMultiset, NodeMixin):
     A node for use with anytree that contains a multiset
     """
 
-    def __init__(self, name, length, width, parent=None, children=None):
+    def __init__(self, name: str, length: int, width: int, parent=None, children=None, *args, **kwargs):
         # super(Multiset, self).__init__(*args, **kwargs)
         super(NodeMixin, self).__init__(name=name, length=length, width=width, parent=parent, children=children)
 

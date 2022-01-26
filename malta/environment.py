@@ -8,19 +8,6 @@ from malta.membrane_item import MembraneItem
 from malta.membrane import Membrane
 
 
-def apply(r: Rule, m: MMultiset) -> MMultiset:
-    # fire once if possible.
-    # Future - apply as many times as possible
-    # Future - apply probabilistically
-
-    if r.catalyst.issubset(m):
-        # catalysts present
-        if r.rule_input.issubset(m):
-            print(f'firing rule: {r}')
-            # inputs also present. fire rule.
-            m -= r.rule_input
-            m += r.rule_output
-    return m
 
 
 class Environment:

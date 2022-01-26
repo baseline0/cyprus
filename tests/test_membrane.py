@@ -1,6 +1,7 @@
 import unittest
 
-from malta.membrane import Membrane
+import json
+from malta.factory import Factory
 from malta.util import prettyprint_json
 from malta.membrane_item import MembraneItem
 
