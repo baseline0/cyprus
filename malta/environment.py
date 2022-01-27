@@ -4,16 +4,25 @@ from anytree import Node, PostOrderIter
 
 from malta.membrane import Membrane
 from malta.membrane_item import MembraneItem
-from malta.rule import apply
+from malta.rule import apply, rule_will_fire
 from malta.ruleset import RuleSet
 
 
+from enum import Enum
+
+
+class EnvState(Enum):
+    STOPPED = 0
+    RUNNING = 1
+
 class Environment:
     """
-    This contains the mulitset tree
+    This contains the multiset tree
         the root of the tree is the top level (most external) membrane
-
     """
+
+    # FUTURE - make ENUM and do proper hook
+    STOP_CRITERION = "NO_RULES_FIRED"
 
     def __init__(self, tree: Node,
                  rules: RuleSet,
@@ -27,20 +36,32 @@ class Environment:
         # useful for legends, status updates.
         self.all_items = all_items
 
-        # FUTURE
-        # the stop / halting condition
-        # self.stop = stop
+        # stopping criterion counter
+        self.rule_fired = False
+        # FUTURE - enables delayed results
+        # self.no_rules_fired_counter=0
+
+        self.running_state = EnvState.RUNNING
 
     def apply_rules(self, root: Node):
         # TODO - randomize rule order or add in rule priority
         # TODO - randomize membrane selection ?
+
+        # reset stopping criterion
+        self.rule_fired = False
 
         for node in PostOrderIter(root):
             print(f'{node.name} has: {node.contents}')
 
             for r in self.rules.rules:
                 # does it apply? run it. update contents of the respective membrane
-                node.contents = apply(r, node.contents)
+                if rule_will_fire(r, node.contents):
+                    self.rule_fired = True
+                    node.contents = apply(r, node.contents)
+
+        # Future: wrap in condition: STOP_CRITERION == "NO_RULES_FIRED"
+        if not self.rule_fired:
+            self.running_state = EnvState.STOPPED
 
     def save_as_dot_digraph(self, fname: str):
         """

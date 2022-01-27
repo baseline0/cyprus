@@ -84,16 +84,34 @@ def make_rule(name: str, descr: str, catalyst: dict, rule_input: dict, rule_outp
     return r
 
 
-def apply(r: Rule, m: MMultiset) -> MMultiset:
-    # fire once if possible.
-    # Future - apply as many times as possible
-    # Future - apply probabilistically
+def rule_will_fire(r: Rule, m: MMultiset) -> bool:
+    """
+    return
+        True if:
+            a catalyst is specified and present in sufficient quantities
+            the input is present and in sufficient quantities
+        otherwise: False
+    """
 
     if r.catalyst.issubset(m):
         # catalysts present
         if r.rule_input.issubset(m):
             print(f'firing rule: {r}')
-            # inputs also present. fire rule.
-            m -= r.rule_input
-            m += r.rule_output
+            # inputs also present. rule will fire.
+            return True
+    return False
+
+
+def apply(r: Rule, m: MMultiset) -> MMultiset:
+    # assumption:
+    #   the environment calls will_fire_rule and has received: True
+    #   decoupling enables STOP criterion to be measured.
+    # Usage:
+    #   fire the rule once
+    #
+    # Future - apply as many times as possible
+    # Future - apply probabilistically
+
+    m -= r.rule_input
+    m += r.rule_output
     return m

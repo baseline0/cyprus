@@ -3,7 +3,7 @@ from typing import List
 
 from anytree import Node
 
-from malta.environment import Environment
+from malta.environment import Environment, EnvState
 from malta.membrane_item import MembraneItem
 from malta.membrane_item import load_membrane_items_from_file
 from malta.mmultiset import MMultiset, make_mmultiset
@@ -65,6 +65,9 @@ class Simulation:
 
         while self.current_index < Simulation.MAX_TICKS and not Simulation.COMPLETE:
             self.next()
+            if self.environment.running_state == EnvState.STOPPED:
+                print('stopping early based on env state. (no rule fired)')
+                break
 
         print('DONE.')
 
