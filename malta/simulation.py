@@ -1,8 +1,8 @@
 import json
 from typing import List
-
-from malta.multiset_treenode import get_membrane_tree1
 from anytree import Node
+
+from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2
 from malta.membrane_item import load_membrane_items_from_file
 from malta.environment import Environment
 from malta.membrane_item import MembraneItem
@@ -173,7 +173,8 @@ class SimulationFactory:
 
         sim = Simulation()
 
-        # items in alphabet are used explicity in the following rules and contents but the data structure (list) is not yet part of params.
+        # items in alphabet are used explicity in the following rules and contents but
+        # the data structure (list) is not yet part of params.
         # Future - generate rules and contents from a defined alphabet
         alphabet = ['a', 'b', 'c', 'w']
 
@@ -224,7 +225,7 @@ class SimulationFactory:
 
         sim = Simulation()
 
-        fname = "./config/sim1_items.json"
+        fname = "./config/sim3_items.json"
         all_items = load_membrane_items_from_file(fname)
 
         alphabet = ['a', 'b', 'c', 'w']
@@ -238,7 +239,20 @@ class SimulationFactory:
 
     @staticmethod
     def get_sim4() -> Simulation:
+        """
+        now we obtain alphabet from the items listed in the json file
+        """
         sim = Simulation()
+
+        fname = "./config/sim4_items.json"
+        all_items, alphabet = load_membrane_items_from_file(fname)
+
+        ruleset = get_ruleset_1(alphabet)
+        root = get_membrane_tree2(alphabet)
+
+        e = Environment(tree=root, rules=ruleset, all_items=all_items)
+        sim.environment = e
+        sim.root = root
         return sim
 
 
@@ -259,8 +273,12 @@ def run(idx: int = 1):
 
 
 if __name__ == "__main__":
-    run(3)
+    run(4)
 
+
+# CURRENT STATE - sim4
+#   m -= r.rule_input
+# TypeError: unsupported operand type(s) for -=: 'dict' and 'MMultiset'
 
 # CURRENT STATE - sim3
 # making random rules from alphabet: ['a', 'b', 'c', 'w']

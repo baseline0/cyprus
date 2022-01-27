@@ -1,8 +1,6 @@
+import json
 import unittest
 
-import json
-from malta.factory import Factory
-from malta.util import prettyprint_json
 from malta.membrane_item import MembraneItem
 
 
@@ -26,6 +24,3 @@ class TestMembraneItem(unittest.TestCase):
 
         # AssertionError: 'gold' != {'name': 'gold', 'symbol': 'gold', 'descr': 'ounces', 'colour': "['wheat2']"}
         self.assertEqual(mi.name, y["name"])
-
-
-

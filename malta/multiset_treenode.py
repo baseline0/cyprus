@@ -3,6 +3,7 @@ import networkx as nx
 
 from random import randint
 from typing import List
+import matplotlib.pyplot as plt
 
 from anytree import Node, RenderTree, PreOrderIter
 from anytree import NodeMixin, Node
@@ -10,9 +11,52 @@ from anytree import NodeMixin, Node
 from mmultiset import MMultiset, make_mmultiset
 
 
+def save_graph_to_file(fname: str, g) -> None:
+    print(f"see: {fname}")
+    # TODO FIX
+    # a = nx.nx_agraph.to_agraph(g)
+    # nx.nx_agraph.write_dot(a, "./graph_/")
+    nx.draw(g)
+    nx.draw_planar(g)
+    plt.draw()
+    plt.savefig(fname)
+
+
+def get_polytree(num_nodes: int = 10):
+    """
+    A polytree (or directed tree or oriented tree or singly
+    connected network) is a directed acyclic graph (DAG)
+    whose underlying undirected graph is a tree
+
+    https://dsplab.feri.um.si/glossary/directed-tree/
+
+    directed tree
+    A weakly connected, directed forest. Equivalently, the underlying graph
+    structure (which ignores edge orientations) is an undirected tree.
+    In convention B, this is known as a polytree.
+
+    https://networkx.org/documentation/stable/reference/algorithms/tree.html
+
+    https://memgraph.com/docs/mage/query-modules/python/nxalg
+
+    The graph is always a (directed) tree.
+    P. L. Krapivsky and S. Redner, Organization of Growing Random Networks, Phys. Rev. E, 63, 066123, 2001.
+    https://networkx.org/documentation/stable/reference/generated/networkx.generators.directed.gn_graph.html
+
+    """
+
+    g = nx.gn_graph(num_nodes)
+    save_graph_to_file("directed_tree_example.png", g)
+
+    return g
+
+
 def random_dag(nodes: int = 5):
     """
     Generate a random Directed Acyclic Graph (DAG) with a given number of nodes and edges
+
+    so the matplotlib image is tagged as "not a dag", but perhaps it is. but what we really
+    want is a polytree
     """
     g = nx.DiGraph()
 
@@ -34,7 +78,13 @@ def random_dag(nodes: int = 5):
         else:
             # we closed a loop!
             g.remove_edge(a, b)
+
+    # is this really a dag? check it
+    save_graph_to_file('an_example_of_random_dag.png', g)
+
     return g
+
+
 
 
 class MultisetTreeNode(MMultiset, NodeMixin):
@@ -204,7 +254,8 @@ def get_membrane_tree2(alphabet: List[str]) -> Node:
     # walk the dag
     # at each node, add in random number of items
     num_nodes = 10
-    g = random_dag(num_nodes)
+    # g = random_dag(num_nodes) my bad
+    g = get_polytree(num_nodes)
 
     # make num nodes and populate. do parent nodes later.
     nodes = []
@@ -212,7 +263,8 @@ def get_membrane_tree2(alphabet: List[str]) -> Node:
     nodes.append(root)
 
     for i in range(1, num_nodes):
-        contents = get_rand_number_and_multiplicity_of_items(alphabet)
+        items = get_rand_number_and_multiplicity_of_items(alphabet)
+        contents = make_mmultiset(items)
         y = Node(name=str(i), parent=root, contents=contents)
         nodes.append(y)
 
@@ -230,8 +282,17 @@ def get_membrane_tree2(alphabet: List[str]) -> Node:
     # second index is child
     for e in g.edges:
         print(f"edge: {e}")
-        idx_self = e[0] # node id
-        idx_child = e[1] # child id
+
+        # cant expect tuples to be ordered
+        first_edge = e[0]
+        second_edge = e[1]
+        if e[0] > e[1]:
+            idx_self = e[1] # node id
+            idx_child = e[0] # child id
+        else:
+            idx_self = e[0] # node id
+            idx_child = e[1] # child id
+
         # go to child, add idx_self as parent
         nodes[idx_child].parent = nodes[idx_self]
 

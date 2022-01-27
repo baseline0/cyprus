@@ -1,6 +1,5 @@
-import unittest
-
 import json
+import unittest
 
 from cyprus.generator import MembraneConcept
 
@@ -8,7 +7,6 @@ from cyprus.generator import MembraneConcept
 class TestMembraneConcept(unittest.TestCase):
 
     def test_1(self):
-
         m = MembraneConcept()
         m.name = 'm1'
         m.rules = 'rule1'

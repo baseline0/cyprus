@@ -1,6 +1,5 @@
-import unittest
-
 import json
+import unittest
 
 from multiset import Multiset
 

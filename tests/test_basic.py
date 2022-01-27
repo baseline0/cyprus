@@ -1,11 +1,10 @@
-import unittest
-
 import json
-import jsons
-
-from multiset import Multiset
+import unittest
 from dataclasses import dataclass
+
+import jsons
 from dataclasses_json import dataclass_json
+from multiset import Multiset
 
 
 @dataclass

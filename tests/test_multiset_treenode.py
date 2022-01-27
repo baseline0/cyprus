@@ -1,11 +1,12 @@
 import unittest
 
-from mmultiset import MMultiset
 from anytree import Node, RenderTree, PostOrderIter
 from anytree.exporter import DotExporter
 from anytree.walker import Walker
-from malta.util import get_alphabet1
+
 from malta.multiset_treenode import MultisetTreeFactory, show_multiset_tree, get_random_selection_from_alphabet
+from malta.util import get_alphabet1
+from mmultiset import MMultiset
 
 
 class TestMembraneTree(unittest.TestCase):

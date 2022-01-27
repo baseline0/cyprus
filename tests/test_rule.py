@@ -1,10 +1,10 @@
+import json
 import unittest
 
-import json
 from multiset import Multiset
-from malta.util import prettyprint_json
 
 from malta.rule import Rule, apply
+from malta.util import prettyprint_json
 from mmultiset import MMultiset
 
 
@@ -93,7 +93,6 @@ class TestRule(unittest.TestCase):
         pass
 
     def test_apply_rule(self):
-
         r_catalyst = MMultiset()
         r_catalyst.add('b')
 

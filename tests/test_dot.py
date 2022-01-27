@@ -2,13 +2,13 @@ import os
 import sys
 import unittest
 
+from malta.dot import ContentItem, DigraphGenerator, ClusterFactory
+from malta.dot_colour import DotColour
+from malta.factory import ContentItemFactory
 from malta.membrane import Membrane
 from malta.membrane_item import MembraneItem
 from malta.simulation import get_multiset_of_item_names_from_membrane_items
-from malta.dot_colour import DotColour
 from malta.util import NameGenerator
-from malta.dot import ContentItem, DigraphGenerator, ClusterFactory
-from malta.factory import ContentItemFactory
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
