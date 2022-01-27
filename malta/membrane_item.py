@@ -89,12 +89,15 @@ def membrane_item_deserialize(d: dict) -> MembraneItem:
     return mi
 
 
-def load_membrane_items_from_file(fname:str) -> List[MembraneItem]:
+def load_membrane_items_from_file(fname: str) -> (List[MembraneItem], List[str]):
     """
     file is in json format.
         key must be from alphabet that is used in rules
         value must be a positive integer and is multiplicity of the key in the membrane
     """
+
+    alphabet = []
+
     # details on the membranes items for summary report
     with open(fname) as f:
         out = json.load(f)
@@ -102,5 +105,6 @@ def load_membrane_items_from_file(fname:str) -> List[MembraneItem]:
     all_items = []
     for k, v in out.items():
         all_items.append(MembraneItem(k, descr=v))
+        alphabet.append(k)
 
-    return all_items
+    return all_items, alphabet

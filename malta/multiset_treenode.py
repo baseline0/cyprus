@@ -1,13 +1,40 @@
 import random
+import networkx as nx
+
+from random import randint
 from typing import List
-from string import ascii_lowercase
 
 from anytree import Node, RenderTree, PreOrderIter
 from anytree import NodeMixin, Node
 
-from multiset import Multiset
-
 from mmultiset import MMultiset, make_mmultiset
+
+
+def random_dag(nodes: int = 5):
+    """
+    Generate a random Directed Acyclic Graph (DAG) with a given number of nodes and edges
+    """
+    g = nx.DiGraph()
+
+    # maximum number of edges in a directed graph with n vertices (which has no cycles):  n−1
+    # proof left to reader
+    edges = nodes - 1
+
+    for i in range(nodes):
+        g.add_node(i)
+
+    while edges > 0:
+        a = randint(0, nodes - 1)
+        b = a
+        while b == a:
+            b = randint(0, nodes - 1)
+        g.add_edge(a, b)
+        if nx.is_directed_acyclic_graph(g):
+            edges -= 1
+        else:
+            # we closed a loop!
+            g.remove_edge(a, b)
+    return g
 
 
 class MultisetTreeNode(MMultiset, NodeMixin):
@@ -15,7 +42,7 @@ class MultisetTreeNode(MMultiset, NodeMixin):
     A node for use with anytree that contains a multiset
     """
 
-    def __init__(self, name: str, length: int, width: int, parent=None, children=None,):
+    def __init__(self, name: str, length: int, width: int, parent=None, children=None, ):
         # super(MMultiset, self).__init__()
 
         self.name = name
@@ -80,7 +107,7 @@ def show_multiset_tree(x: Node):
         print("%s%s" % (pre, node.name))
 
 
-def get_random_selection_from_alphabet(num: int, alphabet: List[str], max_samples: int=10) -> dict:
+def get_random_selection_from_alphabet(num: int, alphabet: List[str], max_samples: int = 10) -> dict:
     """
     num: the number of letters that should be selected from alphabet
     max_samples: the maximum multiplicity of the number selected
@@ -114,6 +141,24 @@ def randomly_populate(mt: MultisetTreeNode, alphabet: List[str]):
             node.add(k, v)
 
 
+def get_rand_number_and_multiplicity_of_items(alphabet: List[str], max_multiplicity: int = 1):
+    if not alphabet:
+        raise ValueError
+    if max_multiplicity < 1:
+        max_multiplicity = 1
+        print("max_multiplicity set to 1")
+
+    items = {}
+
+    num_letter = random.randint(1, len(alphabet))
+    letters = random.sample(alphabet, num_letter)
+
+    for x in letters:
+        items[x] = random.randint(1, max_multiplicity)
+
+    return items
+
+
 def get_membrane_tree1(alphabet: List[str]) -> Node:
     """
     use anytree.node with additional attr: contents = multiset
@@ -124,8 +169,7 @@ def get_membrane_tree1(alphabet: List[str]) -> Node:
         print('expecting a list of membrane identifiers')
         raise ValueError
 
-    # outer membrane has no initial objects (empty multiset)
-    root = Node(name="root", contents=MMultiset())
+    root = get_root_node()
 
     # manually make tree for now
     # FUTURE - call random networkx generator
@@ -143,4 +187,58 @@ def get_membrane_tree1(alphabet: List[str]) -> Node:
 
     s0 = Node(name="sub0", parent=root, contents=contents)
 
+    return root
+
+
+def get_membrane_tree2(alphabet: List[str]) -> Node:
+    """
+        a little more complex nesting
+        done manually.
+        FUTURE - obtain a random graph from networkx
+
+    """
+
+    # outer membrane has no initial objects (empty multiset)
+
+    # get a small random dag.
+    # walk the dag
+    # at each node, add in random number of items
+    num_nodes = 10
+    g = random_dag(num_nodes)
+
+    # make num nodes and populate. do parent nodes later.
+    nodes = []
+    root = get_root_node()
+    nodes.append(root)
+
+    for i in range(1, num_nodes):
+        contents = get_rand_number_and_multiplicity_of_items(alphabet)
+        y = Node(name=str(i), parent=root, contents=contents)
+        nodes.append(y)
+
+    # assert (len(nodes) == num_nodes)  # sanity
+
+    # - do for traversal from bottom
+    # for x in list(nx.dfs_edges(g, source=0)):
+
+    # correct the parent
+    # never adjust root(index 0)
+    #
+    # example: outedges
+    # [e for e in G.edges]
+    # [(0, 1), (1, 2), (2, 3)]
+    # second index is child
+    for e in g.edges:
+        print(f"edge: {e}")
+        idx_self = e[0] # node id
+        idx_child = e[1] # child id
+        # go to child, add idx_self as parent
+        nodes[idx_child].parent = nodes[idx_self]
+
+    return root
+
+
+def get_root_node() -> Node:
+    # outer membrane has no initial objects (empty multiset)
+    root = Node(name="root", contents=MMultiset())
     return root
