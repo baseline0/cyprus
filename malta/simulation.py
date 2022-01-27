@@ -7,7 +7,7 @@ from malta.environment import Environment, EnvState
 from malta.membrane_item import MembraneItem
 from malta.membrane_item import load_membrane_items_from_file
 from malta.mmultiset import MMultiset, make_mmultiset
-from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2
+from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2, convert_tree_to_membranes
 from malta.rule import Rule, make_rule
 from malta.ruleset import RuleSet, get_ruleset_1
 
@@ -24,6 +24,9 @@ class Simulation:
 
         # need to load config or programmatically populate: Environment()
         self.environment = None
+
+        # networkx graph which forms basis of Nodes
+        self.graph = None
 
     def save(self, fname: str):
         # with open(fname, 'w') as f:
@@ -56,6 +59,8 @@ class Simulation:
 
         # if self.current_index == 5:
         #     print('save img')
+
+        convert_tree_to_membranes(self.graph)
 
     def run(self):
         self.current_index = 0
@@ -252,11 +257,12 @@ class SimulationFactory:
         all_items, alphabet = load_membrane_items_from_file(fname)
 
         ruleset = get_ruleset_1(alphabet)
-        root = get_membrane_tree2(alphabet)
+        root, g = get_membrane_tree2(alphabet)
 
         e = Environment(tree=root, rules=ruleset, all_items=all_items)
         sim.environment = e
         sim.root = root
+        sim.graph = g
         return sim
 
 

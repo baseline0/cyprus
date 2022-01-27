@@ -4,6 +4,7 @@ from typing import List
 
 import matplotlib.pyplot as plt
 import networkx as nx
+import networkx.convert
 from anytree import NodeMixin, Node
 from anytree import RenderTree, PreOrderIter
 
@@ -237,7 +238,7 @@ def get_membrane_tree1(alphabet: List[str]) -> Node:
     return root
 
 
-def get_membrane_tree2(alphabet: List[str]) -> Node:
+def get_membrane_tree2(alphabet: List[str]) -> (Node, nx.Graph):
     """
         a little more complex nesting
         done manually.
@@ -251,7 +252,6 @@ def get_membrane_tree2(alphabet: List[str]) -> Node:
     # walk the dag
     # at each node, add in random number of items
     num_nodes = 10
-    # g = random_dag(num_nodes) my bad
     g = get_polytree(num_nodes)
 
     # make num nodes and populate. do parent nodes later.
@@ -265,24 +265,22 @@ def get_membrane_tree2(alphabet: List[str]) -> Node:
         y = Node(name=str(i), parent=root, contents=contents)
         nodes.append(y)
 
-    # assert (len(nodes) == num_nodes)  # sanity
+    # sanity
+    # assert (len(nodes) == num_nodes)
 
     # - do for traversal from bottom
     # for x in list(nx.dfs_edges(g, source=0)):
 
-    # correct the parent
-    # never adjust root(index 0)
+    # correct the parent but
+    # never adjust root (index 0)
     #
     # example: outedges
-    # [e for e in G.edges]
-    # [(0, 1), (1, 2), (2, 3)]
-    # second index is child
+    #   [e for e in G.edges]
+    #   [(0, 1), (1, 2), (2, 3)]
     for e in g.edges:
         print(f"edge: {e}")
 
         # cant expect tuples to be ordered
-        first_edge = e[0]
-        second_edge = e[1]
         if e[0] > e[1]:
             idx_self = e[1]  # node id
             idx_child = e[0]  # child id
@@ -293,10 +291,36 @@ def get_membrane_tree2(alphabet: List[str]) -> Node:
         # go to child, add idx_self as parent
         nodes[idx_child].parent = nodes[idx_self]
 
-    return root
+    return root, g
 
 
 def get_root_node() -> Node:
     # outer membrane has no initial objects (empty multiset)
     root = Node(name="root", contents=MMultiset())
     return root
+
+
+class MemStruct:
+    def __init__(self):
+        pass
+
+    def save_to_file(self, fname: str):
+        pass
+
+
+def convert_tree_to_membranes(g: nx.Graph) -> MemStruct:
+    """
+    root is root of directed tree (polytree)
+    note: need to constantly associated networkx.Graph g and MultisetTree Node root to capture
+    both the membrane structure AND the multiset contents. so TODO make appropriate data struct
+    """
+
+    if not isinstance(g, nx.Graph):
+        raise ValueError
+
+    x = networkx.convert.to_dict_of_dicts(g)
+    y = networkx.convert.to_dict_of_lists(g)
+
+    m = MemStruct()
+
+    return m
