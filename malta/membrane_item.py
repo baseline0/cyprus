@@ -1,7 +1,7 @@
 import json
+from typing import List
 
 from dot_colour import get_rand_colour
-from typing import List
 
 
 class MembraneItem:

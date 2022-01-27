@@ -1,12 +1,13 @@
 import json
 from typing import List
+
 from anytree import Node
 
-from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2
-from malta.membrane_item import load_membrane_items_from_file
 from malta.environment import Environment
 from malta.membrane_item import MembraneItem
+from malta.membrane_item import load_membrane_items_from_file
 from malta.mmultiset import MMultiset, make_mmultiset
+from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2
 from malta.rule import Rule, make_rule
 from malta.ruleset import RuleSet, get_ruleset_1
 
@@ -274,7 +275,6 @@ def run(idx: int = 1):
 
 if __name__ == "__main__":
     run(4)
-
 
 # CURRENT STATE - sim4
 #   m -= r.rule_input

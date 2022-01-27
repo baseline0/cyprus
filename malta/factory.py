@@ -1,16 +1,16 @@
+import json
 from typing import List
 
-import json
 from anytree import Node
-from malta.environment import Environment
-from malta.dot_colour import get_rand_colour
+
 from malta.dot import ContentItem
+from malta.dot_colour import get_rand_colour
+from malta.environment import Environment
 from malta.membrane_item import MembraneItem
-from malta.membrane import Membrane
-from malta.util import NameGenerator
-from malta.rule import make_rule
 from malta.mmultiset import MMultiset, make_mmultiset
+from malta.rule import make_rule
 from malta.ruleset import RuleSet
+from malta.util import NameGenerator
 
 
 class Factory:
@@ -66,7 +66,8 @@ class Factory:
         catalyst = {'b': 1}
         r_input = {'c': 1}
         r_output = {'w': 1}
-        r = make_rule(name='r1', descr="make w from c when b present", catalyst=catalyst, rule_input=r_input, rule_output=r_output)
+        r = make_rule(name='r1', descr="make w from c when b present", catalyst=catalyst, rule_input=r_input,
+                      rule_output=r_output)
 
         ruleset = RuleSet()
         ruleset.rules.append(r)

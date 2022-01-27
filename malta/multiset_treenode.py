@@ -1,12 +1,11 @@
 import random
-import networkx as nx
-
 from random import randint
 from typing import List
-import matplotlib.pyplot as plt
 
-from anytree import Node, RenderTree, PreOrderIter
+import matplotlib.pyplot as plt
+import networkx as nx
 from anytree import NodeMixin, Node
+from anytree import RenderTree, PreOrderIter
 
 from mmultiset import MMultiset, make_mmultiset
 
@@ -83,8 +82,6 @@ def random_dag(nodes: int = 5):
     save_graph_to_file('an_example_of_random_dag.png', g)
 
     return g
-
-
 
 
 class MultisetTreeNode(MMultiset, NodeMixin):
@@ -287,11 +284,11 @@ def get_membrane_tree2(alphabet: List[str]) -> Node:
         first_edge = e[0]
         second_edge = e[1]
         if e[0] > e[1]:
-            idx_self = e[1] # node id
-            idx_child = e[0] # child id
+            idx_self = e[1]  # node id
+            idx_child = e[0]  # child id
         else:
-            idx_self = e[0] # node id
-            idx_child = e[1] # child id
+            idx_self = e[0]  # node id
+            idx_child = e[1]  # child id
 
         # go to child, add idx_self as parent
         nodes[idx_child].parent = nodes[idx_self]

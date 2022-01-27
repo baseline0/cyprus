@@ -1,10 +1,11 @@
 from typing import List, TextIO
 
 from anytree import Node, PostOrderIter
-from malta.ruleset import RuleSet
-from malta.rule import apply
-from malta.membrane_item import MembraneItem
+
 from malta.membrane import Membrane
+from malta.membrane_item import MembraneItem
+from malta.rule import apply
+from malta.ruleset import RuleSet
 
 
 class Environment:

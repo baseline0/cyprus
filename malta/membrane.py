@@ -1,6 +1,6 @@
-from malta.mmultiset import MMultiset
-
 from typing import List
+
+from malta.mmultiset import MMultiset
 
 
 class Membrane:
@@ -14,7 +14,7 @@ class Membrane:
 
     def __init__(self, name: str, descr: str, contents=List[str]):
         # =List[MembraneItem]):
-        if  isinstance(name, str):
+        if isinstance(name, str):
             self.name = name
         else:
             raise ValueError
@@ -48,7 +48,7 @@ class Membrane:
 
         # TODO - add in indent
 
-        #TODO - add in colour
+        # TODO - add in colour
         # TODO - how to show multiplicity
         # option1: duplicate the visual object
         # option2: use a label on the object with quantity

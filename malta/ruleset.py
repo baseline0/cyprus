@@ -1,5 +1,6 @@
 import random
 from typing import List
+
 from malta.rule import Rule, make_rule
 from util import NameGenerator
 
@@ -84,7 +85,7 @@ def make_random_rule_from_alphabet(alphabet: List[str]) -> Rule:
         else:
             r_input = {alphabet[1]: 1}
             r_output = {alphabet[0]: 1}
-        descr="coin flip"
+        descr = "coin flip"
     else:
 
         selected = random.sample(alphabet, 3)

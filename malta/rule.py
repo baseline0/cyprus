@@ -2,7 +2,6 @@ from malta.mmultiset import MMultiset, make_mmultiset
 
 
 class Rule:
-
     __slots__ = ["name", "descr", "catalyst", "rule_input", "rule_output"]
 
     def __init__(self, name: str, descr: str, catalyst: MMultiset, rule_input: MMultiset, rule_output: MMultiset):

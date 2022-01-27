@@ -1,6 +1,6 @@
 from enum import Enum
-from typing import List
 from random import sample
+from typing import List
 
 
 class DotColour(str, Enum):

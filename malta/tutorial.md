@@ -13,7 +13,6 @@ the following code generates a dot file
 
 ```
 
-
 graph1.dot looks like:
 
 ```
