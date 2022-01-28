@@ -9,6 +9,7 @@ from anytree import NodeMixin, Node
 from anytree import RenderTree, PreOrderIter
 
 from mmultiset import MMultiset, make_mmultiset
+from util import hierarchy_pos
 
 
 def save_graph_to_dot_file(fname: str, g: nx.Graph) -> None:
@@ -33,15 +34,20 @@ def save_simple_graph_to_file(fname: str, g: nx.Graph) -> None:
     # nx.draw_planar(g)
 
     options = {
-        "font_size": 24,
-        "node_size": 1000,
+        "font_size": 12,
+        "node_size": 500,
         "node_color": "white",
         "edgecolors": "black",
-        "linewidths": 5,
-        "width": 5,
+        "linewidths": 3,
+        "width": 2,
     }
 
-    nx.draw_networkx(g, **options)
+    # pos = hierarchy_pos(g)
+    # nx.draw_networkx(g, pos, **options)
+
+    # for no overlap
+    pos = nx.spring_layout(g)
+    nx.draw_networkx(g, pos, **options)
 
     # Set margins for the axes so that nodes aren't clipped
     ax = plt.gca()
@@ -337,6 +343,26 @@ class MemStruct:
         pass
 
 
+def get_leaf_nodes(g: networkx.Graph) -> []:
+    leaf_nodes = [node for node in g.nodes() if g.out_degree(node) != 0 and g.in_degree(node) == 0]
+    print(f"leaf nodes are: {leaf_nodes}")
+    return leaf_nodes
+
+
+def remove_nodes(g: networkx.Graph, nodes: List) -> networkx.Graph:
+    """
+    use with leaf nodes
+    """
+
+    if not isinstance(g, networkx.Graph):
+        raise ValueError
+
+    for n in nodes:
+        g.remove_node(n)
+
+    return g
+
+
 def convert_tree_to_membranes(g: nx.Graph) -> MemStruct:
     """
     root is root of directed tree (polytree)
@@ -347,11 +373,33 @@ def convert_tree_to_membranes(g: nx.Graph) -> MemStruct:
     if not isinstance(g, nx.Graph):
         raise ValueError
 
-    x = networkx.convert.to_dict_of_dicts(g)
-    y = networkx.convert.to_dict_of_lists(g)
-    print(x)
-    print(y)
+    # x = networkx.convert.to_dict_of_dicts(g)
+    # print(x)
+    # example: {0: {}, 1: {0: {}}, 2: {0: {}}, 3: {2: {}}, 4: {0: {}}, 5: {3: {}}, 6: {2: {}}, 7: {3: {}}, 8: {0: {}}, 9: {4: {}}}
 
+    y = networkx.convert.to_dict_of_lists(g)
+    # print(y)
+    # example: {0: [], 1: [0], 2: [0], 3: [2], 4: [0], 5: [3], 6: [2], 7: [3], 8: [0], 9: [4]}
+
+    struct = []
+    # make a copy of g. find leaf nodes and record node id. erode leaves to get next layer
+    g_eroding = g
+    while len(g.nodes) > 1:
+        leaves = get_leaf_nodes(g_eroding)
+        struct.append(leaves)
+        g_eroding = remove_nodes(g_eroding, leaves)
+
+    # removing leaf nodes works. this walks back to the root so that we can write the
+    # dot file with the nested membranes and their contents
+    # Need to do this only once at start and then store for writing out images.
+    # example
+    # leaf nodes are: [3, 5, 7, 8, 9]
+    # leaf nodes are: [6]
+    # leaf nodes are: [4]
+    # leaf nodes are: [2]
+    # leaf nodes  are: [1]
+
+    # do once and add to env data fields
     m = MemStruct()
 
     return m
