@@ -11,13 +11,42 @@ from anytree import RenderTree, PreOrderIter
 from mmultiset import MMultiset, make_mmultiset
 
 
-def save_graph_to_file(fname: str, g) -> None:
-    print(f"see: {fname}")
-    # TODO FIX
-    # a = nx.nx_agraph.to_agraph(g)
+def save_graph_to_dot_file(fname: str, g: nx.Graph) -> None:
+    if not isinstance(g, nx.Graph):
+        raise ValueError
+
+    a = nx.nx_agraph.to_agraph(g)
+    a.write(f"{fname}.dot")
+    # nx.nx_agraph.read_dot("k5.dot")
+
+    a.draw(fname, prog="neato")
     # nx.nx_agraph.write_dot(a, "./graph_/")
-    nx.draw(g)
-    nx.draw_planar(g)
+
+
+def save_simple_graph_to_file(fname: str, g: nx.Graph) -> None:
+    # print(f"see: {fname}")
+
+    if not isinstance(g, nx.Graph):
+        raise ValueError
+
+    # nx.draw(g)
+    # nx.draw_planar(g)
+
+    options = {
+        "font_size": 24,
+        "node_size": 1000,
+        "node_color": "white",
+        "edgecolors": "black",
+        "linewidths": 5,
+        "width": 5,
+    }
+
+    nx.draw_networkx(g, **options)
+
+    # Set margins for the axes so that nodes aren't clipped
+    ax = plt.gca()
+    ax.margins(0.20)
+    plt.axis("off")
     plt.draw()
     plt.savefig(fname)
 
@@ -46,7 +75,7 @@ def get_polytree(num_nodes: int = 10):
     """
 
     g = nx.gn_graph(num_nodes)
-    save_graph_to_file("directed_tree_example.png", g)
+    save_simple_graph_to_file("directed_tree_example.png", g)
 
     return g
 
@@ -80,7 +109,7 @@ def random_dag(nodes: int = 5):
             g.remove_edge(a, b)
 
     # is this really a dag? check it
-    save_graph_to_file('an_example_of_random_dag.png', g)
+    save_simple_graph_to_file('an_example_of_random_dag.png', g)
 
     return g
 
@@ -320,6 +349,8 @@ def convert_tree_to_membranes(g: nx.Graph) -> MemStruct:
 
     x = networkx.convert.to_dict_of_dicts(g)
     y = networkx.convert.to_dict_of_lists(g)
+    print(x)
+    print(y)
 
     m = MemStruct()
 
