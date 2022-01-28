@@ -43,44 +43,43 @@ class TestDigraphGenerator(unittest.TestCase):
 
         print(names)
 
-    def test_demo1(self):
+    # def test_demo1(self):
+    #
+    #     c = ClusterFactory.get_cluster_1()
+    #
+    #     dg = DigraphGenerator()
+    #     dg.digraph.add_cluster(c)
+    #
+    #     dg.save_dot(fname='./out/graph1.dot')
 
-        c = ClusterFactory.get_cluster_1()
+    # def test_demo2(self):
+    #
+    #     [c, peer] = ClusterFactory.get_cluster_2()
+    #
+    #     dg = DigraphGenerator()
+    #     dg.digraph.add_cluster(c)
+    #     dg.digraph.add_cluster(peer)
+    #
+    #     dg.save_dot(fname='./tests/out/graph2.dot')
 
-        dg = DigraphGenerator()
-        dg.digraph.add_cluster(c)
-
-        dg.save_dot(fname='./out/graph1.dot')
-        # dg.save_png()
-
-    def test_demo2(self):
-
-        [c, peer] = ClusterFactory.get_cluster_2()
-
-        dg = DigraphGenerator()
-        dg.digraph.add_cluster(c)
-        dg.digraph.add_cluster(peer)
-
-        dg.save_dot(fname='./out/graph2.dot')
-
-    def test_membrane_to_dot(self):
-
-        fname = './out/test_membrane.dot'
-
-        mi1 = MembraneItem(name='a', descr='apple')
-        mi2 = MembraneItem(name='b', descr='bread')
-        contents = get_multiset_of_item_names_from_membrane_items([mi1, mi2])
-        m = Membrane('membrane', descr='descr', contents=contents)
-
-        s = m.as_dot()
-        print(s)
-
-        self.assertTrue('subgraph ' in s)
-        self.assertTrue('cluster_membrane ' in s)
-        self.assertTrue('a ' in s)
-        self.assertTrue('b ' in s)
-
-        with open(fname, 'w') as f:
-            f.write('digraph d {')
-            f.write(s)
-            f.write('}')
+    # def test_membrane_to_dot(self):
+    #
+    #     fname = './out/test_membrane.dot'
+    #
+    #     mi1 = MembraneItem(name='a', descr='apple')
+    #     mi2 = MembraneItem(name='b', descr='bread')
+    #     contents = get_multiset_of_item_names_from_membrane_items([mi1, mi2])
+    #     m = Membrane('membrane', descr='descr', contents=contents)
+    #
+    #     s = m.as_dot()
+    #     print(s)
+    #
+    #     self.assertTrue('subgraph ' in s)
+    #     self.assertTrue('cluster_membrane ' in s)
+    #     self.assertTrue('a ' in s)
+    #     self.assertTrue('b ' in s)
+    #
+    #     with open(fname, 'w') as f:
+    #         f.write('digraph d {')
+    #         f.write(s)
+    #         f.write('}')
