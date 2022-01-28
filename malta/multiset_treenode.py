@@ -13,6 +13,10 @@ from util import hierarchy_pos
 
 
 def save_graph_to_dot_file(fname: str, g: nx.Graph) -> None:
+    # USE anytree wlker.
+    # for node in PostOrderIter(root):
+    #     print(f'{node.name} has: {node.contents}')
+
     if not isinstance(g, nx.Graph):
         raise ValueError
 
@@ -414,7 +418,7 @@ def walk_dfs_post_order(g: nx.Graph):
     return retval
 
 
-def get_branches_from_g(g: nx.Graph):
+def get_branches_from_g(g: nx.Graph) -> List:
 
     if not isinstance(g, nx.Graph):
         raise  ValueError
@@ -427,6 +431,10 @@ def get_branches_from_g(g: nx.Graph):
     for root in roots:
         paths = nx.all_simple_paths(g, root, leaves)
         branches.extend(paths)
+
+    # reverse the paths so we can have 0, root, at front. works.
+    for i, b in enumerate(branches):
+        branches[i] = b[::-1]
 
     return branches
 

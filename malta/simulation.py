@@ -7,10 +7,58 @@ from malta.environment import Environment, EnvState
 from malta.membrane_item import MembraneItem
 from malta.membrane_item import load_membrane_items_from_file
 from malta.mmultiset import MMultiset, make_mmultiset
-from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2, convert_tree_to_membranes, \
-    walk_dfs_post_order
+from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2, get_branches_from_g
 from malta.rule import Rule, make_rule
 from malta.ruleset import RuleSet, get_ruleset_1
+
+from enum import Enum
+
+
+class NodeState(Enum):
+    # can close the subgraph structure
+    ALL_CHILDREN_COMPLETE = 0
+
+    # look for other children
+    CHILDREN_IN_PROGRESS = 1
+
+
+class BranchManager:
+    """
+    given a list of branches of a directed tree with root 7 and misc leaf nodes and branches of misc length,
+    write the corresponding
+        [0, 1, 3]
+        [0, 1, 4, 5]
+        [0, 1, 6]
+        [0, 1, 7]
+        [0, 1, 2, 8]
+        [0, 1, 2, 9]
+
+        start0
+            start1
+                start3
+                end3
+                start4
+                    start5
+                    end5
+                end4
+                start6
+                end6
+                start7
+                end7
+                start2
+                    start8
+                    end8
+                    start9
+                    end9
+                end2
+            end1
+        end0
+
+
+    """
+    # NOTE TO SELF: use anytree walker
+    # for node in PostOrderIter(root):
+    #     print(f'{node.name} has: {node.contents}')
 
 
 class Simulation:
@@ -28,6 +76,9 @@ class Simulation:
 
         # networkx graph which forms basis of Nodes
         self.graph = None
+
+        # branches from root to leave
+        self.branches = None
 
     def save(self, fname: str):
         # with open(fname, 'w') as f:
@@ -60,6 +111,18 @@ class Simulation:
 
         # if self.current_index == 5:
         #     print('save img')
+        self.write_nested_membranes()
+
+    def write_nested_membranes(self):
+        fname = 'nested_membranes_from_branches.dot'
+
+        with open(fname, 'w') as f:
+            f.write('digraph d { \n\n')
+
+            for b in self.branches:
+                f.write(f'\t{b}\n\n')
+
+            f.write('}\n')
 
     def run(self):
         self.current_index = 0
@@ -265,7 +328,8 @@ class SimulationFactory:
         sim.graph = g
 
         #sim.membrane_struct = convert_tree_to_membranes(g)
-        walk_dfs_post_order(g)
+        sim.branches = get_branches_from_g(g)
+        #walk_dfs_post_order(g)
 
         return sim
 
