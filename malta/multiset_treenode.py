@@ -6,16 +6,20 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import networkx.convert
 from anytree import NodeMixin, Node
-from anytree import RenderTree, PreOrderIter
+from anytree import RenderTree, PreOrderIter, PostOrderIter
 
 from mmultiset import MMultiset, make_mmultiset
-from util import hierarchy_pos
+
+
+def save_nested_membranes(root: Node):
+    # do the full nested membrane image properly
+
+    for node in PostOrderIter(root):
+        print(f'{node.name} has: {node.contents}')
+        # TODO
 
 
 def save_graph_to_dot_file(fname: str, g: nx.Graph) -> None:
-    # USE anytree wlker.
-    # for node in PostOrderIter(root):
-    #     print(f'{node.name} has: {node.contents}')
 
     if not isinstance(g, nx.Graph):
         raise ValueError
@@ -419,6 +423,8 @@ def walk_dfs_post_order(g: nx.Graph):
 
 
 def get_branches_from_g(g: nx.Graph) -> List:
+    # use with simplified visuals that show
+    # nested structure only along one branch
 
     if not isinstance(g, nx.Graph):
         raise  ValueError

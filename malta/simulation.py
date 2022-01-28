@@ -1,7 +1,7 @@
 import json
-from typing import List
+from typing import List, TextIO
 
-from anytree import Node
+from anytree import Node, search
 
 from malta.environment import Environment, EnvState
 from malta.membrane_item import MembraneItem
@@ -111,16 +111,76 @@ class Simulation:
 
         # if self.current_index == 5:
         #     print('save img')
-        self.write_nested_membranes()
+        self.write_simplified_branches()
 
-    def write_nested_membranes(self):
-        fname = 'nested_membranes_from_branches.dot'
+    def write_simplified_branches(self):
+
+        prefix = "simplified_branch_"
+
+        for i, b in enumerate(self.branches):
+            fname = f"{prefix}{i}.dot"
+            self.write_branch(fname, branch=b)
+
+    @staticmethod
+    def write_subgraph_starts(fp: TextIO, names: List[str]):
+        """
+        helper
+        pass in the name of the nodes for digraph subcluster.
+        """
+
+        TAB = "\t"
+        start_clause = "subgraph cluster_"
+        depth = 1
+
+        for name in names:
+            indent = TAB*depth
+            line = f"{indent}{start_clause}{name}"
+            fp.write(line + "\t { \n")
+            depth += 1
+
+    @staticmethod
+    def write_subgraph_end(fp: TextIO, node: Node):
+
+        if not hasattr(node, "contents"):
+            print('node must have contents attr for membrane items')
+            raise AttributeError
+
+        # TODO - get node colour, label, etc
+        for c in node.contents:
+            fp.write(f"{c}\n")
+
+    def write_branch(self, fname: str, branch: List[int]):
+        """
+        branch is a list of node identifiers from leaf to root
+        output is a dot file
+        """
+
+        print(branch)
+
+        depth = len(branch)
+        #leaf_node_name = branch[depth-1]
 
         with open(fname, 'w') as f:
             f.write('digraph d { \n\n')
 
-            for b in self.branches:
-                f.write(f'\t{b}\n\n')
+            # start all the nesting
+            self.write_subgraph_starts(f, branch)
+
+            # get the node and write its contents and close clause
+            for node_id in branch:
+                try:
+                    if node_id == 0:
+                        node_id = "root"
+
+                    results = search.findall(self.root, filter_=lambda node: node.name == str(node_id))
+
+                    if not len(results) == 1:
+                        raise ValueError
+                    node = results[0]
+                    self.write_subgraph_end(f, node)
+                except Exception:
+                    print(f'could not access node with id {node_id}')
+                    raise ValueError
 
             f.write('}\n')
 
