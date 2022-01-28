@@ -1,6 +1,6 @@
 import random
 from random import randint
-from typing import List
+from typing import List, TextIO
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -335,12 +335,37 @@ def get_root_node() -> Node:
     return root
 
 
+def start_writing_node(node, f:TextIO):
+    f.write(f'\tsubgraph cluster_{node.name} {{ \n')
+    # write contents.
+
+
+def finish_writing_node(f:TextIO):
+    # write label
+    f.write('\t}')
+
+
 class MemStruct:
-    def __init__(self):
-        pass
+    """
+        since we are dealing with a directed tree, it is fairly simple.
+        n nodes; n - 1 edges
+        each node can only be the child of one other node.
+        one node, root, has no parents.
+
+    https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.simple_paths.all_simple_paths.html
+
+    """
+    def __init__(self, branches: List):
+        self.branches = branches
 
     def save_to_file(self, fname: str):
-        pass
+        with open(fname, 'w') as f:
+            f.write('digraph d {')
+
+            for i in self.branches:
+                f.write('branch here\n\n')
+
+            f.write('}')
 
 
 def get_leaf_nodes(g: networkx.Graph) -> []:
@@ -363,6 +388,49 @@ def remove_nodes(g: networkx.Graph, nodes: List) -> networkx.Graph:
     return g
 
 
+def walk_dfs_post_order(g: nx.Graph):
+    """
+        walk the tree, pick up multiset contents from node id, write to digraph subgraph cluster...
+        https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.traversal.depth_first_search.dfs_postorder_nodes.html#networkx.algorithms.traversal.depth_first_search.dfs_postorder_nodes
+
+        subtree_at_2 = dfs_tree(t, 2)
+
+    """
+
+    if not isinstance(g, nx.Graph):
+        raise ValueError
+
+    # assume root = 0
+    # find root node: (i think i am using opposite notion of root since having to change in/out_degree to match past personal conventions )
+    # roots = (v for v, d in g.out_degree() if d == 0)
+    #
+    # # need to run the generator?
+    # for r in roots:
+    #     print(r)
+
+    # expect only one root since g should be a polytree
+    retval = list(nx.dfs_postorder_nodes(g, source=0))
+    print(retval)
+    return retval
+
+
+def get_branches_from_g(g: nx.Graph):
+
+    if not isinstance(g, nx.Graph):
+        raise  ValueError
+
+    # get all branches
+    roots = (v for v, d in g.in_degree() if d == 0)
+
+    leaves = [v for v, d in g.out_degree() if d == 0]
+    branches = []
+    for root in roots:
+        paths = nx.all_simple_paths(g, root, leaves)
+        branches.extend(paths)
+
+    return branches
+
+
 def convert_tree_to_membranes(g: nx.Graph) -> MemStruct:
     """
     root is root of directed tree (polytree)
@@ -373,33 +441,35 @@ def convert_tree_to_membranes(g: nx.Graph) -> MemStruct:
     if not isinstance(g, nx.Graph):
         raise ValueError
 
+    branches = get_branches_from_g(g)
+
     # x = networkx.convert.to_dict_of_dicts(g)
     # print(x)
     # example: {0: {}, 1: {0: {}}, 2: {0: {}}, 3: {2: {}}, 4: {0: {}}, 5: {3: {}}, 6: {2: {}}, 7: {3: {}}, 8: {0: {}}, 9: {4: {}}}
 
-    y = networkx.convert.to_dict_of_lists(g)
+    node_connections = networkx.convert.to_dict_of_lists(g)
     # print(y)
     # example: {0: [], 1: [0], 2: [0], 3: [2], 4: [0], 5: [3], 6: [2], 7: [3], 8: [0], 9: [4]}
 
-    struct = []
+    leaf_order = []
     # make a copy of g. find leaf nodes and record node id. erode leaves to get next layer
     g_eroding = g
     while len(g.nodes) > 1:
         leaves = get_leaf_nodes(g_eroding)
-        struct.append(leaves)
+        leaf_order.append(leaves)
         g_eroding = remove_nodes(g_eroding, leaves)
 
     # removing leaf nodes works. this walks back to the root so that we can write the
     # dot file with the nested membranes and their contents
     # Need to do this only once at start and then store for writing out images.
-    # example
-    # leaf nodes are: [3, 5, 7, 8, 9]
-    # leaf nodes are: [6]
+    # example, on successive calls to erode tree,
+    # first, leaf nodes are: [3, 5, 7, 8, 9]
+    # then leaf nodes are: [6]
     # leaf nodes are: [4]
     # leaf nodes are: [2]
-    # leaf nodes  are: [1]
+    # leaf nodes are: [1]
 
     # do once and add to env data fields
-    m = MemStruct()
+    m = MemStruct(branches)
 
     return m

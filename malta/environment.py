@@ -10,6 +10,8 @@ from malta.ruleset import RuleSet
 
 from enum import Enum
 
+from multiset_treenode import convert_tree_to_membranes
+
 
 class EnvState(Enum):
     STOPPED = 0
@@ -43,6 +45,9 @@ class Environment:
         # self.no_rules_fired_counter=0
 
         self.running_state = EnvState.RUNNING
+
+        # use this structure for nested membrane visuals
+        self.membrane_struct = None
 
     def apply_rules(self, root: Node):
         # TODO - randomize rule order or add in rule priority
