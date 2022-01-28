@@ -27,3 +27,11 @@ class TestMMultiset(unittest.TestCase):
         expected = {'a': 1}
         self.assertEqual(d, expected)
         print(d)
+
+        m.add('b')
+        m.add('b')
+
+        d = multiset_to_dict(m)
+        expected = {'a': 1, 'b': 2}
+        self.assertDictEqual(d, expected)
+        print(d)

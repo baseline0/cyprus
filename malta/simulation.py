@@ -6,7 +6,7 @@ from anytree import Node, search
 from malta.environment import Environment, EnvState
 from malta.membrane_item import MembraneItem
 from malta.membrane_item import load_membrane_items_from_file
-from malta.mmultiset import MMultiset, make_mmultiset
+from malta.mmultiset import MMultiset, make_mmultiset, multiset_to_dict
 from malta.multiset_treenode import get_membrane_tree1, get_membrane_tree2, get_branches_from_g
 from malta.rule import Rule, make_rule
 from malta.ruleset import RuleSet, get_ruleset_1
@@ -139,26 +139,75 @@ class Simulation:
             depth += 1
 
     @staticmethod
+    def get_label_string(name: str, multiplicity: int):
+        if not name or multiplicity < 1:
+            return ''
+        s = f"[label = \"{name}:{multiplicity}\" ]"
+        return s
+
+    @staticmethod
     def write_subgraph_end(fp: TextIO, node: Node):
 
         if not hasattr(node, "contents"):
             print('node must have contents attr for membrane items')
             raise AttributeError
 
-        # TODO - get node colour, label, etc
-        for c in node.contents:
-            fp.write(f"{c}\n")
+        # constant indent for now
+        TAB = "\t"
+        indent = TAB*2
+        # node names are integers but we need char to start for dot so use node name as suffix
+        suffix = node.name
+
+        # given that dot does not automatically duplicate same named objects within a subgraph,
+        # though visually representing the multiplicity with same coloured circles can be appealing,
+        # we process the multiset into obj:quantity and generate a label for the circle that indicates
+        # the multiplicity of the object.
+
+        d = multiset_to_dict(node.contents)
+
+        # need to have unique name within the membrane so add prefix based on nesting
+        for k, v in d.items():
+            # TODO - get node colour, label, etc
+            descr = Simulation.get_label_string(k,v)
+            fp.write(f"{indent} {k}{suffix}{descr}\n")
+
+            # TODO
+            # fp.write(f"label = \"membrane\" ")
+        fp.write("} \n\n")
 
     def write_branch(self, fname: str, branch: List[int]):
         """
         branch is a list of node identifiers from leaf to root
         output is a dot file
+
+        note: for dot, node name needs to start w character, not number
+
+        current state: example
+                digraph d {
+
+                    subgraph cluster_0	 {
+                        subgraph cluster_1	 {
+                        subgraph cluster_3	 {
+                        }
+
+                        1_g[label = "g:1" ]
+                        1_h[label = "h:1" ]
+                    }
+
+                 3_g[label = "g:2" ]
+                 3_d[label = "d:2" ]
+                 3_i[label = "i:3" ]
+                 3_h[label = "h:2" ]
+                 3_a[label = "a:1" ]
+                 3_j[label = "j:1" ]
+            }
+
+        }
+
+
         """
 
         print(branch)
-
-        depth = len(branch)
-        #leaf_node_name = branch[depth-1]
 
         with open(fname, 'w') as f:
             f.write('digraph d { \n\n')
@@ -177,11 +226,14 @@ class Simulation:
                     if not len(results) == 1:
                         raise ValueError
                     node = results[0]
+                    # write the contents
                     self.write_subgraph_end(f, node)
+
                 except Exception:
                     print(f'could not access node with id {node_id}')
                     raise ValueError
 
+            # end digraph
             f.write('}\n')
 
     def run(self):

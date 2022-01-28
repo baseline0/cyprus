@@ -82,20 +82,8 @@ def multiset_to_dict(m: Multiset) -> dict:
 
     d = {}
 
-    s = m.__str__()
-    s = s.replace("{", '')
-    s = s.replace("}", '')
-    s = s.replace("'", '')
-
-    # may need to split into tuples here?
-    tokens = s.split(':')
-
-    for t in tokens:
-        if t in d.keys():
-            d[t] += 1
-        else:
-            d[t] = 1
-
+    for k, v in m.items():
+        d[k] = v
     return d
 
 
