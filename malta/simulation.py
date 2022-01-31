@@ -115,7 +115,7 @@ class Simulation:
 
     def write_simplified_branches(self):
 
-        prefix = "simplified_branch_"
+        prefix = "./sims/simplified_branch_"
 
         for i, b in enumerate(self.branches):
             fname = f"{prefix}{i}.dot"

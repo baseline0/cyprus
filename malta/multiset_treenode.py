@@ -89,7 +89,7 @@ def get_polytree(num_nodes: int = 10):
     """
 
     g = nx.gn_graph(num_nodes)
-    save_simple_graph_to_file("directed_tree_example.png", g)
+    save_simple_graph_to_file("./sims/directed_tree_example.png", g)
 
     return g
 
